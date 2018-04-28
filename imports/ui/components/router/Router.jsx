@@ -6,6 +6,7 @@ import PublicRoute from "./PublicRoute";
 
 import DashboardPage from "../../pages/DashboardPage";
 import LandingPage from "../../pages/LandingPage";
+import SigninPage from "../../pages/SigninPage";
 import SignupPage from "../../pages/SignupPage";
 
 export default (Router = () => (
@@ -22,6 +23,7 @@ export default (Router = () => (
           );
         }}
       />
+      <PublicRoute exact path="/signin" component={SigninPage} />
       <PublicRoute exact path="/signup" component={SignupPage} />
     </Switch>
   </BrowserRouter>
