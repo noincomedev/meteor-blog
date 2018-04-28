@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-const h1 = () => <h1>Hello, router!</h1>;
+import LandingPage from "../../pages/LandingPage";
 
 export default (Router = () => (
   <BrowserRouter>
     <Switch>
-      <Route exact path="/" component={h1} />
+      <Route exact path="/" component={LandingPage} />
     </Switch>
   </BrowserRouter>
 ));
