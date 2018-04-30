@@ -16,9 +16,7 @@ class SignupForm extends Component {
     event.preventDefault();
     const { history } = this.props;
     Accounts.createUser(this.state, error => {
-      if (!error) {
-        history.push("/");
-      }
+      if (!error) history.push("/");
 
       Bert.alert({
         title: error ? "Error!" : "Success",
@@ -27,7 +25,7 @@ class SignupForm extends Component {
           : "Thanks for signup, you are now logged in",
         type: error ? "danger" : "success",
         style: "growl-top-right",
-        icon: error ? "fa-error" : "fa-check"
+        icon: error ? "fa-remove" : "fa-check"
       });
     });
   };
