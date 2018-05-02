@@ -1,0 +1,7 @@
+type User {
+  admin: Boolean
+}
+
+type Query {
+  user: User
+}
