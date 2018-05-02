@@ -5,6 +5,6 @@ export default {
     }
   },
   User: {
-    admin: user => user.admin
+    admin: user => user.profile.admin
   }
 };

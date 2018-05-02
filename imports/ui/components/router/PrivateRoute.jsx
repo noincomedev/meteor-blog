@@ -1,9 +1,15 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { PropTypes } from "prop-types";
+import { withApollo } from "react-apollo";
 
-const PrivateRoute = ({ component, exact, path }) => {
-  if (!Meteor.userId()) return <Redirect to="/" />;
+import { currentUser } from "./Router";
+
+const PrivateRoute = ({ client, component, exact, path }) => {
+  const { user } = client.readQuery({ query: currentUser });
+  if (!user) {
+    return <Redirect to="/" />;
+  }
   return (
     <Route
       exact={exact}
@@ -14,9 +20,10 @@ const PrivateRoute = ({ component, exact, path }) => {
 };
 
 PrivateRoute.propTypes = {
+  client: PropTypes.object.isRequired,
   component: PropTypes.func.isRequired,
   exact: PropTypes.bool.isRequired,
   path: PropTypes.string.isRequired
 };
 
-export default PrivateRoute;
+export default withApollo(PrivateRoute);
