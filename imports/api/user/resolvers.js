@@ -5,6 +5,6 @@ export default {
     }
   },
   User: {
-    admin: user => user.profile.admin
+    admin: user => (user.profile ? user.profile.admin : false)
   }
 };
