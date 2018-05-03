@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Bert } from "meteor/themeteorchef:bert";
-import { withRouter } from "react-router-dom";
+import { withApollo } from "react-apollo";
 
 class SigninForm extends Component {
   state = { email: "", password: "" };
@@ -14,11 +14,11 @@ class SigninForm extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const { history } = this.props;
+    const { client } = this.props;
     const { email, password } = this.state;
     Meteor.loginWithPassword(email, password, error => {
       if (!error) {
-        history.push("/");
+        client.resetStore();
       }
 
       Bert.alert({
@@ -53,4 +53,4 @@ class SigninForm extends Component {
   }
 }
 
-export default withRouter(props => <SigninForm {...props} />);
+export default withApollo(SigninForm);

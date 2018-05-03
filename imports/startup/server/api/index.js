@@ -2,14 +2,17 @@ import { createApolloServer } from "meteor/apollo";
 import { makeExecutableSchema } from "graphql-tools";
 import merge from "lodash/merge";
 
-import UserSchema from "../../../api/user/User.graphql";
-import UserResolvers from "../../../api/user/resolvers";
+import UserSchema from "../../../api/users/User.graphql";
+import UserResolvers from "../../../api/users/resolvers";
 
-// aaa
+import PostSchema from "../../../api/posts/Post.graphql";
+import PostResolvers from "../../../api/users/resolvers";
 
-const typeDefs = [UserSchema];
+// aaaaa
 
-const resolvers = merge(UserResolvers);
+const typeDefs = [UserSchema, PostSchema];
+
+const resolvers = merge(UserResolvers, PostResolvers);
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 

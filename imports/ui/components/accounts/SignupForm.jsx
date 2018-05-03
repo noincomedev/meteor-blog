@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Bert } from "meteor/themeteorchef:bert";
-import { withRouter } from "react-router-dom";
+import { withApollo } from "react-apollo";
 
 class SignupForm extends Component {
   state = { email: "", password: "" };
@@ -14,9 +14,9 @@ class SignupForm extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const { history } = this.props;
+    const { client } = this.props;
     Accounts.createUser(this.state, error => {
-      if (!error) history.push("/");
+      if (!error) client.resetStore();
 
       Bert.alert({
         title: error ? "Error!" : "Success",
@@ -52,4 +52,4 @@ class SignupForm extends Component {
   }
 }
 
-export default withRouter(props => <SignupForm {...props} />);
+export default withApollo(SignupForm);

@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from "react";
-import { withRouter } from "react-router-dom";
+import { withApollo } from "react-apollo";
 
 class DashboardPage extends Component {
   handleLogout = () => {
-    const { history } = this.props;
+    const { client } = this.props;
     Meteor.logout(error => {
-      if (!error) history.push("/");
+      if (!error) client.resetStore();
     });
   };
 
@@ -19,4 +19,4 @@ class DashboardPage extends Component {
   }
 }
 
-export default withRouter(props => <DashboardPage {...props} />);
+export default withApollo(DashboardPage);

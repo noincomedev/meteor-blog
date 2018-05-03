@@ -1,0 +1,11 @@
+type Post {
+  _id: String
+  owner: String
+  title: String
+  slug: String
+  content: String
+}
+
+extend type Query {
+  posts: [Post]
+}
