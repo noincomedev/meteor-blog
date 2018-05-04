@@ -4,6 +4,10 @@ type Post {
   title: String
   slug: String
   content: String
+  created: String
+  updated: String
+  tags: [String]
+  published: Boolean
 }
 
 extend type Query {

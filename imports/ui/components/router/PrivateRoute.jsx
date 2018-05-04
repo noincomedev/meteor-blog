@@ -3,10 +3,10 @@ import { Route, Redirect } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { withApollo } from "react-apollo";
 
-import { currentUser } from "./Router";
+import { CURRENT_USER } from "./Router";
 
 const PrivateRoute = ({ client, component, exact, path }) => {
-  const { user } = client.readQuery({ query: currentUser });
+  const { user } = client.readQuery({ query: CURRENT_USER });
   if (!user) {
     return <Redirect to="/" />;
   }

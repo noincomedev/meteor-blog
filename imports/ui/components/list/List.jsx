@@ -1,26 +1,14 @@
 import React from "react";
-import gql from "graphql-tag";
-import { graphql } from "react-apollo";
+import { PropTypes } from "prop-types";
 
-import ListLayout from "../../layouts/ListLayout";
+import PrivateList from "./PrivateList";
+import PublicList from "./PublicList";
 
-const List = ({ admin, loading }) => {
-  if (loading) return <h1>LOADING</h1>;
-  return <ListLayout admin={admin} />;
+const List = ({ user }) =>
+  user ? <PrivateList user={user} /> : <PublicList />;
+
+List.propTypes = {
+  user: PropTypes.object
 };
 
-const posts = gql`
-  query Posts {
-    posts {
-      _id
-      owner
-      slug
-      title
-      content
-    }
-  }
-`;
-
-export default graphql(posts, {
-  props: ({ data }) => ({ ...data })
-})(List);
+export default List;

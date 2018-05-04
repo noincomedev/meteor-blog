@@ -5,10 +5,10 @@ import { withApollo } from "react-apollo";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 
-import { currentUser } from "./Router";
+import { CURRENT_USER } from "./Router";
 
 const MultiRoute = ({ client, component, exact, path }) => {
-  const { user } = client.readQuery({ query: currentUser });
+  const { user } = client.readQuery({ query: CURRENT_USER });
   if (!user)
     return <PublicRoute exact={exact} path={path} component={component} />;
 

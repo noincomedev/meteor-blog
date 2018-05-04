@@ -36,7 +36,7 @@ const Router = ({ loading, user }) => {
   return <h1>LOADING</h1>;
 };
 
-export const currentUser = gql`
+export const CURRENT_USER = gql`
   query currentUser {
     user {
       _id
@@ -45,6 +45,6 @@ export const currentUser = gql`
   }
 `;
 
-export default graphql(currentUser, {
+export default graphql(CURRENT_USER, {
   props: ({ data }) => ({ ...data })
 })(Router);

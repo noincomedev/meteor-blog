@@ -1,18 +1,24 @@
 import React from "react";
+import { PropTypes } from "prop-types";
 import { withApollo } from "react-apollo";
 
 import List from "../components/list/List";
 import Post from "../components/post/Post";
 import PostEditor from "../components/post/PostEditor";
 
-import { currentUser } from "../components/router/Router";
+import { CURRENT_USER } from "../components/router/Router";
 
 const PostsPageLayout = ({ client, slug }) => {
-  const { user } = client.readQuery({ query: currentUser });
-  const admin = user ? user.admin : false;
+  const { user } = client.readQuery({ query: CURRENT_USER });
+  const { admin } = user;
   if (admin && slug) return <PostEditor slug={slug} />;
   else if (slug) return <Post slug={slug} />;
-  return <List admin={admin} />;
+  return <List user={user} />;
+};
+
+PostsPageLayout.propTypes = {
+  client: PropTypes.object.isRequired,
+  slug: PropTypes.string
 };
 
 export default withApollo(PostsPageLayout);
