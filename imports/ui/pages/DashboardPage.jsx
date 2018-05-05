@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import { Link } from "react-router-dom";
 import { withApollo } from "react-apollo";
 
 class DashboardPage extends Component {
@@ -13,6 +14,7 @@ class DashboardPage extends Component {
     return (
       <Fragment>
         <h1>DashboardPage</h1>
+        <Link to="/posts">View POSTS</Link>
         <button onClick={this.handleLogout}>Logout</button>
       </Fragment>
     );

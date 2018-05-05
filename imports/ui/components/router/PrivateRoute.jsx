@@ -14,7 +14,17 @@ const PrivateRoute = ({ client, component, exact, path }) => {
     <Route
       exact={exact}
       path={path}
-      render={props => <main>{React.createElement(component)}</main>}
+      render={props => (
+        <main
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center"
+          }}
+        >
+          {React.createElement(component)}
+        </main>
+      )}
     />
   );
 };
