@@ -40,6 +40,11 @@ class PrivateList extends Component {
             <Fragment>
               <h1>User Posts</h1>
               {showForm && <PostEditor />}
+              {posts ? (
+                <h1>PostList</h1>
+              ) : (
+                <h3 style={{ color: "grey" }}>Empty List</h3>
+              )}
             </Fragment>
           );
         }}
