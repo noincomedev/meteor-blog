@@ -10,8 +10,7 @@ import { CURRENT_USER } from "../../components/router/Router";
 
 const PostsPageLayout = ({ client, slug }) => {
   const { user } = client.readQuery({ query: CURRENT_USER });
-  const { admin } = user;
-  if (admin && slug) return <PostEditor slug={slug} />;
+  if (user && slug) return <PostEditor slug={slug} />;
   else if (slug) return <Post slug={slug} />;
   return <PostListLayout user={user} />;
 };

@@ -10,7 +10,23 @@ type Post {
   published: Boolean
 }
 
+type Mutation {
+  createPost(
+    title: String!
+    slug: String!
+    content: String
+    tags: [String]!
+  ): Post
+  editPost(
+    _id: String!
+    title: String!
+    slug: String!
+    content: String
+    tags: [String]!
+  ): Post
+}
+
 extend type Query {
   post(slug: String!): Post
-  posts(owner: String): [Post]
+  posts(owner: String!): [Post]
 }

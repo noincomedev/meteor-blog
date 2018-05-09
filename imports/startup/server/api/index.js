@@ -6,7 +6,7 @@ import UserSchema from "../../../api/users/User.graphql";
 import UserResolvers from "../../../api/users/resolvers";
 
 import PostSchema from "../../../api/posts/Post.graphql";
-import PostResolvers from "../../../api/users/resolvers";
+import PostResolvers from "../../../api/posts/resolvers";
 
 // aaaaa
 
