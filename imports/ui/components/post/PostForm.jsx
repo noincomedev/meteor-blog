@@ -231,7 +231,11 @@ export default compose(
     name: "editPost"
   }),
   graphql(DELETE_POST, {
-    name: "deletePost"
+    name: "deletePost",
+    options: {
+      refetchQueries: ["posts"],
+      variables: { owner: Meteor.userId() }
+    }
   }),
   graphql(CREATE_POST, {
     name: "createPost",
