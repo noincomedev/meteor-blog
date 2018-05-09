@@ -39,7 +39,7 @@ const PostListLayout = ({ user }) =>
       }}
     </Query>
   ) : (
-    <Query query={PUBLIC_POSTS}>
+    <Query query={PUBLIC_POSTS} pollInterval={500}>
       {({ loading, error, data }) => {
         if (loading) return <h1>LOADING</h1>;
         if (error) return `Error!: ${error}`;
