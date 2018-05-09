@@ -31,4 +31,5 @@ type Mutation {
 extend type Query {
   post(slug: String!): Post
   posts(owner: String!): [Post]
+  publicPosts: [Post]
 }

@@ -17,7 +17,16 @@ class Post extends Component {
           if (error) return `Error!: ${error}`;
           const { post } = data;
           if (!post) return <Redirect to="/not-found" />;
-          return <h1>{post.title}</h1>;
+          return (
+            <div>
+              <h1>Title: {post.title}</h1>
+              <h3>SLUG: {post.slug}</h3>
+              <p>Content:</p>
+              <h4>{post.content}</h4>
+              <p>TAGS:</p>
+              <h6>{post.tags.map(tag => tag)}</h6>
+            </div>
+          );
         }}
       </Query>
     );

@@ -7,6 +7,9 @@ export default {
     },
     post(obj, { slug }, { userId }) {
       return Posts.findOne({ slug, status: true });
+    },
+    publicPosts(obj, args, ctx) {
+      return Posts.find({ status: true, published: true }).fetch({});
     }
   },
   Post: {},

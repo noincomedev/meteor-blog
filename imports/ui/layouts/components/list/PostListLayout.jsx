@@ -17,6 +17,18 @@ export const USER_POSTS = gql`
   }
 `;
 
+const PUBLIC_POSTS = gql`
+  query publicPosts {
+    publicPosts {
+      _id
+      title
+      slug
+      content
+      tags
+    }
+  }
+`;
+
 const PostListLayout = ({ user }) =>
   user ? (
     <Query query={USER_POSTS} variables={{ owner: Meteor.userId() }}>
@@ -27,7 +39,13 @@ const PostListLayout = ({ user }) =>
       }}
     </Query>
   ) : (
-    <PublicList />
+    <Query query={PUBLIC_POSTS}>
+      {({ loading, error, data }) => {
+        if (loading) return <h1>LOADING</h1>;
+        if (error) return `Error!: ${error}`;
+        if (data) return <PublicList posts={data.publicPosts} />;
+      }}
+    </Query>
   );
 
 PostListLayout.propTypes = {
