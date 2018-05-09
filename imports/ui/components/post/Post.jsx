@@ -15,7 +15,6 @@ class Post extends Component {
         {({ loading, error, data }) => {
           if (loading) return <h1>LOADING</h1>;
           if (error) return `Error!: ${error}`;
-          console.log(data);
           const { post } = data;
           if (!post) return <Redirect to="/not-found" />;
           return <h1>{post.title}</h1>;

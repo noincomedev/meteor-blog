@@ -8,6 +8,7 @@ type Post {
   updated: String
   tags: [String]
   published: Boolean
+  status: Boolean
 }
 
 type Mutation {
@@ -24,6 +25,7 @@ type Mutation {
     content: String
     tags: [String]!
   ): Post
+  deletePost(_id: String!): Post
 }
 
 extend type Query {

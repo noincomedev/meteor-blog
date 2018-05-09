@@ -33,13 +33,7 @@ class PostEditor extends Component {
           if (loading) return <h1>LOADING</h1>;
           if (error) return `Error!: ${error}`;
           const { post } = data;
-          if (slug && !post)
-            return (
-              <Redirect
-                to="/
-          not-found"
-              />
-            );
+          if (slug && !post) return <Redirect to="/not-found" />;
           return <PostForm handleCancel={this.handleCancel} post={post} />;
         }}
       </Query>

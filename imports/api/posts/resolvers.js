@@ -3,10 +3,10 @@ import Posts from "./Posts";
 export default {
   Query: {
     posts(obj, args, { userId }) {
-      return Posts.find({ owner: userId }).fetch({});
+      return Posts.find({ owner: userId, status: true }).fetch({});
     },
     post(obj, { slug }, { userId }) {
-      return Posts.findOne({ slug });
+      return Posts.findOne({ slug, status: true });
     }
   },
   Post: {},
@@ -27,6 +27,16 @@ export default {
     editPost(obj, args, { userId }) {
       if (userId) {
         const postId = Posts.update({ _id: args._id }, { $set: args });
+        return postId;
+      }
+      throw new Error("Unauthorized");
+    },
+    deletePost(obj, args, { userId }) {
+      if (userId) {
+        const postId = Posts.update(
+          { _id: args._id },
+          { $set: { status: false } }
+        );
         return postId;
       }
       throw new Error("Unauthorized");

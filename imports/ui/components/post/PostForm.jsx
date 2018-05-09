@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { compose, graphql } from "react-apollo";
 import { Bert } from "meteor/themeteorchef:bert";
 import { PropTypes } from "prop-types";
+import { withRouter } from "react-router-dom";
 
 import { USER_POSTS } from "../../layouts/components/list/PostListLayout";
 
@@ -34,6 +35,14 @@ const EDIT_POST = gql`
       content: $content
       tags: $tags
     ) {
+      _id
+    }
+  }
+`;
+
+const DELETE_POST = gql`
+  mutation deletePost($_id: String!) {
+    deletePost(_id: $_id) {
       _id
     }
   }
@@ -109,6 +118,35 @@ class PostForm extends Component {
     this.props.handleCancel();
   };
 
+  handleDelete = () => {
+    const { _id } = this.state;
+    const { history } = this.props;
+    const variables = { _id };
+    if (_id) {
+      this.props
+        .deletePost({ variables })
+        .then(
+          Bert.alert({
+            title: "Success",
+            message: "Post deleted.",
+            type: "danger",
+            style: "growl-top-right",
+            icon: "fa-remove"
+          })
+        )
+        .then(history.push("/posts"))
+        .catch(error =>
+          Bert.alert({
+            title: error ? "Error!" : "Success",
+            message: error ? error.message : "Post saved",
+            type: error ? "danger" : "success",
+            style: "growl-top-right",
+            icon: error ? "fa-remove" : "fa-check"
+          })
+        );
+    }
+  };
+
   updateSlug = title => {
     this.setState({ slug: getSlug(title) });
   };
@@ -166,6 +204,15 @@ class PostForm extends Component {
         <button onClick={this.handleSubmit}>
           {post ? "Save" : "Add"} Post
         </button>
+        {post && (
+          <button
+            type="button"
+            style={{ background: "red", color: "white" }}
+            onClick={this.handleDelete}
+          >
+            Delete Post
+          </button>
+        )}
         <button type="button" onClick={this.handleCancel}>
           Cancel
         </button>
@@ -183,6 +230,9 @@ export default compose(
   graphql(EDIT_POST, {
     name: "editPost"
   }),
+  graphql(DELETE_POST, {
+    name: "deletePost"
+  }),
   graphql(CREATE_POST, {
     name: "createPost",
     options: {
@@ -190,4 +240,4 @@ export default compose(
       variables: { owner: Meteor.userId() }
     }
   })
-)(PostForm);
+)(withRouter(props => <PostForm {...props} />));
