@@ -7,4 +7,4 @@ const PostsPage = ({ match }) => {
   return <PostsPageLayout slug={match.params.slug} />;
 };
 
-export default withRouter(props => <PostsPage {...props} />);
+export default withRouter(PostsPage);

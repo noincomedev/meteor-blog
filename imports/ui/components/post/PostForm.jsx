@@ -244,4 +244,4 @@ export default compose(
       variables: { owner: Meteor.userId() }
     }
   })
-)(withRouter(props => <PostForm {...props} />));
+)(withRouter(PostForm));

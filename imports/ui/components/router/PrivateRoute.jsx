@@ -2,28 +2,31 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { withApollo } from "react-apollo";
+import { withStyles } from "material-ui/styles";
 
 import { CURRENT_USER } from "./Router";
 
-const PrivateRoute = ({ client, component, exact, path }) => {
+const styles = theme => ({
+  main: {
+    display: "flex",
+    flexDirection: "column",
+    background: theme.palette.primary.light,
+    height: "100vh"
+  }
+});
+
+const PrivateRoute = ({ classes, client, component, exact, path }) => {
   const { user } = client.readQuery({ query: CURRENT_USER });
   if (!user) {
     return <Redirect to="/" />;
   }
+
   return (
     <Route
       exact={exact}
       path={path}
       render={props => (
-        <main
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center"
-          }}
-        >
-          {React.createElement(component)}
-        </main>
+        <main className={classes.main}>{React.createElement(component)}</main>
       )}
     />
   );
@@ -36,4 +39,6 @@ PrivateRoute.propTypes = {
   path: PropTypes.string.isRequired
 };
 
-export default withApollo(PrivateRoute);
+export default withStyles(styles, { withTheme: true })(
+  withApollo(PrivateRoute)
+);

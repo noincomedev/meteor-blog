@@ -1,10 +1,15 @@
 import React, { Fragment } from "react";
+import { PropTypes } from "prop-types";
 
+import CardTemplate from "../layouts/components/card/withTitleAndContent";
 import SignupForm from "../components/accounts/SignupForm";
 
-export default (SignupPage = () => (
-  <Fragment>
-    <h1>Signup</h1>
-    <SignupForm />
-  </Fragment>
-));
+const SignupPage = ({ name }) => (
+  <CardTemplate title={name} content={SignupForm} />
+);
+
+SignupPage.propTypes = {
+  name: PropTypes.string
+};
+
+export default SignupPage;

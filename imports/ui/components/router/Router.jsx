@@ -1,7 +1,10 @@
 import React from "react";
 import gql from "graphql-tag";
+import { MuiThemeProvider } from "material-ui/styles";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { graphql } from "react-apollo";
+
+import theme from "../../../assets/theme";
 
 import MultiRoute from "./MultiRoute";
 import PrivateRoute from "./PrivateRoute";
@@ -17,20 +20,37 @@ import SignupPage from "../../pages/SignupPage";
 const Router = ({ loading, user }) => {
   if (!loading) {
     return (
-      <BrowserRouter>
-        <Switch>
-          {user ? (
-            <PrivateRoute exact path="/" component={DashboardPage} />
-          ) : (
-            <PublicRoute exact path="/" component={LandingPage} />
-          )}
-          <MultiRoute exact path="/posts/:slug" component={PostsPage} />
-          <MultiRoute exact path="/posts" component={PostsPage} />
-          <PublicRoute exact path="/signin" component={SigninPage} />
-          <PublicRoute exact path="/signup" component={SignupPage} />
-          <Route component={NotFoundPage} />
-        </Switch>
-      </BrowserRouter>
+      <MuiThemeProvider theme={theme}>
+        <BrowserRouter>
+          <Switch>
+            {user ? (
+              <PrivateRoute exact path="/" component={DashboardPage} />
+            ) : (
+              <PublicRoute exact path="/" component={LandingPage} />
+            )}
+            <MultiRoute exact path="/posts/:slug" component={PostsPage} />
+            <MultiRoute
+              exact
+              name="Posts"
+              path="/posts"
+              component={PostsPage}
+            />
+            <PublicRoute
+              exact
+              name="Sing In"
+              path="/signin"
+              component={SigninPage}
+            />
+            <PublicRoute
+              exact
+              name="Sign Up"
+              path="/signup"
+              component={SignupPage}
+            />
+            <Route component={NotFoundPage} />
+          </Switch>
+        </BrowserRouter>
+      </MuiThemeProvider>
     );
   }
   return <h1>LOADING</h1>;

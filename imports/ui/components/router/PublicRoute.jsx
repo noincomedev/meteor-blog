@@ -1,11 +1,38 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { withApollo } from "react-apollo";
+import { withRouter } from "react-router-dom";
+import { withStyles } from "material-ui/styles";
+
+import Grid from "material-ui/Grid";
+
+import PublicNavigationLayout from "../../layouts/navigation/PublicNavigationLayout";
 
 import { CURRENT_USER } from "./Router";
 
-const PublicRoute = ({ client, component, exact, path }) => {
+const styles = theme => ({
+  main: {
+    display: "flex",
+    justifyContent: "center",
+    padding: `${theme.spacing.unit * 8 + 24}px 24px 24px 24px`
+  },
+  landingPageMain: {
+    display: "flex",
+    justifyContent: "center",
+    padding: `0px 24px 24px 24px`
+  }
+});
+
+const PublicRoute = ({
+  classes,
+  client,
+  component,
+  exact,
+  location,
+  name,
+  path
+}) => {
   const { user } = client.readQuery({ query: CURRENT_USER });
   if (!user) {
     return (
@@ -13,15 +40,18 @@ const PublicRoute = ({ client, component, exact, path }) => {
         exact={exact}
         path={path}
         render={props => (
-          <main
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center"
-            }}
-          >
-            {React.createElement(component)}
-          </main>
+          <Fragment>
+            <PublicNavigationLayout name={name} />
+            <main
+              className={
+                location.pathname == "/"
+                  ? classes.landingPageMain
+                  : classes.main
+              }
+            >
+              {React.createElement(component, { name })}
+            </main>
+          </Fragment>
         )}
       />
     );
@@ -33,7 +63,12 @@ PublicRoute.propTypes = {
   client: PropTypes.object.isRequired,
   component: PropTypes.func.isRequired,
   exact: PropTypes.bool.isRequired,
+  name: PropTypes.string,
   path: PropTypes.string.isRequired
 };
 
-export default withApollo(PublicRoute);
+export default withApollo(
+  withStyles(styles, { withTheme: true })(
+    withRouter(props => <PublicRoute {...props} />)
+  )
+);

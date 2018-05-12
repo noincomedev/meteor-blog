@@ -1,20 +1,43 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
+import Button from "material-ui/Button";
+import Grid from "material-ui/Grid";
+import TextField from "material-ui/TextField";
 import { Bert } from "meteor/themeteorchef:bert";
 import { withApollo } from "react-apollo";
+import { withStyles } from "material-ui/styles";
+
+import Spinner from "../utils/Spinner";
+
+const styles = theme => ({
+  container: {
+    marginTop: 16
+  },
+  textfield: {
+    color: "red"
+  },
+  contrastButton: {
+    marginRight: 16,
+    background: theme.palette.secondary.contrastText,
+    color: theme.palette.primary.main,
+    "&:hover": {
+      background: theme.palette.primary.main,
+      color: theme.palette.primary.light
+    }
+  }
+});
 
 class SignupForm extends Component {
-  state = { email: "", password: "" };
+  state = { email: "", loading: false, password: "" };
 
-  handleChange = event => {
-    const name = event.target.name,
-      value = event.target.value;
-
+  handleChange = name => event => {
+    const value = event.target.value;
     this.setState({ [name]: value });
   };
 
   handleSubmit = event => {
     event.preventDefault();
     const { client } = this.props;
+    this.toggleLoading();
     Accounts.createUser(this.state, error => {
       if (!error) client.resetStore();
 
@@ -27,29 +50,65 @@ class SignupForm extends Component {
         style: "growl-top-right",
         icon: error ? "fa-remove" : "fa-check"
       });
+      this.toggleLoading();
     });
   };
 
+  toggleLoading = () => {
+    this.setState({ loading: !this.state.loading });
+  };
+
   render() {
-    const { email, password } = this.state;
+    const { classes } = this.props;
+    const { email, loading, password } = this.state;
+
     return (
-      <form onSubmit={this.handleSubmit}>
-        <input
-          type="email"
-          name="email"
-          value={email}
-          onChange={this.handleChange}
-        />
-        <input
-          type="password"
-          name="password"
-          value={password}
-          onChange={this.handleChange}
-        />
-        <button type="submit">Signup</button>
-      </form>
+      <Fragment>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <form onSubmit={this.handleSubmit} noValidate autoComplete="off">
+            <Grid item xs={12}>
+              <TextField
+                type="email"
+                label="e-mail"
+                className={classes.textField}
+                value={email}
+                onChange={this.handleChange("email")}
+                margin="none"
+                autoFocus
+                fullWidth
+                required
+              />
+              <TextField
+                type="password"
+                label="password"
+                value={password}
+                onChange={this.handleChange("password")}
+                fullWidth
+              />
+            </Grid>
+            <Grid
+              container
+              className={classes.container}
+              justify="center"
+              alignItems="center"
+            >
+              <Grid item xs={12} md={6}>
+                <Button
+                  className={classes.contrastButton}
+                  type="submit"
+                  fullWidth
+                >
+                  Signup
+                </Button>
+              </Grid>
+            </Grid>
+          </form>
+        )}
+      </Fragment>
     );
   }
 }
 
-export default withApollo(SignupForm);
+export default withStyles(styles, { withTheme: true })(withApollo(SignupForm));
