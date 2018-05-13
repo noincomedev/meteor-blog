@@ -2,7 +2,9 @@
   "name": "blog",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+    "start": "meteor run",
+    "dev": "meteor --settings settings-development.json",
+    "prod": "meteor --settings settings-production.json"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.42",
