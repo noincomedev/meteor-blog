@@ -23,8 +23,12 @@ const PUBLIC_POSTS = gql`
       _id
       title
       slug
+      category
       content
       tags
+      created
+      updated
+      new
     }
   }
 `;

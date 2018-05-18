@@ -69,6 +69,16 @@ Posts.schema = new SimpleSchema({
   },
   "tags.$": {
     type: String
+  },
+  category: {
+    type: String,
+    label: "The category of this post.",
+    optional: false
+  },
+  intro: {
+    type: String,
+    label: "The intro of this post.",
+    optional: false
   }
 });
 

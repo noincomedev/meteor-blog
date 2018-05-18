@@ -9,18 +9,29 @@ export default {
       return Posts.findOne({ slug, status: true });
     },
     publicPosts(obj, args, ctx) {
-      return Posts.find({ status: true, published: true }).fetch({});
+      return Posts.find(
+        { status: true, published: true },
+        { sort: { created: -1 } }
+      ).fetch({});
     }
   },
-  Post: {},
+  Post: {
+    new: post => moment(new Date()).diff(post.created, "days") <= 5
+  },
   Mutation: {
-    createPost(obj, { title, slug, content, tags }, { userId }) {
+    createPost(
+      obj,
+      { title, slug, content, category, intro, tags },
+      { userId }
+    ) {
       if (userId) {
         const postId = Posts.insert({
           owner: userId,
           title,
           slug,
+          category,
           content,
+          intro,
           tags
         });
         return postId;

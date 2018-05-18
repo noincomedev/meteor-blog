@@ -3,12 +3,15 @@ type Post {
   owner: String
   title: String
   slug: String
+  category: String
   content: String
   created: String
   updated: String
   tags: [String]
   published: Boolean
   status: Boolean
+  new: Boolean
+  intro: String
 }
 
 type Mutation {
