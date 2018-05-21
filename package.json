@@ -3,12 +3,13 @@
   "private": true,
   "scripts": {
     "start": "meteor run",
-    "dev": "meteor --settings settings-development.json",
+    "dev":
+      "MONGO_URL=mongodb://admin:Diegoro1108@ds161459.mlab.com:61459/noincomeblog meteor --settings settings-development.json",
     "prod": "meteor --settings settings-production.json"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.42",
-    "@material-ui/core": "^1.0.0-rc.1",
+    "@material-ui/core": "^1.0.0",
     "@material-ui/icons": "^1.0.0-rc.0",
     "apollo-client": "^2.2.8",
     "apollo-client-preset": "^1.0.8",
@@ -20,7 +21,6 @@
     "graphql-tag": "^2.9.2",
     "graphql-tools": "^3.0.0",
     "lodash": "^4.17.10",
-    "material-ui": "^1.0.0-beta.47",
     "meteor-node-stubs": "^0.3.2",
     "react": "^16.3.2",
     "react-apollo": "^2.1.3",

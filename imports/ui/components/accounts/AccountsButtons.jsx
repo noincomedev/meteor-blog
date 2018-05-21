@@ -1,8 +1,8 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import Button from "material-ui/Button";
-import Grid from "material-ui/Grid";
-import { withStyles } from "material-ui/styles";
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
   container: {

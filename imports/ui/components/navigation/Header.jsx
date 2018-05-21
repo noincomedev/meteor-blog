@@ -1,9 +1,9 @@
 import React from "react";
 
-import Button from "material-ui/Button";
-import Grid from "material-ui/Grid";
-import Typography from "material-ui/Typography";
-import { withStyles } from "material-ui/styles";
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
 import { Link, Redirect, withRouter } from "react-router-dom";
 
 import AccountsButtons from "../accounts/AccountsButtons";

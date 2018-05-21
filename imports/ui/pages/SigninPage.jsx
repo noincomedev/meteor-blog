@@ -1,11 +1,13 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 
-import CardTemplate from "../layouts/components/card/withTitleAndContent";
+import CardWithTitleAndContent from "../layouts/components/card/CardWithTitleAndContent";
 import SigninForm from "../components/accounts/SigninForm";
 
 const SigninPage = ({ name }) => (
-  <CardTemplate title={name} content={SigninForm} />
+  <CardWithTitleAndContent title={name}>
+    <SigninForm />
+  </CardWithTitleAndContent>
 );
 
 SigninPage.propTypes = {

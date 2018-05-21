@@ -3,9 +3,9 @@ import { Route, Redirect } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { withApollo } from "react-apollo";
 import { withRouter } from "react-router-dom";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
-import Grid from "material-ui/Grid";
+import Grid from "@material-ui/core/Grid";
 
 import PublicNavigationLayout from "../../layouts/navigation/PublicNavigationLayout";
 

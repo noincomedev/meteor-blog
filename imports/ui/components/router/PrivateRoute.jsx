@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { withApollo } from "react-apollo";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 import { CURRENT_USER } from "./Router";
 

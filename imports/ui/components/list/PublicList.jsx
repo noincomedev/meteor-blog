@@ -14,7 +14,7 @@ import Divider from "@material-ui/core/Divider";
 import Hidden from "@material-ui/core/Hidden";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 import { createSvgIcon } from "@material-ui/icons/utils/createSvgIcon";
 

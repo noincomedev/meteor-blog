@@ -1,7 +1,7 @@
 import React from "react";
 import gql from "graphql-tag";
-import { MuiThemeProvider } from "material-ui/styles";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { MuiThemeProvider } from "@material-ui/core/styles";
 import { graphql } from "react-apollo";
 
 import theme from "../../../assets/theme";
@@ -20,8 +20,8 @@ import SignupPage from "../../pages/SignupPage";
 const Router = ({ loading, user }) => {
   if (!loading) {
     return (
-      <MuiThemeProvider theme={theme}>
-        <BrowserRouter>
+      <BrowserRouter>
+        <MuiThemeProvider theme={theme}>
           <Switch>
             {user ? (
               <PrivateRoute exact path="/" component={DashboardPage} />
@@ -49,8 +49,8 @@ const Router = ({ loading, user }) => {
             />
             <Route component={NotFoundPage} />
           </Switch>
-        </BrowserRouter>
-      </MuiThemeProvider>
+        </MuiThemeProvider>
+      </BrowserRouter>
     );
   }
   return <h1>LOADING</h1>;
@@ -66,5 +66,8 @@ export const CURRENT_USER = gql`
 `;
 
 export default graphql(CURRENT_USER, {
+  options: {
+    fetchPolicy: "cache-and-network"
+  },
   props: ({ data }) => ({ ...data })
 })(Router);
