@@ -4,6 +4,11 @@ import { compose, graphql } from "react-apollo";
 import { Bert } from "meteor/themeteorchef:bert";
 import { PropTypes } from "prop-types";
 import { withRouter } from "react-router-dom";
+import { withStyles } from "@material-ui/core/styles";
+
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
 
 import { USER_POSTS } from "../../layouts/components/list/PostListLayout";
 
@@ -13,8 +18,17 @@ const CREATE_POST = gql`
     $slug: String!
     $content: String!
     $tags: [String]!
+    $category: String!
+    $imageUrl: String!
   ) {
-    createPost(title: $title, slug: $slug, content: $content, tags: $tags) {
+    createPost(
+      title: $title
+      slug: $slug
+      category: $category
+      content: $content
+      tags: $tags
+      imageUrl: $imageUrl
+    ) {
       _id
     }
   }
@@ -27,6 +41,8 @@ const EDIT_POST = gql`
     $slug: String!
     $content: String!
     $tags: [String]!
+    $category: String!
+    $imageUrl: String!
   ) {
     editPost(
       _id: $_id
@@ -34,6 +50,8 @@ const EDIT_POST = gql`
       slug: $slug
       content: $content
       tags: $tags
+      category: $category
+      imageUrl: $imageUrl
     ) {
       _id
     }
@@ -48,25 +66,37 @@ const DELETE_POST = gql`
   }
 `;
 
+const styles = theme => ({
+  container: {
+    display: "flex",
+    overflow: "auto"
+  }
+});
+
 class PostForm extends Component {
   state = {
     title: "",
+    imageUrl: "",
     slug: "",
+    category: "",
     content: "",
     tags: []
   };
 
   handleChange = event => {
-    const name = event.target.name,
+    const name = event.target.id,
       value = event.target.value;
     if (name == "title") this.updateSlug(value);
     switch (name) {
-      case "title":
-        this.setState({ title: value });
-        this.updateSlug(value);
+      case "category":
+        this.setState({ category: value });
         break;
       case "tags":
         this.setState({ tags: value.split(",").map(tag => tag.trim()) });
+        break;
+      case "title":
+        this.setState({ title: value });
+        this.updateSlug(value);
         break;
       default:
         this.setState({ [name]: value });
@@ -75,8 +105,9 @@ class PostForm extends Component {
   };
 
   handleSubmit = () => {
-    const { _id, title, slug, content, tags } = this.state;
-    const variables = { _id, title, slug, content, tags };
+    const { history } = this.props;
+    const { _id, title, imageUrl, slug, category, content, tags } = this.state;
+    const variables = { _id, title, imageUrl, slug, category, content, tags };
     if (_id) {
       this.props
         .editPost({ variables })
@@ -89,10 +120,21 @@ class PostForm extends Component {
             icon: "fa-check"
           })
         )
-        .catch(error => console.log(error));
+        .then(history.push("/posts"))
+        .catch(error =>
+          Bert.alert({
+            title: error ? "Error!" : "Success",
+            message: error ? error.message : "Post saved",
+            type: error ? "danger" : "success",
+            style: "growl-top-right",
+            icon: error ? "fa-remove" : "fa-check"
+          })
+        );
     } else {
       this.props
-        .createPost({ variables: { title, slug, content, tags } })
+        .createPost({
+          variables: { title, imageUrl, slug, category, content, tags }
+        })
         .then(
           Bert.alert({
             title: "Success",
@@ -158,64 +200,107 @@ class PostForm extends Component {
   }
 
   render() {
-    const { post } = this.props;
-    const { title, slug, content, tags } = this.state;
-
+    const { classes, post } = this.props;
+    const { title, imageUrl, slug, category, content, tags } = this.state;
     return (
       <form
+        className={classes.container}
         onSubmit={event => event.preventDefault()}
-        style={{
-          minWidth: 500,
-          display: "flex",
-          flexDirection: "column",
-          margin: 16
-        }}
       >
-        {post && <h1>Edit Post</h1>}
-        <input
-          type="text"
-          name="title"
-          placeholder="Title"
-          value={title}
-          onChange={this.handleChange}
-        />
-        <input
-          type="text"
-          name="slug"
-          placeholder="SLUG"
-          disabled
-          onChange={this.updateSlug}
-          value={slug}
-        />
-        <input
-          type="text"
-          name="content"
-          placeholder="Content"
-          onChange={this.handleChange}
-          value={content}
-        />
-        <input
-          type="text"
-          name="tags"
-          placeholder="TAGs (comma separated)"
-          onChange={this.handleChange}
-          value={tags}
-        />
-        <button onClick={this.handleSubmit}>
-          {post ? "Save" : "Add"} Post
-        </button>
-        {post && (
-          <button
-            type="button"
-            style={{ background: "red", color: "white" }}
-            onClick={this.handleDelete}
-          >
-            Delete Post
-          </button>
-        )}
-        <button type="button" onClick={this.handleCancel}>
-          Cancel
-        </button>
+        <Grid container justify="center">
+          <Grid item xs={12}>
+            <TextField
+              id="title"
+              label="Title"
+              className={classes.textField}
+              value={title}
+              onChange={this.handleChange}
+              margin="normal"
+              fullWidth
+            />
+            <TextField
+              id="slug"
+              label="Slug"
+              className={classes.textField}
+              value={slug}
+              onChange={this.handleChange}
+              margin="normal"
+              disabled
+              fullWidth
+            />
+            <TextField
+              id="imageUrl"
+              label="Image URL"
+              className={classes.textField}
+              value={imageUrl}
+              onChange={this.handleChange}
+              margin="normal"
+              fullWidth
+            />
+            <TextField
+              id="category"
+              label="Category"
+              className={classes.textField}
+              value={category}
+              onChange={this.handleChange}
+              margin="normal"
+              fullWidth
+            />
+            <TextField
+              id="tags"
+              label="Tags"
+              className={classes.textField}
+              value={tags}
+              onChange={this.handleChange}
+              margin="normal"
+              fullWidth
+              helperText="No spaces, use - instead. Separate by comma."
+            />
+            <TextField
+              id="content"
+              label="Content"
+              className={classes.textField}
+              value={content}
+              onChange={this.handleChange}
+              margin="normal"
+              multiline
+              rows={3}
+              fullWidth
+            />
+          </Grid>
+          <Grid container justify="center">
+            <Grid item xs={12}>
+              <Button
+                variant="raised"
+                color="primary"
+                fullWidth
+                onClick={this.handleSubmit}
+              >
+                {post ? "Save" : "Add"}
+              </Button>
+              {post && (
+                <Button
+                  type="button"
+                  variant="raised"
+                  color="secondary"
+                  fullWidth
+                  onClick={this.handleDelete}
+                >
+                  Delete
+                </Button>
+              )}
+              <Button
+                type="button"
+                variant="raised"
+                color="inherit"
+                fullWidth
+                onClick={this.handleCancel}
+              >
+                Cancel
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
       </form>
     );
   }
@@ -228,7 +313,11 @@ PostForm.propTypes = {
 
 export default compose(
   graphql(EDIT_POST, {
-    name: "editPost"
+    name: "editPost",
+    options: {
+      refetchQueries: ["posts"],
+      variables: { owner: Meteor.userId() }
+    }
   }),
   graphql(DELETE_POST, {
     name: "deletePost",
@@ -244,4 +333,4 @@ export default compose(
       variables: { owner: Meteor.userId() }
     }
   })
-)(withRouter(PostForm));
+)(withRouter(withStyles(styles)(PostForm)));

@@ -3,7 +3,10 @@ import Posts from "./Posts";
 export default {
   Query: {
     posts(obj, args, { userId }) {
-      return Posts.find({ owner: userId, status: true }).fetch({});
+      return Posts.find(
+        { owner: userId, status: true },
+        { sort: { created: -1 } }
+      ).fetch({});
     },
     post(obj, { slug }, { userId }) {
       return Posts.findOne({ slug, status: true });
@@ -16,22 +19,23 @@ export default {
     }
   },
   Post: {
-    new: post => moment(new Date()).diff(post.created, "days") <= 5
+    new: post => moment(new Date()).diff(post.created, "days") <= 5,
+    intro: post => post.content.substring(0, 150)
   },
   Mutation: {
     createPost(
       obj,
-      { title, slug, content, category, intro, tags },
+      { title, imageUrl, slug, content, category, tags },
       { userId }
     ) {
       if (userId) {
         const postId = Posts.insert({
           owner: userId,
           title,
+          imageUrl,
           slug,
           category,
           content,
-          intro,
           tags
         });
         return postId;

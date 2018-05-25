@@ -1,6 +1,5 @@
 import React from "react";
 
-import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
@@ -23,21 +22,19 @@ const styles = theme => ({
   typoContainer: { flex: 1 }
 });
 
-const NavBar = ({ classes, name }) => (
-  <AppBar position="fixed" color="primary">
-    <Toolbar className={classes.customToolbar}>
-      <div className={classes.typoContainer}>
-        <Typography variant="body1">
-          <Link className={classes.link} to="/">
-            NOINCOMEBLOG
-          </Link>
-        </Typography>
-      </div>
-      <Typography className={classes.name} variant="body1">
-        {name}
+const PublicToolbar = ({ classes, name }) => (
+  <Toolbar className={classes.customToolbar}>
+    <div className={classes.typoContainer}>
+      <Typography variant="body1">
+        <Link className={classes.link} to="/">
+          NOINCOMEBLOG
+        </Link>
       </Typography>
-    </Toolbar>
-  </AppBar>
+    </div>
+    <Typography className={classes.name} variant="body1">
+      {name}
+    </Typography>
+  </Toolbar>
 );
 
-export default withStyles(styles, { withTheme: true })(NavBar);
+export default withStyles(styles, { withTheme: true })(PublicToolbar);

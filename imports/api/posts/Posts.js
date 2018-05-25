@@ -75,10 +75,10 @@ Posts.schema = new SimpleSchema({
     label: "The category of this post.",
     optional: false
   },
-  intro: {
+  imageUrl: {
     type: String,
-    label: "The intro of this post.",
-    optional: false
+    label: "The url image of this post.",
+    optional: true
   }
 });
 

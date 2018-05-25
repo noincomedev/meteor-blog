@@ -5,6 +5,9 @@ import { PropTypes } from "prop-types";
 import { Query } from "react-apollo";
 import { Redirect, withRouter } from "react-router-dom";
 
+import Spinner from "../utils/Spinner";
+import CardWithTitleAndContent from "../../layouts/components/card/CardWithTitleAndContent";
+
 import PostForm from "./PostForm";
 
 export const GET_POST = gql`
@@ -12,10 +15,14 @@ export const GET_POST = gql`
     post(slug: $slug) {
       _id
       title
+      category
       content
       published
       tags
       slug
+      intro
+      new
+      imageUrl
     }
   }
 `;
@@ -30,11 +37,15 @@ class PostEditor extends Component {
     return (
       <Query query={GET_POST} variables={{ slug: slug ? slug : "" }}>
         {({ loading, error, data }) => {
-          if (loading) return <h1>LOADING</h1>;
+          if (loading) return <Spinner />;
           if (error) return `Error!: ${error}`;
           const { post } = data;
           if (slug && !post) return <Redirect to="/not-found" />;
-          return <PostForm handleCancel={this.handleCancel} post={post} />;
+          return (
+            <CardWithTitleAndContent title="Edit Post">
+              <PostForm handleCancel={this.handleCancel} post={post} />
+            </CardWithTitleAndContent>
+          );
         }}
       </Query>
     );

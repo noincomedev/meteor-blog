@@ -18,7 +18,7 @@ const styles = theme => ({
   contrastButton: {
     marginRight: 16,
     background: theme.palette.secondary.contrastText,
-    color: theme.palette.primary.main,
+    color: "white",
     "&:hover": {
       background: theme.palette.primary.main,
       color: theme.palette.custom.text

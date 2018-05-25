@@ -10,6 +10,8 @@ import MultiRoute from "./MultiRoute";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 
+import Spinner from "../utils/Spinner";
+
 import DashboardPage from "../../pages/DashboardPage";
 import LandingPage from "../../pages/LandingPage";
 import NotFoundPage from "../../pages/NotFoundPage";
@@ -24,9 +26,19 @@ const Router = ({ loading, user }) => {
         <MuiThemeProvider theme={theme}>
           <Switch>
             {user ? (
-              <PrivateRoute exact path="/" component={DashboardPage} />
+              <PrivateRoute
+                exact
+                path="/"
+                name="Dashboard"
+                component={DashboardPage}
+              />
             ) : (
-              <PublicRoute exact path="/" component={LandingPage} />
+              <PublicRoute
+                exact
+                path="/"
+                name="index"
+                component={LandingPage}
+              />
             )}
             <MultiRoute exact path="/posts/:slug" component={PostsPage} />
             <MultiRoute
@@ -53,7 +65,7 @@ const Router = ({ loading, user }) => {
       </BrowserRouter>
     );
   }
-  return <h1>LOADING</h1>;
+  return <Spinner />;
 };
 
 export const CURRENT_USER = gql`

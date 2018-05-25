@@ -23,7 +23,7 @@ module.exports = {
       PORT: 3000,
       MONGO_URL:
         "mongodb://admin:Diegoro1108@ds161459.mlab.com:61459/noincomeblog",
-      ROOT_URL: "https://noincomedev.me"
+      ROOT_URL: "https://www.noincomedev.me"
     },
     enableUploadProgressBar: true,
     deployCheckWaitTime: 150

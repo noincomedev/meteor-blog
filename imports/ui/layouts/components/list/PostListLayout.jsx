@@ -6,13 +6,22 @@ import { Query } from "react-apollo";
 import PrivateList from "../../../components/list/PrivateList";
 import PublicList from "../../../components/list/PublicList";
 
+import Spinner from "../../../components/utils/Spinner";
+
 export const USER_POSTS = gql`
   query posts($owner: String!) {
     posts(owner: $owner) {
       _id
       title
-      published
       slug
+      category
+      content
+      tags
+      created
+      updated
+      new
+      intro
+      imageUrl
     }
   }
 `;
@@ -29,6 +38,8 @@ const PUBLIC_POSTS = gql`
       created
       updated
       new
+      intro
+      imageUrl
     }
   }
 `;
@@ -37,7 +48,7 @@ const PostListLayout = ({ user }) =>
   user ? (
     <Query query={USER_POSTS} variables={{ owner: Meteor.userId() }}>
       {({ loading, error, data }) => {
-        if (loading) return <h1>LOADING</h1>;
+        if (loading) return <Spinner />;
         if (error) return `Error!: ${error}`;
         if (data) return <PrivateList user={user} posts={data.posts} />;
       }}

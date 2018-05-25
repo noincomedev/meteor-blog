@@ -12,21 +12,26 @@ type Post {
   status: Boolean
   new: Boolean
   intro: String
+  imageUrl: String
 }
 
 type Mutation {
   createPost(
     title: String!
+    imageUrl: String!
     slug: String!
+    category: String!
     content: String
     tags: [String]!
   ): Post
   editPost(
     _id: String!
     title: String!
+    imageUrl: String!
     slug: String!
     content: String
     tags: [String]!
+    category: String!
   ): Post
   deletePost(_id: String!): Post
 }

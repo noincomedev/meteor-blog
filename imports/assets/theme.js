@@ -19,5 +19,21 @@ export default createMuiTheme({
       success: "#d1e37f",
       text: "#94d6d6"
     }
+  },
+  overrides: {
+    MuiButton: {
+      raisedSecondary: {
+        color: "white",
+        backgroundColor: "#CF256D"
+      },
+      flatSecondary: {
+        color: "white",
+        backgroundColor: "#CF256D",
+        "&:hover": {
+          color: "white",
+          backgroundColor: "#512DA8"
+        }
+      }
+    }
   }
 });

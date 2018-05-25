@@ -3,10 +3,23 @@ import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import { PropTypes } from "prop-types";
 import { Query } from "react-apollo";
+import { withStyles } from "@material-ui/core/styles";
+
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import CardWithTitleAndContent from "../../layouts/components/card/CardWithTitleAndContent";
 
 import PostEditor from "../post/PostEditor";
 import PostForm from "../post/PostForm";
-import PostItem from "../post/PostItem";
+import PrivatePostItem from "../post/PrivatePostItem";
+
+const styles = theme => ({
+  container: {
+    margin: theme.spacing.unit,
+    paddingRight: theme.spacing.unit * 2,
+    overflow: "auto"
+  }
+});
 
 class PrivateList extends Component {
   state = {
@@ -40,21 +53,36 @@ class PrivateList extends Component {
   }
 
   render() {
-    const { error, loading } = this.props;
+    const { classes } = this.props;
     const { showButton, showForm } = this.state;
-    if (loading) return <h1>LOADING</h1>;
-    if (error) return `Error!: ${error}`;
     return (
-      <Fragment>
-        <h1>PrivateList</h1>
+      <Grid container className={classes.container} justify="center">
         {showButton && (
-          <button type="button" onClick={this.toggleButton}>
-            New Post
-          </button>
+          <Grid item xs={6}>
+            <Button
+              variant="raised"
+              color="primary"
+              onClick={this.toggleButton}
+              className={classes.button}
+              fullWidth
+            >
+              New Post
+            </Button>
+          </Grid>
         )}
-        {showForm && <PostForm handleCancel={this.toggleCancel} />}
-        {this.props.posts.map(post => <PostItem key={post._id} post={post} />)}
-      </Fragment>
+        {showForm && (
+          <Grid item xs={12} style={{ paddingRight: 8 }}>
+            <CardWithTitleAndContent title="New Post">
+              <PostForm handleCancel={this.toggleCancel} />
+            </CardWithTitleAndContent>
+          </Grid>
+        )}
+        {this.props.posts.map(post => (
+          <Grid item xs={12} key={post._id}>
+            <PrivatePostItem post={post} />
+          </Grid>
+        ))}
+      </Grid>
     );
   }
 }
@@ -64,4 +92,4 @@ PrivateList.propTypes = {
   posts: PropTypes.array.isRequired
 };
 
-export default PrivateList;
+export default withStyles(styles, { withTheme: true })(PrivateList);

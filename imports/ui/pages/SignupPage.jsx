@@ -5,7 +5,9 @@ import CardWithTitleAndContent from "../layouts/components/card/CardWithTitleAnd
 import SignupForm from "../components/accounts/SignupForm";
 
 const SignupPage = ({ name }) => (
-  <CardWithTitleAndContent title={name} content={SignupForm} />
+  <CardWithTitleAndContent title={name}>
+    <SignupForm />
+  </CardWithTitleAndContent>
 );
 
 SignupPage.propTypes = {

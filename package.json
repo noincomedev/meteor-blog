@@ -5,7 +5,8 @@
     "start": "meteor run",
     "dev":
       "MONGO_URL=mongodb://admin:Diegoro1108@ds161459.mlab.com:61459/noincomeblog meteor --settings settings-development.json",
-    "prod": "meteor --settings settings-production.json"
+    "devlocal": "meteor --settings settings-development.json",
+    "prodlocal": "meteor --settings settings-production.json"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.42",

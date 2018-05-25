@@ -2,6 +2,7 @@ import React from "react";
 
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
+import Hidden from "@material-ui/core/Hidden";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import { Link, Redirect, withRouter } from "react-router-dom";
@@ -43,21 +44,36 @@ const styles = theme => ({
 const Header = ({ classes, history }) => (
   <header className={classes.header}>
     <Grid container className={classes.container} justify="center">
-      <Typography variant="display3" className={classes.logo}>
-        {`{`}
-      </Typography>
-      <Typography variant="display3" className={classes.logo}>
-        NO
-      </Typography>
-      <Typography variant="display3" className={classes.logo}>
-        INCOME
-      </Typography>
-      <Typography variant="display3" className={classes.logo}>
-        DEV
-      </Typography>
-      <Typography variant="display3" className={classes.logo}>
-        {`}`}
-      </Typography>
+      <Hidden xsDown>
+        <Typography variant="display3" className={classes.logo}>
+          {`{`}
+        </Typography>
+        {"NO INCOME DEV".split(" ").map(word => (
+          <Typography variant="display3" className={classes.logo}>
+            {word}
+          </Typography>
+        ))}
+        <Typography variant="display3" className={classes.logo}>
+          {`}`}
+        </Typography>
+      </Hidden>
+      <Hidden smUp>
+        <Typography variant="display3" className={classes.logo}>
+          {`{`}
+        </Typography>
+        <Typography variant="display3" className={classes.logo}>
+          !
+        </Typography>
+        <Typography variant="display3" className={classes.logo}>
+          $
+        </Typography>
+        <Typography variant="display3" className={classes.logo}>
+          DEV
+        </Typography>
+        <Typography variant="display3" className={classes.logo}>
+          {`}`}
+        </Typography>
+      </Hidden>
     </Grid>
     {Meteor.settings.public.validateNewUser && (
       <Grid container className={classes.container} justify="center">
