@@ -56,7 +56,7 @@ const PostListLayout = ({ user }) =>
   ) : (
     <Query query={PUBLIC_POSTS} pollInterval={500}>
       {({ loading, error, data }) => {
-        if (loading) return <h1>LOADING</h1>;
+        if (loading) return <Spinner />;
         if (error) return `Error!: ${error}`;
         if (data) return <PublicList posts={data.publicPosts} />;
       }}
