@@ -20,13 +20,13 @@ const styles = theme => ({
     color: theme.palette.custom.text,
     textDecoration: "none"
   },
-  name: {
+  title: {
     color: theme.palette.custom.success
   },
   typoContainer: { flex: 1 }
 });
 
-const PrivateToolbar = ({ classes, client, name }) => (
+const PrivateToolbar = ({ classes, client, title }) => (
   <Toolbar className={classes.customToolbar}>
     <div className={classes.typoContainer}>
       <Typography variant="body1">
@@ -35,8 +35,8 @@ const PrivateToolbar = ({ classes, client, name }) => (
         </Link>
       </Typography>
     </div>
-    <Typography className={classes.name} variant="body1">
-      {name}
+    <Typography className={classes.title} variant="body1">
+      {title}
     </Typography>
     <IconButton
       color="inherit"

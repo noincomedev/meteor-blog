@@ -1,5 +1,10 @@
 {
   "public": {
-    "validateNewUser": true
+    "validateNewUser": true,
+    "analyticsSettings": {
+      "Google Analytics": {
+        "trackingId": "UA-110232442-2"
+      }
+    }
   }
 }

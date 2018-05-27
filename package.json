@@ -3,8 +3,7 @@
   "private": true,
   "scripts": {
     "start": "meteor run",
-    "dev":
-      "MONGO_URL=mongodb://admin:Diegoro1108@ds161459.mlab.com:61459/noincomeblog meteor --settings settings-development.json",
+    "dev": "MONGO_URL=mongodb://admin:Diegoro1108@ds161459.mlab.com:61459/noincomeblog meteor --settings settings-development.json",
     "devlocal": "meteor --settings settings-development.json",
     "prodlocal": "meteor --settings settings-production.json"
   },
@@ -26,6 +25,7 @@
     "react": "^16.3.2",
     "react-apollo": "^2.1.3",
     "react-dom": "^16.3.2",
+    "react-helmet": "^5.2.0",
     "react-router-dom": "^4.2.2",
     "simpl-schema": "^1.5.0"
   },

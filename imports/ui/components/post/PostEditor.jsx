@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
+import { Helmet } from "react-helmet";
 import { PropTypes } from "prop-types";
 import { Query } from "react-apollo";
 import { Redirect, withRouter } from "react-router-dom";
@@ -43,6 +44,10 @@ class PostEditor extends Component {
           if (slug && !post) return <Redirect to="/not-found" />;
           return (
             <CardWithTitleAndContent title="Edit Post">
+              <Helmet>
+                <title>Edit Post</title>
+                <meta name="Edit Post" content="Edit Post" />
+              </Helmet>
               <PostForm handleCancel={this.handleCancel} post={post} />
             </CardWithTitleAndContent>
           );

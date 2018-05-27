@@ -7,7 +7,15 @@ import PublicRoute from "./PublicRoute";
 
 import { CURRENT_USER } from "./Router";
 
-const MultiRoute = ({ client, component, exact, name, path }) => {
+const MultiRoute = ({
+  client,
+  component,
+  content,
+  exact,
+  name,
+  path,
+  title
+}) => {
   const { user } = client.readQuery({ query: CURRENT_USER });
   if (!user)
     return (
@@ -16,11 +24,20 @@ const MultiRoute = ({ client, component, exact, name, path }) => {
         name={name}
         path={path}
         component={component}
+        title={title}
+        content={content}
       />
     );
 
   return (
-    <PrivateRoute exact={exact} name={name} path={path} component={component} />
+    <PrivateRoute
+      exact={exact}
+      name={name}
+      path={path}
+      component={component}
+      title={title}
+      content={content}
+    />
   );
 };
 

@@ -48,8 +48,8 @@ const Header = ({ classes, history }) => (
         <Typography variant="display3" className={classes.logo}>
           {`{`}
         </Typography>
-        {"NO INCOME DEV".split(" ").map(word => (
-          <Typography variant="display3" className={classes.logo}>
+        {"NO INCOME DEV".split(" ").map((word, index) => (
+          <Typography key={index} variant="display3" className={classes.logo}>
             {word}
           </Typography>
         ))}

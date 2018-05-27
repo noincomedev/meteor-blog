@@ -27,35 +27,45 @@ const Router = ({ loading, user }) => {
           <Switch>
             {user ? (
               <PrivateRoute
+                name="Dahboard Page"
+                content="Dashboard Page"
                 exact
                 path="/"
-                name="Dashboard"
+                title="Dashboard"
                 component={DashboardPage}
               />
             ) : (
               <PublicRoute
+                title="Index"
+                content="Index Page"
                 exact
                 path="/"
-                name="index"
+                name="Index Page"
                 component={LandingPage}
               />
             )}
             <MultiRoute exact path="/posts/:slug" component={PostsPage} />
             <MultiRoute
+              content="Posts Page"
               exact
-              name="Posts"
+              name="Posts Page"
               path="/posts"
+              title="Posts"
               component={PostsPage}
             />
             <PublicRoute
+              title="Sign In"
+              content="Sing In Page"
               exact
-              name="Sing In"
+              name="Sing In Page"
               path="/signin"
               component={SigninPage}
             />
             <PublicRoute
+              title="Sing UP"
+              content="Sing Up Page"
               exact
-              name="Sign Up"
+              name="Sign Up Page"
               path="/signup"
               component={SignupPage}
             />

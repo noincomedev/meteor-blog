@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
+import { Helmet } from "react-helmet";
 import { PropTypes } from "prop-types";
 import { Query } from "react-apollo";
 import { Redirect } from "react-router-dom";
@@ -46,6 +47,10 @@ const Post = ({ classes, slug }) => (
       if (!post) return <Redirect to="/not-found" />;
       return (
         <Grid container justify="center">
+          <Helmet>
+            <title>{post.title}</title>
+            <meta name="Read Post" content="Post" />
+          </Helmet>
           <Grid item xs={12} md={6}>
             <CardWithImage imageUrl={post.imageUrl} title={post.title}>
               <Fragment>

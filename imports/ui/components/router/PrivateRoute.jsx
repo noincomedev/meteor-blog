@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import { Helmet } from "react-helmet";
 import { Route, Redirect } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { withApollo } from "react-apollo";
@@ -17,7 +18,16 @@ const styles = theme => ({
   }
 });
 
-const PrivateRoute = ({ classes, client, component, exact, name, path }) => {
+const PrivateRoute = ({
+  classes,
+  client,
+  component,
+  content,
+  exact,
+  name,
+  path,
+  title
+}) => {
   const { user } = client.readQuery({ query: CURRENT_USER });
   if (!user) {
     return <Redirect to="/" />;
@@ -29,7 +39,11 @@ const PrivateRoute = ({ classes, client, component, exact, name, path }) => {
       path={path}
       render={props => (
         <Fragment>
-          <AppbarLayout private name={name} />
+          <Helmet>
+            <title>{title}</title>
+            <meta name={name} content={content} />
+          </Helmet>
+          <AppbarLayout private title={title} />
           <main className={classes.main}>{React.createElement(component)}</main>
         </Fragment>
       )}
@@ -42,7 +56,9 @@ PrivateRoute.propTypes = {
   component: PropTypes.func.isRequired,
   exact: PropTypes.bool.isRequired,
   name: PropTypes.string,
-  path: PropTypes.string.isRequired
+  path: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  content: PropTypes.string
 };
 
 export default withStyles(styles, { withTheme: true })(

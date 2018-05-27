@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import { Helmet } from "react-helmet";
 import { Route, Redirect } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { withApollo } from "react-apollo";
@@ -25,13 +26,15 @@ const styles = theme => ({
 });
 
 const PublicRoute = ({
+  content,
   classes,
   client,
   component,
   exact,
   location,
   name,
-  path
+  path,
+  title
 }) => {
   const { user } = client.readQuery({ query: CURRENT_USER });
   if (!user) {
@@ -41,7 +44,11 @@ const PublicRoute = ({
         path={path}
         render={props => (
           <Fragment>
-            <PublicNavigationLayout name={name} />
+            <Helmet>
+              <title>{title}</title>
+              <meta name={name} content={content} />
+            </Helmet>
+            <PublicNavigationLayout title={title} />
             <main
               className={
                 location.pathname == "/"
@@ -64,7 +71,9 @@ PublicRoute.propTypes = {
   component: PropTypes.func.isRequired,
   exact: PropTypes.bool.isRequired,
   name: PropTypes.string,
-  path: PropTypes.string.isRequired
+  path: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  content: PropTypes.string
 };
 
 export default withApollo(

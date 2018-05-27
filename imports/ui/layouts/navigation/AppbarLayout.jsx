@@ -10,14 +10,14 @@ import PublicToolbar from "../../components/navigation/PublicToolbar";
 
 const styles = theme => ({});
 
-const AppbarLayout = ({ classes, name, private }) => (
+const AppbarLayout = ({ classes, title, private }) => (
   <AppBar position="fixed" color="primary">
-    {private ? <PrivateToolbar name={name} /> : <PublicToolbar name={name} />}
+    {private ? <PrivateToolbar title={title} /> : <PublicToolbar name={name} />}
   </AppBar>
 );
 
 AppbarLayout.propTypes = {
-  name: PropTypes.string,
+  title: PropTypes.string,
   private: PropTypes.bool
 };
 
