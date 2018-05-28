@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
+import { Helmet } from "react-helmet";
 import { PropTypes } from "prop-types";
 import { Query } from "react-apollo";
 import { withStyles } from "@material-ui/core/styles";
@@ -72,6 +73,10 @@ class PrivateList extends Component {
         )}
         {showForm && (
           <Grid item xs={12} style={{ paddingRight: 8 }}>
+            <Helmet>
+              <title>NOINCOMEDEV | Add Post</title>
+              <meta name="Add Post" content="Add Post" />
+            </Helmet>
             <CardWithTitleAndContent title="New Post">
               <PostForm handleCancel={this.toggleCancel} />
             </CardWithTitleAndContent>
