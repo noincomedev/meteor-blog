@@ -48,7 +48,7 @@ const Post = ({ classes, slug }) => (
       return (
         <Grid container justify="center">
           <Helmet>
-            <title>{post.title}</title>
+            <title>{`NOINCOMEDEV | ${post.title}`}</title>
             <meta name="Read Post" content="Post" />
           </Helmet>
           <Grid item xs={12} md={6}>

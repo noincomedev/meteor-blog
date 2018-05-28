@@ -36,7 +36,7 @@ const Router = ({ loading, user }) => {
               />
             ) : (
               <PublicRoute
-                title="Index"
+                title="Home"
                 content="Index Page"
                 exact
                 path="/"
