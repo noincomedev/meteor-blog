@@ -21,8 +21,6 @@ export const GET_POST = gql`
       published
       tags
       slug
-      intro
-      new
       imageUrl
     }
   }

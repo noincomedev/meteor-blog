@@ -10,6 +10,12 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 
+import { ContentState, EditorState, convertToRaw } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import draftToMarkdown from "draftjs-to-markdown";
+import { stateFromMarkdown } from "draft-js-import-markdown";
+
 import { USER_POSTS } from "../../layouts/components/list/PostListLayout";
 
 const CREATE_POST = gql`
@@ -79,6 +85,7 @@ class PostForm extends Component {
     imageUrl: "",
     slug: "",
     category: "",
+    editorState: EditorState.createEmpty(),
     content: "",
     tags: []
   };
@@ -107,7 +114,15 @@ class PostForm extends Component {
   handleSubmit = () => {
     const { history } = this.props;
     const { _id, title, imageUrl, slug, category, content, tags } = this.state;
-    const variables = { _id, title, imageUrl, slug, category, content, tags };
+    const variables = {
+      _id,
+      title,
+      imageUrl,
+      slug,
+      category,
+      content,
+      tags
+    };
     if (_id) {
       this.props
         .editPost({ variables })
@@ -193,7 +208,23 @@ class PostForm extends Component {
     this.setState({ slug: getSlug(title) });
   };
 
+  onEditorStateChange = editorState => {
+    const md = draftToMarkdown(convertToRaw(editorState.getCurrentContent()));
+    this.setState({
+      editorState,
+      content: md
+    });
+  };
+
   static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.post) {
+      return {
+        ...nextProps.post,
+        editorState: EditorState.createWithContent(
+          stateFromMarkdown(nextProps.post.content)
+        )
+      };
+    }
     return {
       ...nextProps.post
     };
@@ -201,7 +232,7 @@ class PostForm extends Component {
 
   render() {
     const { classes, post } = this.props;
-    const { title, imageUrl, slug, category, content, tags } = this.state;
+    const { title, imageUrl, slug, category, editorState, tags } = this.state;
     return (
       <form
         className={classes.container}
@@ -232,7 +263,7 @@ class PostForm extends Component {
               id="imageUrl"
               label="Image URL"
               className={classes.textField}
-              value={imageUrl}
+              value={imageUrl ? imageUrl : ""}
               onChange={this.handleChange}
               margin="normal"
               fullWidth
@@ -256,17 +287,35 @@ class PostForm extends Component {
               fullWidth
               helperText="No spaces, use - instead. Separate by comma."
             />
-            <TextField
-              id="content"
-              label="Content"
-              className={classes.textField}
-              value={content}
-              onChange={this.handleChange}
-              margin="normal"
-              multiline
-              rows={3}
-              fullWidth
-            />
+            <Editor
+              editorState={editorState}
+              placeholder="Create something new!"
+              toolbarClassName="toolbarClassName"
+              wrapperClassName="wrapperClassName"
+              editorClassName="editorClassName"
+              onEditorStateChange={this.onEditorStateChange}
+              toolbar={{
+                image: {
+                  urlEnabled: true,
+                  uploadEnabled: false,
+                  alignmentEnabled: true,
+                  previewImage: true,
+                  alt: { present: false, mandatory: false },
+                  defaultSize: {
+                    height: "auto",
+                    width: "auto"
+                  }
+                }
+              }}
+            >
+              <textarea
+                disabled
+                value={
+                  editorState &&
+                  draftToMarkdown(convertToRaw(editorState.getCurrentContent()))
+                }
+              />
+            </Editor>
           </Grid>
           <Grid container justify="center">
             <Grid item xs={12}>
