@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import ReactMarkdown from "react-markdown";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import { Helmet } from "react-helmet";
@@ -58,7 +59,7 @@ const Post = ({ classes, slug }) => (
                   {post.title}
                 </Typography>
                 <Divider className={classes.divider} light />
-                <Typography component="p">{post.content}</Typography>
+                <ReactMarkdown skipHtml source={post.content} />
                 <div className={classes.tagsContainer}>
                   <Typography className={classes.text} component="p">
                     TAGS:

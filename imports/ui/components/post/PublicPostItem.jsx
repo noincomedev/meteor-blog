@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ReactMarkdown from "react-markdown";
 import { Link } from "react-router-dom";
 
 import Avatar from "@material-ui/core/Avatar";
@@ -45,7 +46,10 @@ const styles = theme => ({
     color: theme.palette.text.secondary,
     marginBottom: theme.spacing.unit / 2
   },
-  tagsContainer: { marginTop: theme.spacing.unit }
+  tagsContainer: { marginTop: theme.spacing.unit },
+  markdown: {
+    color: theme.palette.grey[600]
+  }
 });
 
 class PublicPostItem extends Component {
@@ -82,7 +86,11 @@ class PublicPostItem extends Component {
               {post.title}
             </Typography>
             <Divider className={classes.divider} light />
-            <Typography component="p">{post.intro}</Typography>
+            <ReactMarkdown
+              skipHtml
+              className={classes.markdown}
+              source={post.intro}
+            />
             <div className={classes.tagsContainer}>
               <Typography className={classes.text} component="p">
                 TAGS:

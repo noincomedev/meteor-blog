@@ -10,10 +10,10 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 
-import { ContentState, EditorState, convertToRaw } from "draft-js";
+import { EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import draftToMarkdown from "draftjs-to-markdown";
+import { stateToMarkdown } from "draft-js-export-markdown";
 import { stateFromMarkdown } from "draft-js-import-markdown";
 
 import { USER_POSTS } from "../../layouts/components/list/PostListLayout";
@@ -76,6 +76,10 @@ const styles = theme => ({
   container: {
     display: "flex",
     overflow: "auto"
+  },
+  editor: {
+    border: `1px solid ${theme.palette.grey[200]}`,
+    minHeight: 150
   }
 });
 
@@ -85,9 +89,9 @@ class PostForm extends Component {
     imageUrl: "",
     slug: "",
     category: "",
-    editorState: EditorState.createEmpty(),
     content: "",
-    tags: []
+    tags: [],
+    editorState: EditorState.createEmpty()
   };
 
   handleChange = event => {
@@ -208,14 +212,6 @@ class PostForm extends Component {
     this.setState({ slug: getSlug(title) });
   };
 
-  onEditorStateChange = editorState => {
-    const md = draftToMarkdown(convertToRaw(editorState.getCurrentContent()));
-    this.setState({
-      editorState,
-      content: md
-    });
-  };
-
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.post) {
       return {
@@ -230,9 +226,16 @@ class PostForm extends Component {
     };
   }
 
+  onEditorStateChange = editorState => {
+    this.setState({
+      editorState,
+      content: stateToMarkdown(editorState.getCurrentContent())
+    });
+  };
+
   render() {
     const { classes, post } = this.props;
-    const { title, imageUrl, slug, category, editorState, tags } = this.state;
+    const { title, imageUrl, slug, category, tags, editorState } = this.state;
     return (
       <form
         className={classes.container}
@@ -288,34 +291,34 @@ class PostForm extends Component {
               helperText="No spaces, use - instead. Separate by comma."
             />
             <Editor
-              editorState={editorState}
-              placeholder="Create something new!"
-              toolbarClassName="toolbarClassName"
-              wrapperClassName="wrapperClassName"
-              editorClassName="editorClassName"
+              editorClassName={classes.editor}
+              defaultEditorState={editorState}
               onEditorStateChange={this.onEditorStateChange}
               toolbar={{
+                options: [
+                  "inline",
+                  "blockType",
+                  "list",
+                  "link",
+                  "embedded",
+                  "emoji",
+                  "image",
+                  "history"
+                ],
+                inline: {
+                  inDropdown: true,
+                  options: ["bold", "italic"]
+                },
+                list: { inDropdown: true },
+                textAlign: { inDropdown: true },
+                link: { inDropdown: true },
+                history: { inDropdown: true },
                 image: {
-                  urlEnabled: true,
-                  uploadEnabled: false,
-                  alignmentEnabled: true,
                   previewImage: true,
-                  alt: { present: false, mandatory: false },
-                  defaultSize: {
-                    height: "auto",
-                    width: "auto"
-                  }
+                  alt: { present: true, mandatory: true }
                 }
               }}
-            >
-              <textarea
-                disabled
-                value={
-                  editorState &&
-                  draftToMarkdown(convertToRaw(editorState.getCurrentContent()))
-                }
-              />
-            </Editor>
+            />
           </Grid>
           <Grid container justify="center">
             <Grid item xs={12}>
