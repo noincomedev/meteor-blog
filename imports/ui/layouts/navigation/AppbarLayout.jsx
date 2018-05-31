@@ -12,7 +12,11 @@ const styles = theme => ({});
 
 const AppbarLayout = ({ classes, title, private }) => (
   <AppBar position="fixed" color="primary">
-    {private ? <PrivateToolbar title={title} /> : <PublicToolbar name={name} />}
+    {private ? (
+      <PrivateToolbar title={title} />
+    ) : (
+      <PublicToolbar title={title} />
+    )}
   </AppBar>
 );
 

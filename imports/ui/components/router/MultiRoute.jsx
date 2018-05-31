@@ -44,9 +44,9 @@ const MultiRoute = ({
 MultiRoute.propTypes = {
   client: PropTypes.object.isRequired,
   component: PropTypes.func.isRequired,
-  exact: PropTypes.bool.isRequired,
+  exact: PropTypes.bool,
   name: PropTypes.string,
-  path: PropTypes.string.isRequired
+  path: PropTypes.string
 };
 
 export default withApollo(MultiRoute);

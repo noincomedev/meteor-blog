@@ -69,7 +69,12 @@ const Router = ({ loading, user }) => {
               path="/signup"
               component={SignupPage}
             />
-            <Route component={NotFoundPage} />
+            <MultiRoute
+              title="404 Not Found"
+              content="404"
+              name="404 Page"
+              component={NotFoundPage}
+            />
           </Switch>
         </MuiThemeProvider>
       </BrowserRouter>

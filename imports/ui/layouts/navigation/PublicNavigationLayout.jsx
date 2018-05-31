@@ -3,11 +3,11 @@ import { PropTypes } from "prop-types";
 import { withRouter } from "react-router-dom";
 
 import Header from "../../../ui/components/navigation/Header";
-import AppbarLAyout from "./AppbarLayout";
+import AppbarLayout from "./AppbarLayout";
 
 const PublicNavigationLayout = ({ location, history, title }) => (
   <nav>
-    {location.pathname != "/" ? <AppbarLAyout title={title} /> : <Header />}
+    {location.pathname != "/" ? <AppbarLayout title={title} /> : <Header />}
   </nav>
 );
 

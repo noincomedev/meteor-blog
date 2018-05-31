@@ -1,5 +1,5 @@
-import React from "react";
-
+import React, { Fragment } from "react";
+import GithubCorner from "react-github-corner";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
@@ -42,74 +42,65 @@ const styles = theme => ({
 });
 
 const Header = ({ classes, history }) => (
-  <header className={classes.header}>
-    <Grid container className={classes.container} justify="center">
-      <Hidden xsDown>
-        <Typography variant="display3" className={classes.logo}>
-          {`{`}
-        </Typography>
-        {"NO INCOME DEV".split(" ").map((word, index) => (
-          <Typography key={index} variant="display3" className={classes.logo}>
-            {word}
-          </Typography>
-        ))}
-        <Typography variant="display3" className={classes.logo}>
-          {`}`}
-        </Typography>
-      </Hidden>
-      <Hidden smUp>
-        <Typography variant="display3" className={classes.logo}>
-          {`{`}
-        </Typography>
-        <Typography variant="display3" className={classes.logo}>
-          !
-        </Typography>
-        <Typography variant="display3" className={classes.logo}>
-          $
-        </Typography>
-        <Typography variant="display3" className={classes.logo}>
-          DEV
-        </Typography>
-        <Typography variant="display3" className={classes.logo}>
-          {`}`}
-        </Typography>
-      </Hidden>
-    </Grid>
-    {Meteor.settings.public.validateNewUser && (
+  <Fragment>
+    <GithubCorner
+      href="https://github.com/noincomedev/meteor-blog"
+      direction="right"
+      bannerColor="#94d6d6"
+    />
+    <header className={classes.header}>
       <Grid container className={classes.container} justify="center">
-        <AccountsButtons />
+        <Hidden xsDown>
+          {"{ NO INCOME DEV }".split(" ").map((word, index) => (
+            <Typography key={index} variant="display3" className={classes.logo}>
+              {word}
+            </Typography>
+          ))}
+        </Hidden>
+        <Hidden smUp>
+          {"{ ! $ DEV }".split(" ").map((word, index) => (
+            <Typography key={index} variant="display3" className={classes.logo}>
+              {word}
+            </Typography>
+          ))}
+        </Hidden>
       </Grid>
-    )}
-    <Grid className={classes.mediaSection} container>
-      <Grid className={classes.centeredGridItem} item xs={4}>
-        <Button
-          className={classes.button}
-          variant="flat"
-          href="https://www.instagram.com/noincomedev"
-        >
-          <i className="fab fa-instagram fa-2x" />
-        </Button>
+      {Meteor.settings.public.validateNewUser && (
+        <Grid container className={classes.container} justify="center">
+          <AccountsButtons />
+        </Grid>
+      )}
+      <Grid className={classes.mediaSection} container>
+        <Grid className={classes.centeredGridItem} item xs={4}>
+          <Button
+            className={classes.button}
+            variant="flat"
+            href="https://www.instagram.com/noincomedev"
+          >
+            <i className="fab fa-instagram fa-2x" />
+          </Button>
+        </Grid>
+        <Grid className={classes.centeredGridItem} item xs={4}>
+          <Button
+            className={classes.button}
+            variant="flat"
+            href="https://www.twitter.com/noincomedev"
+          >
+            <i className="fab fa-twitter fa-2x" />
+          </Button>
+        </Grid>
+        <Grid className={classes.centeredGridItem} item xs={4}>
+          <Button
+            className={classes.button}
+            variant="flat"
+            href="https://github.com/noincomedev"
+          >
+            <i className="fab fa-github fa-2x" />
+          </Button>
+        </Grid>
       </Grid>
-      <Grid className={classes.centeredGridItem} item xs={4}>
-        <Button
-          className={classes.button}
-          variant="flat"
-          href="https://www.twitter.com/noincomedev"
-        >
-          <i className="fab fa-twitter fa-2x" />
-        </Button>
-      </Grid>
-      <Grid className={classes.centeredGridItem} item xs={4}>
-        <Button
-          className={classes.button}
-          variant="flat"
-          href="https://github.com/noincomedev"
-        >
-          <i className="fab fa-github fa-2x" />
-        </Button>
-      </Grid>
-    </Grid>
-  </header>
+    </header>
+  </Fragment>
 );
 
 export default withStyles(styles, { withTheme: true })(withRouter(Header));
