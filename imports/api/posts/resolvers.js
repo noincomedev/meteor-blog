@@ -20,7 +20,7 @@ export default {
   },
   Post: {
     new: post => moment(new Date()).diff(post.created, "days") <= 5,
-    intro: post => post.content.substring(0, 150)
+    intro: post => post.content.substring(0, 200) + "..."
   },
   Mutation: {
     createPost(

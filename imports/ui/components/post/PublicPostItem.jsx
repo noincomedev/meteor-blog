@@ -25,6 +25,13 @@ const styles = theme => ({
     backgroundColor: theme.palette.secondary.contrastText,
     color: theme.palette.common.white
   },
+  card: {
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
+    flex: 1,
+    justifyContent: "stretch"
+  },
   cardActions: {
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white
@@ -48,7 +55,11 @@ const styles = theme => ({
   },
   tagsContainer: { marginTop: theme.spacing.unit },
   markdown: {
-    color: theme.palette.grey[600]
+    color: theme.palette.grey[600],
+    flex: 1
+  },
+  item: {
+    flexGrow: 1
   }
 });
 
@@ -65,8 +76,9 @@ class PublicPostItem extends Component {
     const { classes, post } = this.props;
     const { raised } = this.state;
     return (
-      <Grid item xs={12} sm={6} md={4}>
+      <Grid item xs={12} sm={6} md={4} className={classes.item}>
         <Card
+          className={classes.card}
           raised={raised}
           onMouseLeave={this.toggleRaised}
           onMouseEnter={this.toggleRaised}
@@ -81,7 +93,9 @@ class PublicPostItem extends Component {
             src="image"
             title={post.title}
           />
-          <CardContent>
+          <CardContent
+            style={{ display: "flex", flexDirection: "column", flex: 1 }}
+          >
             <Typography gutterBottom variant="headline" component="h2">
               {post.title}
             </Typography>
