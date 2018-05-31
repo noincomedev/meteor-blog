@@ -1,11 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
+  button: {
+    color: theme.palette.primary.light
+  },
   container: {
     minHeight: "15vh",
     backgroundColor: theme.palette.secondary.dark
@@ -78,12 +82,27 @@ const PublicFooterLayout = ({ classes }) => (
         NOINCOMEDEV.ME
       </Typography>
       <div style={{ display: "inline", color: "#CDCADE" }}>
-        <Link to="www.instagram.com/noincomedev">
+        <Button
+          className={classes.button}
+          ariant="flat"
+          href="https://www.instagram.com/noincomedev"
+        >
           <i className="fab fa-instagram fa-3x" />
-        </Link>
-        <Link to="www.twitter.com/noincomedev">
+        </Button>
+        <Button
+          className={classes.button}
+          variant="flat"
+          href="https://www.twitter.com/noincomedev"
+        >
           <i className="fab fa-twitter fa-3x" />
-        </Link>
+        </Button>
+        <Button
+          className={classes.button}
+          variant="flat"
+          href="https://www.github.com/noincomedev"
+        >
+          <i className="fab fa-github fa-3x" />
+        </Button>
       </div>
     </Grid>
   </Grid>
