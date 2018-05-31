@@ -9,19 +9,23 @@ import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
 import PublicNavigationLayout from "../../layouts/navigation/PublicNavigationLayout";
+import PublicFooterLayout from "../../layouts/navigation/PublicFooterLayout";
 
 import { CURRENT_USER } from "./Router";
 
 const styles = theme => ({
   main: {
+    flex: 1,
     display: "flex",
     justifyContent: "center",
     padding: `${theme.spacing.unit * 8 + 24}px 24px 24px 24px`
   },
   landingPageMain: {
     display: "flex",
+    flex: 1,
     justifyContent: "center",
-    padding: `0px 24px 24px 24px`
+    padding: `0px 24px 24px 24px`,
+    minHeight: "100vh"
   }
 });
 
@@ -58,6 +62,7 @@ const PublicRoute = ({
             >
               {React.createElement(component, { name })}
             </main>
+            <PublicFooterLayout />
           </Fragment>
         )}
       />

@@ -9,9 +9,9 @@ export default createMuiTheme({
       // contrastText: will be calculated to contast with palette.primary.main
     },
     secondary: {
-      light: "#FF8CC6",
+      light: "#7E57C2",
       main: "#E040FB",
-      dark: "#512DA8",
+      dark: "#5E35B1",
       contrastText: "#CF256D"
     },
     custom: {

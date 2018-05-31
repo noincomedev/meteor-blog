@@ -5,7 +5,8 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
   container: {
-    margin: "auto"
+    margin: "auto",
+    minHeight: "100%"
   }
 });
 

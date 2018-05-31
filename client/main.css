@@ -3,6 +3,10 @@ body {
   background-color: #cdcade;
 }
 
+a {
+  text-decoration: none;
+}
+
 #react-root {
   display: flex;
   flex-direction: column;
