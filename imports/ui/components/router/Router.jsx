@@ -12,12 +12,14 @@ import PublicRoute from "./PublicRoute";
 
 import Spinner from "../utils/Spinner";
 
+import AboutPage from "../../pages/AboutPage";
 import DashboardPage from "../../pages/DashboardPage";
 import LandingPage from "../../pages/LandingPage";
 import NotFoundPage from "../../pages/NotFoundPage";
 import PostsPage from "../../pages/PostsPage";
 import SigninPage from "../../pages/SigninPage";
 import SignupPage from "../../pages/SignupPage";
+import StackPage from "../../pages/StackPage";
 
 const Router = ({ loading, user }) => {
   if (!loading) {
@@ -54,6 +56,14 @@ const Router = ({ loading, user }) => {
               component={PostsPage}
             />
             <PublicRoute
+              title="About Me"
+              content="Description about me"
+              exact
+              name="About Me"
+              path="/about"
+              component={AboutPage}
+            />
+            <PublicRoute
               title="Sign In"
               content="Sing In Page"
               exact
@@ -68,6 +78,14 @@ const Router = ({ loading, user }) => {
               name="Sign Up Page"
               path="/signup"
               component={SignupPage}
+            />
+            <PublicRoute
+              title="STACK"
+              content="Stack"
+              exact
+              name="Stack Page"
+              path="/stack"
+              component={StackPage}
             />
             <MultiRoute
               title="404 Not Found"

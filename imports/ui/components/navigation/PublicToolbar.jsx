@@ -27,7 +27,7 @@ const PublicToolbar = ({ classes, title }) => (
     <div className={classes.typoContainer}>
       <Typography variant="body1">
         <Link className={classes.link} to="/">
-          NOINCOMEBLOG
+          NOINCOMEDEV
         </Link>
       </Typography>
     </div>

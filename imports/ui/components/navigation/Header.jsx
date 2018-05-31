@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import ReactMarkdown from "react-markdown";
 import GithubCorner from "react-github-corner";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -8,6 +9,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { Link, Redirect, withRouter } from "react-router-dom";
 
 import AccountsButtons from "../accounts/AccountsButtons";
+import ProfileBanner from "../profile/ProfileBanner";
 
 const styles = theme => ({
   button: {
@@ -19,10 +21,6 @@ const styles = theme => ({
   container: {
     backgroundColor: theme.palette.primary.dark
   },
-  centeredGridItem: {
-    display: "flex",
-    justifyContent: "center"
-  },
   logo: {
     alignSelf: "right",
     padding: 8,
@@ -33,13 +31,18 @@ const styles = theme => ({
     "&:nth-last-child(2)": { color: theme.palette.custom.text },
     "&:last-child": { paddingRigth: 0, color: theme.palette.common.white }
   },
-  mediaSection: {
+  quoteSection: {
     backgroundColor: theme.palette.secondary.contrastText,
     paddingTop: theme.spacing.unit / 2,
     paddingBottom: theme.spacing.unit / 2,
-    boxShadow: theme.shadows[4]
+    boxShadow: theme.shadows[4],
+    color: theme.palette.primary.light
   }
 });
+
+const quoteMarkdown = `
+> “If you can’t feed a team with two pizzas🍕, it’s too large.” - Jeff Bezos
+`;
 
 const Header = ({ classes, history }) => (
   <Fragment>
@@ -70,34 +73,11 @@ const Header = ({ classes, history }) => (
           <AccountsButtons />
         </Grid>
       )}
-      <Grid className={classes.mediaSection} container>
-        <Grid className={classes.centeredGridItem} item xs={4}>
-          <Button
-            className={classes.button}
-            variant="flat"
-            href="https://www.instagram.com/noincomedev"
-          >
-            <i className="fab fa-instagram fa-2x" />
-          </Button>
-        </Grid>
-        <Grid className={classes.centeredGridItem} item xs={4}>
-          <Button
-            className={classes.button}
-            variant="flat"
-            href="https://www.twitter.com/noincomedev"
-          >
-            <i className="fab fa-twitter fa-2x" />
-          </Button>
-        </Grid>
-        <Grid className={classes.centeredGridItem} item xs={4}>
-          <Button
-            className={classes.button}
-            variant="flat"
-            href="https://github.com/noincomedev"
-          >
-            <i className="fab fa-github fa-2x" />
-          </Button>
-        </Grid>
+      <Hidden xsDown>
+        <ProfileBanner />
+      </Hidden>
+      <Grid className={classes.quoteSection} container justify="center">
+        <ReactMarkdown className={classes.quoteText} source={quoteMarkdown} />
       </Grid>
     </header>
   </Fragment>

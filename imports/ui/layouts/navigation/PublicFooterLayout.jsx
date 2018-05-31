@@ -18,7 +18,7 @@ const styles = theme => ({
     alignItems: "center"
   },
   footerLink: {
-    color: theme.palette.primary.light,
+    color: `${theme.palette.primary.light} !important`,
     "&:hover": {
       color: theme.palette.common.white
     }
@@ -77,6 +77,14 @@ const PublicFooterLayout = ({ classes }) => (
       >
         NOINCOMEDEV.ME
       </Typography>
+      <div style={{ display: "inline", color: "#CDCADE" }}>
+        <Link to="www.instagram.com/noincomedev">
+          <i className="fab fa-instagram fa-3x" />
+        </Link>
+        <Link to="www.twitter.com/noincomedev">
+          <i className="fab fa-twitter fa-3x" />
+        </Link>
+      </div>
     </Grid>
   </Grid>
 );
