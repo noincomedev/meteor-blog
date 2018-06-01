@@ -38,19 +38,20 @@ const markdowText = `
   I am self-taught👨‍🎓 web developer🖥️ from Santiago, Chile🇨🇱. 
   Few months ago me and my girlfriend arrived home from our 6 months trip to South East Asia.  
 
-  I want to ship📦 awesome profitable📈 products and try to make a living of it!💰🤑.
-   I like to write⌨️ code and learn new things every day.  
+  I want to make awesome profitable📈 products while I try to make a living of it!💰🤑.
+  I like to write⌨️ code and learn new things every day.  
     
-  I created this blog from scratch🚀 with educational purposes👨‍🏫. I wanted to learn how to ship📦 
-  modern apps📱. So I decided to do it with my favorite😍 tools🛠️ 
-  [#meteor☄️](https://www.noincomedev.met/tags/meteor), 
+  I built this blog from scratch🚀 with educational purposes👨‍🏫 to learn how to
+  code modern apps📱 with
+  [#meteor☄️](https://www.noincomedev.me/tags/meteor), 
   [#apollo](https://www.noincomedev.me/tags/apollo) and 
   [#react⚛️](https://www.noincomedev.me/tags/react)!  
 
   I will use this blog as my "Maker Diary"📕 so I will share any kind of
   content related to startups🚀, software development🖥️, tech🔭, étc.  
-    
-  Follow me on [Twitter🐦](https://www.twitter.com/noincomedev) and [Instagram📷](https://www.instagram.com/noincomedev) to keep you updated!
+
+  As you might noticed, I am a no income dev! Thats why I am askig for [DONATIONS](https://www.paypal.me/noincomedev/3). 
+  Also you can help me with a follow on [Twitter🐦](https://www.twitter.com/noincomedev) and [Instagram📷](https://www.instagram.com/noincomedev).
 `;
 
 const ProfileBanner = ({ classes }) => (
