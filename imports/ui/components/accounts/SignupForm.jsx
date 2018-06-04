@@ -10,19 +10,7 @@ import Spinner from "../utils/Spinner";
 
 const styles = theme => ({
   container: {
-    marginTop: 16
-  },
-  textfield: {
-    color: "red"
-  },
-  contrastButton: {
-    marginRight: 16,
-    background: theme.palette.secondary.contrastText,
-    color: "white",
-    "&:hover": {
-      background: theme.palette.primary.main,
-      color: theme.palette.primary.light
-    }
+    marginTop: theme.spacing.unit * 2
   }
 });
 
@@ -72,7 +60,6 @@ class SignupForm extends Component {
               <TextField
                 type="email"
                 label="e-mail"
-                className={classes.textField}
                 value={email}
                 onChange={this.handleChange("email")}
                 margin="none"
@@ -96,11 +83,12 @@ class SignupForm extends Component {
             >
               <Grid item xs={12} md={6}>
                 <Button
-                  className={classes.contrastButton}
+                  color="secondary"
+                  variant="raised"
                   type="submit"
                   fullWidth
                 >
-                  Signup
+                  Sign up
                 </Button>
               </Grid>
             </Grid>

@@ -22,7 +22,7 @@ const styles = theme => ({
   }
 });
 
-class PrivateList extends Component {
+class Private extends Component {
   state = {
     showButton: false,
     showForm: true
@@ -92,9 +92,9 @@ class PrivateList extends Component {
   }
 }
 
-PrivateList.propTypes = {
+Private.propTypes = {
   user: PropTypes.object.isRequired,
   posts: PropTypes.array.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(PrivateList);
+export default withStyles(styles, { withTheme: true })(Private);

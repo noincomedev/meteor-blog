@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import classNames from "classnames";
 import { Helmet } from "react-helmet";
 import { Route, Redirect } from "react-router-dom";
 import { PropTypes } from "prop-types";
@@ -8,24 +9,24 @@ import { withStyles } from "@material-ui/core/styles";
 
 import Grid from "@material-ui/core/Grid";
 
-import PublicNavigationLayout from "../../layouts/navigation/PublicNavigationLayout";
+import NavigationLayout from "../../layouts/navigation/NavigationLayout";
 import PublicFooterLayout from "../../layouts/navigation/PublicFooterLayout";
 
 import { CURRENT_USER } from "./Router";
 
 const styles = theme => ({
   main: {
-    flex: 1,
     display: "flex",
-    justifyContent: "center",
-    padding: `${theme.spacing.unit * 8 + 24}px 24px 24px 24px`
+    flex: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: 24,
+    marginTop: 56,
+    [theme.breakpoints.up("sm")]: {
+      marginTop: 64
+    }
   },
   landingPageMain: {
-    display: "flex",
-    flex: 1,
-    justifyContent: "center",
-    padding: `0px 24px 24px 24px`,
-    minHeight: "100vh"
+    marginTop: 0
   }
 });
 
@@ -52,13 +53,12 @@ const PublicRoute = ({
               <title>{`NOINCOMEDEV | ${title}`}</title>
               <meta name={name} content={content} />
             </Helmet>
-            <PublicNavigationLayout title={title} />
+            <NavigationLayout location={location} />
             <main
-              className={
-                location.pathname == "/"
-                  ? classes.landingPageMain
-                  : classes.main
-              }
+              className={classNames(
+                location.pathname == "/" && classes.landingPageMain,
+                classes.main
+              )}
             >
               {React.createElement(component, { name })}
             </main>
@@ -82,7 +82,5 @@ PublicRoute.propTypes = {
 };
 
 export default withApollo(
-  withStyles(styles, { withTheme: true })(
-    withRouter(props => <PublicRoute {...props} />)
-  )
+  withStyles(styles, { withTheme: true })(withRouter(PublicRoute))
 );

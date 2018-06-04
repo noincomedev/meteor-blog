@@ -64,10 +64,10 @@ const Router = ({ loading, user }) => {
               component={AboutPage}
             />
             <PublicRoute
-              title="Sign In"
+              title="Sign IN"
               content="Sing In Page"
               exact
-              name="Sing In Page"
+              name="Sing In"
               path="/signin"
               component={SigninPage}
             />
@@ -75,7 +75,7 @@ const Router = ({ loading, user }) => {
               title="Sing UP"
               content="Sing Up Page"
               exact
-              name="Sign Up Page"
+              name="Sign Up"
               path="/signup"
               component={SignupPage}
             />

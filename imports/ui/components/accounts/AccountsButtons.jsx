@@ -6,25 +6,14 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
   container: {
-    paddingBottom: 16
-  },
-  contrastButton: {
-    marginRight: 16,
-    background: theme.palette.primary.light,
-    color: theme.palette.primary.dark,
-    "&:hover": { background: theme.palette.secondary.contrastText }
-  },
-  darkButton: {
-    background: theme.palette.primary.dark,
-    color: theme.palette.common.white,
-    "&:hover": { background: theme.palette.secondary.contrastText }
+    padding: theme.spacing.unit
   }
 });
 
 const AccountsButtons = ({ classes, history }) => (
-  <Grid className={classes.container} container justify="center">
+  <div className={classes.container}>
     <Button
-      className={classes.contrastButton}
+      color="primary"
       variant="raised"
       onClick={event => {
         event.preventDefault();
@@ -34,7 +23,7 @@ const AccountsButtons = ({ classes, history }) => (
       Sign In
     </Button>
     <Button
-      className={classes.darkButton}
+      color="secondary"
       variant="raised"
       onClick={event => {
         event.preventDefault();
@@ -43,7 +32,7 @@ const AccountsButtons = ({ classes, history }) => (
     >
       Sign Up
     </Button>
-  </Grid>
+  </div>
 );
 
 export default withStyles(styles, { withTheme: true })(

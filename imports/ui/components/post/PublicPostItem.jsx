@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ReactMarkdown from "react-markdown";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 import Avatar from "@material-ui/core/Avatar";
 import Alarm from "@material-ui/icons/Alarm";
@@ -20,20 +20,8 @@ import FiberNew from "@material-ui/icons/FiberNew";
 import CalendarToday from "../../../assets/icons/CalendarToday";
 
 const styles = theme => ({
-  actionButton: { marginLeft: "auto" },
   avatar: {
     backgroundColor: theme.palette.secondary.contrastText,
-    color: theme.palette.common.white
-  },
-  card: {
-    display: "flex",
-    flexDirection: "column",
-    height: "100%",
-    flex: 1,
-    justifyContent: "stretch"
-  },
-  cardActions: {
-    backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white
   },
   chip: {
@@ -53,7 +41,6 @@ const styles = theme => ({
     color: theme.palette.text.secondary,
     marginBottom: theme.spacing.unit / 2
   },
-  tagsContainer: { marginTop: theme.spacing.unit },
   markdown: {
     color: theme.palette.grey[600],
     flex: 1
@@ -72,16 +59,21 @@ class PublicPostItem extends Component {
     this.setState({ raised: !this.state.raised });
   };
 
+  onCardClick = event => {
+    this.props.history.push(`/posts/${this.props.post.slug}`);
+  };
+
   render() {
     const { classes, post } = this.props;
     const { raised } = this.state;
     return (
-      <Grid item xs={12} sm={6} md={4} className={classes.item}>
+      <Grid item xs={12} className={classes.item}>
         <Card
           className={classes.card}
           raised={raised}
           onMouseLeave={this.toggleRaised}
           onMouseEnter={this.toggleRaised}
+          onClick={this.onCardClick}
         >
           <CardMedia
             className={classes.media}
@@ -94,8 +86,48 @@ class PublicPostItem extends Component {
             title={post.title}
           />
           <CardContent
-            style={{ display: "flex", flexDirection: "column", flex: 1 }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              flex: 1,
+              paddingTop: 0
+            }}
           >
+            <Grid container style={{ alignItems: "center" }}>
+              <Grid
+                item
+                xs={8}
+                style={{
+                  display: "flex",
+                  alignContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <Avatar className={classes.avatar}>
+                  {post.new ? (
+                    <FiberNew />
+                  ) : (
+                    <CalendarToday color="secondary" />
+                  )}
+                </Avatar>
+                <Typography color="inherit" variant="body1">
+                  {post.new
+                    ? moment(post.created)
+                        .startOf("day")
+                        .fromNow()
+                    : moment(post.created).format("LL")}
+                </Typography>
+              </Grid>
+              <Grid
+                item
+                xs={4}
+                style={{ display: "flex", justifyContent: "flex-end" }}
+              >
+                <Typography color="primary" variant="caption">
+                  {post.category}
+                </Typography>
+              </Grid>
+            </Grid>
             <Typography gutterBottom variant="headline" component="h2">
               {post.title}
             </Typography>
@@ -105,45 +137,12 @@ class PublicPostItem extends Component {
               className={classes.markdown}
               source={post.intro}
             />
-            <div className={classes.tagsContainer}>
-              <Typography className={classes.text} component="p">
-                TAGS:
-              </Typography>
-              {post.tags.map((tag, index) => (
-                <Chip key={index} label={`#${tag}`} className={classes.tag} />
-              ))}
-            </div>
           </CardContent>
-          <CardActions className={classes.cardActions}>
-            <Chip
-              label={
-                post.new
-                  ? moment(post.created)
-                      .startOf("day")
-                      .fromNow()
-                  : moment(post.created).format("LL")
-              }
-              avatar={
-                <Avatar className={classes.avatar}>
-                  {post.new ? <FiberNew /> : <CalendarToday />}
-                </Avatar>
-              }
-              className={classes.chip}
-            />
-            <Button
-              className={classes.actionButton}
-              size="small"
-              component={Link}
-              color="secondary"
-              to={`/posts/${post.slug}`}
-              variant="flat"
-            >
-              Continue Reading
-            </Button>
-          </CardActions>
         </Card>
       </Grid>
     );
   }
 }
-export default withStyles(styles, { withTheme: true })(PublicPostItem);
+export default withStyles(styles, { withTheme: true })(
+  withRouter(PublicPostItem)
+);

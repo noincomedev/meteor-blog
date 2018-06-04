@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { Query } from "react-apollo";
 import { Redirect } from "react-router-dom";
@@ -19,6 +20,9 @@ import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 
 import Spinner from "../utils/Spinner";
+
+import FiberNew from "@material-ui/icons/FiberNew";
+import CalendarToday from "../../../assets/icons/CalendarToday";
 
 import CardWithImage from "../../layouts/components/card/CardWithImage";
 
@@ -55,6 +59,44 @@ const Post = ({ classes, slug }) => (
           <Grid item xs={12} md={6}>
             <CardWithImage imageUrl={post.imageUrl} title={post.title}>
               <Fragment>
+                <Grid container style={{ alignItems: "center" }}>
+                  <Grid
+                    item
+                    xs={8}
+                    style={{
+                      display: "flex",
+                      alignContent: "center",
+                      alignItems: "center"
+                    }}
+                  >
+                    <Avatar className={classes.avatar}>
+                      {post.new ? (
+                        <FiberNew />
+                      ) : (
+                        <CalendarToday color="secondary" />
+                      )}
+                    </Avatar>
+                    <Typography color="inherit" variant="body1">
+                      {post.new
+                        ? moment(post.created)
+                            .startOf("day")
+                            .fromNow()
+                        : moment(post.created).format("LL")}
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={4}
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end"
+                    }}
+                  >
+                    <Typography color="primary" variant="caption">
+                      {post.category}
+                    </Typography>
+                  </Grid>
+                </Grid>
                 <Typography gutterBottom variant="headline" component="h2">
                   {post.title}
                 </Typography>
@@ -69,6 +111,8 @@ const Post = ({ classes, slug }) => (
                       key={index}
                       label={`#${tag}`}
                       className={classes.tag}
+                      component={Link}
+                      to={`/tags/${tag}`}
                     />
                   ))}
                 </div>

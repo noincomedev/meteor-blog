@@ -10,19 +10,10 @@ import Spinner from "../utils/Spinner";
 
 const styles = theme => ({
   container: {
-    marginTop: 16
+    marginTop: theme.spacing.unit * 2
   },
   textfield: {
     color: "red"
-  },
-  contrastButton: {
-    marginRight: 16,
-    background: theme.palette.secondary.contrastText,
-    color: "white",
-    "&:hover": {
-      background: theme.palette.primary.main,
-      color: theme.palette.custom.text
-    }
   }
 });
 
@@ -96,11 +87,12 @@ class SigninForm extends Component {
             >
               <Grid item xs={12} md={6}>
                 <Button
-                  className={classes.contrastButton}
+                  color="secondary"
+                  variant="raised"
                   type="submit"
                   fullWidth
                 >
-                  Signin
+                  Sign in
                 </Button>
               </Grid>
             </Grid>

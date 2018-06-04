@@ -6,15 +6,28 @@ import { withApollo } from "react-apollo";
 import { withStyles } from "@material-ui/core/styles";
 
 import { CURRENT_USER } from "./Router";
-import AppbarLayout from "../../layouts/navigation/AppbarLayout";
+
+import NavigationLayout from "../../layouts/navigation/NavigationLayout";
 
 const styles = theme => ({
   main: {
-    display: "flex",
-    flexDirection: "column",
-    background: theme.palette.primary.light,
-    height: "100vh",
-    marginTop: 64
+    flex: 1,
+    alignItems: "stretch",
+    backgroundColor: theme.palette.background.default,
+    padding: 24,
+    marginTop: 56,
+    [theme.breakpoints.up("md")]: {
+      marginTop: 64,
+      marginLeft: 240
+    },
+    [theme.breakpoints.down("sm")]: {
+      marginTop: 64,
+      marginLeft: 60
+    },
+    [theme.breakpoints.down("xs")]: {
+      marginTop: 64,
+      marginLeft: 0
+    }
   }
 });
 
@@ -43,7 +56,7 @@ const PrivateRoute = ({
             <title>{`NOINCOMEDEV | ${title}`}</title>
             <meta name={name} content={content} />
           </Helmet>
-          <AppbarLayout private title={title} />
+          <NavigationLayout title={title} />
           <main className={classes.main}>{React.createElement(component)}</main>
         </Fragment>
       )}

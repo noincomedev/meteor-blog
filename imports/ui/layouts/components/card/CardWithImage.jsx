@@ -25,7 +25,7 @@ const CardWithImage = ({ children, classes, imageUrl, title }) => (
       src="image"
       title={title}
     />
-    <CardContent>{children}</CardContent>
+    <CardContent style={{ paddingTop: 0 }}>{children}</CardContent>
   </Card>
 );
 

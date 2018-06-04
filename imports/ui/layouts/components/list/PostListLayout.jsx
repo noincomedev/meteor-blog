@@ -3,8 +3,8 @@ import gql from "graphql-tag";
 import { PropTypes } from "prop-types";
 import { Query } from "react-apollo";
 
-import PrivateList from "../../../components/list/PrivateList";
-import PublicList from "../../../components/list/PublicList";
+import PrivateList from "../../../components/list/Private";
+import PublicList from "../../../components/list/Public";
 
 import Spinner from "../../../components/utils/Spinner";
 

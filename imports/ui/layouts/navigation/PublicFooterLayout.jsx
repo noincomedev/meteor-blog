@@ -1,4 +1,5 @@
 import React from "react";
+import classNames from "classnames";
 import { Link } from "react-router-dom";
 
 import Button from "@material-ui/core/Button";
@@ -7,12 +8,12 @@ import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
-  button: {
-    color: theme.palette.primary.light
-  },
   container: {
     minHeight: "15vh",
-    backgroundColor: theme.palette.secondary.dark
+    backgroundColor: theme.palette.primary.dark,
+    [theme.breakpoints.down("sm")]: {
+      paddingTop: theme.spacing.unit
+    }
   },
   footerLink: {
     color: `${theme.palette.primary.light}`,
@@ -26,6 +27,9 @@ const styles = theme => ({
     flexGrow: 1,
     flexDirection: "column",
     justifyContent: "center"
+  },
+  stack: {
+    color: theme.palette.custom.text
   }
 });
 
@@ -38,7 +42,7 @@ const PublicFooterLayout = ({ classes }) => (
           align="center"
           component={Link}
           to="/stack"
-          className={classes.footerLink}
+          className={classNames(classes.footerLink, classes.stack)}
         >
           STACK
         </Typography>
@@ -82,14 +86,14 @@ const PublicFooterLayout = ({ classes }) => (
           align="center"
           component={Link}
           to="/"
-          className={classes.footerLink}
+          color="secondary"
         >
           NOINCOMEDEV.ME
         </Typography>
         <Grid container>
           <Grid item xs>
             <Button
-              className={classes.button}
+              color="secondary"
               ariant="flat"
               href="https://www.instagram.com/noincomedev"
               fullWidth
@@ -99,7 +103,7 @@ const PublicFooterLayout = ({ classes }) => (
           </Grid>
           <Grid item xs>
             <Button
-              className={classes.button}
+              color="secondary"
               variant="flat"
               href="https://www.twitter.com/noincomedev"
               fullWidth
@@ -109,7 +113,7 @@ const PublicFooterLayout = ({ classes }) => (
           </Grid>
           <Grid item xs>
             <Button
-              className={classes.button}
+              color="secondary"
               variant="flat"
               href="https://www.github.com/noincomedev"
               fullWidth
