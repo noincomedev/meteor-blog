@@ -54,7 +54,6 @@ const styles = theme => ({
 });
 
 let getDrawerType = width => {
-  console.log(width);
   switch (width) {
     case "xs":
       return "temporary";

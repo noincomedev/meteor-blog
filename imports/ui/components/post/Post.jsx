@@ -71,7 +71,7 @@ const Post = ({ classes, slug }) => (
                   >
                     <Avatar className={classes.avatar}>
                       {post.new ? (
-                        <FiberNew />
+                        <FiberNew color="secondary" />
                       ) : (
                         <CalendarToday color="secondary" />
                       )}

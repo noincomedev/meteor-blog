@@ -22,6 +22,7 @@ export const GET_POST = gql`
       tags
       slug
       imageUrl
+      new
     }
   }
 `;
