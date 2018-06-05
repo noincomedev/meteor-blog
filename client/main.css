@@ -6,10 +6,18 @@ a {
   text-decoration: none;
 }
 
+#public-post-content a {
+  color: #cf256d;
+}
+
 #react-root {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   overflow: hidden;
   z-index: 1;
+}
+
+.disqus-comment-count {
+  align-self: flex-end;
 }

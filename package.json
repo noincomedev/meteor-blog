@@ -15,6 +15,7 @@
     "apollo-client-preset": "^1.0.8",
     "bcrypt": "^2.0.1",
     "classnames": "^2.2.5",
+    "disqus-react": "^1.0.5",
     "draft-js": "^0.10.5",
     "draft-js-export-markdown": "^1.2.0",
     "draft-js-import-markdown": "^1.2.1",

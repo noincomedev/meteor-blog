@@ -24,6 +24,8 @@ import Spinner from "../utils/Spinner";
 import FiberNew from "@material-ui/icons/FiberNew";
 import CalendarToday from "../../../assets/icons/CalendarToday";
 
+import Disqus from "disqus-react";
+
 import CardWithImage from "../../layouts/components/card/CardWithImage";
 
 styles = theme => ({
@@ -50,6 +52,12 @@ const Post = ({ classes, slug }) => (
       if (error) return `Error!: ${error}`;
       const { post } = data;
       if (!post) return <Redirect to="/not-found" />;
+      const disqusShortname = "noincomedev";
+      const disqusConfig = {
+        url: "https://www.noincomedev.me/" + slug,
+        identifier: post._id,
+        title: post.title
+      };
       return (
         <Grid container justify="center">
           <Helmet>
@@ -87,10 +95,7 @@ const Post = ({ classes, slug }) => (
                   <Grid
                     item
                     xs={4}
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-end"
-                    }}
+                    style={{ display: "flex", justifyContent: "flex-end" }}
                   >
                     <Typography color="primary" variant="caption">
                       {post.category}
@@ -118,6 +123,10 @@ const Post = ({ classes, slug }) => (
                 </div>
               </Fragment>
             </CardWithImage>
+            <Disqus.DiscussionEmbed
+              shortname={disqusShortname}
+              config={disqusConfig}
+            />
           </Grid>
         </Grid>
       );

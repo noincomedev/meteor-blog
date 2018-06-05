@@ -16,9 +16,9 @@ const styles = theme => ({
     }
   },
   footerLink: {
-    color: `${theme.palette.primary.light}`,
+    color: `${theme.palette.secondary.light} !important`,
     "&:hover": {
-      color: "white"
+      color: "white !important"
     }
   },
   itemContainer: {

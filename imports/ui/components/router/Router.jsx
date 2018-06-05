@@ -10,6 +10,7 @@ import MultiRoute from "./MultiRoute";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 
+import ScrollTop from "../utils/ScrollTop";
 import Spinner from "../utils/Spinner";
 
 import AboutPage from "../../pages/AboutPage";
@@ -26,74 +27,76 @@ const Router = ({ loading, user }) => {
     return (
       <BrowserRouter>
         <MuiThemeProvider theme={theme}>
-          <Switch>
-            {user ? (
-              <PrivateRoute
-                name="Dahboard Page"
-                content="Dashboard Page"
+          <ScrollTop>
+            <Switch>
+              {user ? (
+                <PrivateRoute
+                  name="Dahboard Page"
+                  content="Dashboard Page"
+                  exact
+                  path="/"
+                  title="Dashboard"
+                  component={DashboardPage}
+                />
+              ) : (
+                <PublicRoute
+                  title="Home"
+                  content="Index Page"
+                  exact
+                  path="/"
+                  name="Index Page"
+                  component={LandingPage}
+                />
+              )}
+              <MultiRoute exact path="/posts/:slug" component={PostsPage} />
+              <MultiRoute
+                content="Posts Page"
                 exact
-                path="/"
-                title="Dashboard"
-                component={DashboardPage}
+                name="Posts Page"
+                path="/posts"
+                title="Posts"
+                component={PostsPage}
               />
-            ) : (
               <PublicRoute
-                title="Home"
-                content="Index Page"
+                title="About Me"
+                content="Description about me"
                 exact
-                path="/"
-                name="Index Page"
-                component={LandingPage}
+                name="About Me"
+                path="/about"
+                component={AboutPage}
               />
-            )}
-            <MultiRoute exact path="/posts/:slug" component={PostsPage} />
-            <MultiRoute
-              content="Posts Page"
-              exact
-              name="Posts Page"
-              path="/posts"
-              title="Posts"
-              component={PostsPage}
-            />
-            <PublicRoute
-              title="About Me"
-              content="Description about me"
-              exact
-              name="About Me"
-              path="/about"
-              component={AboutPage}
-            />
-            <PublicRoute
-              title="Sign IN"
-              content="Sing In Page"
-              exact
-              name="Sing In"
-              path="/signin"
-              component={SigninPage}
-            />
-            <PublicRoute
-              title="Sing UP"
-              content="Sing Up Page"
-              exact
-              name="Sign Up"
-              path="/signup"
-              component={SignupPage}
-            />
-            <PublicRoute
-              title="STACK"
-              content="Stack"
-              exact
-              name="Stack Page"
-              path="/stack"
-              component={StackPage}
-            />
-            <MultiRoute
-              title="404 Not Found"
-              content="404"
-              name="404 Page"
-              component={NotFoundPage}
-            />
-          </Switch>
+              <PublicRoute
+                title="Sign IN"
+                content="Sing In Page"
+                exact
+                name="Sing In"
+                path="/signin"
+                component={SigninPage}
+              />
+              <PublicRoute
+                title="Sing UP"
+                content="Sing Up Page"
+                exact
+                name="Sign Up"
+                path="/signup"
+                component={SignupPage}
+              />
+              <PublicRoute
+                title="STACK"
+                content="Stack"
+                exact
+                name="Stack Page"
+                path="/stack"
+                component={StackPage}
+              />
+              <MultiRoute
+                title="404 Not Found"
+                content="404"
+                name="404 Page"
+                component={NotFoundPage}
+              />
+            </Switch>
+          </ScrollTop>
         </MuiThemeProvider>
       </BrowserRouter>
     );

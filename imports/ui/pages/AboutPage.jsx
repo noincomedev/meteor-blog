@@ -17,7 +17,6 @@ ship modern/2018 apps📱.
 const styles = theme => ({
   aboutSection: {
     position: "relative",
-    backgroundColor: "red",
     backgroundImage: `url(${imgUrl})`,
     backgroundSize: "cover",
     backgroundPosition: "center center",
@@ -51,7 +50,8 @@ const styles = theme => ({
   subheading: {
     position: "absolute",
     right: 0,
-    bottom: 0
+    bottom: 0,
+    color: theme.palette.common.white
   }
 });
 

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import ReactMarkdown from "react-markdown";
 import { Link, withRouter } from "react-router-dom";
 
+import Disqus from "disqus-react";
+
 import Avatar from "@material-ui/core/Avatar";
 import Alarm from "@material-ui/icons/Alarm";
 import Button from "@material-ui/core/Button";
@@ -66,6 +68,14 @@ class PublicPostItem extends Component {
   render() {
     const { classes, post } = this.props;
     const { raised } = this.state;
+
+    const disqusShortname = "noincomedev";
+    const disqusConfig = {
+      url: "https://www.noincomedev.me/" + post.slug,
+      identifier: post._id,
+      title: post.title
+    };
+
     return (
       <Grid item xs={12} className={classes.item}>
         <Card
@@ -86,6 +96,7 @@ class PublicPostItem extends Component {
             title={post.title}
           />
           <CardContent
+            id="public-post-content"
             style={{
               display: "flex",
               flexDirection: "column",
@@ -137,6 +148,12 @@ class PublicPostItem extends Component {
               className={classes.markdown}
               source={post.intro}
             />
+            <Disqus.CommentCount
+              shortname={disqusShortname}
+              config={disqusConfig}
+            >
+              0 Comments
+            </Disqus.CommentCount>
           </CardContent>
         </Card>
       </Grid>
