@@ -34,6 +34,7 @@
     "react-draft-wysiwyg": "^1.12.13",
     "react-helmet": "^5.2.0",
     "react-markdown": "^3.3.2",
+    "react-recaptcha": "^2.3.8",
     "react-router-dom": "^4.2.2",
     "simpl-schema": "^1.5.0"
   },

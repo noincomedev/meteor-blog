@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import Avatar from "@material-ui/core/Avatar";
@@ -10,6 +10,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -18,6 +19,8 @@ import DraftsIcon from "@material-ui/icons/Drafts";
 
 import PostListLayout from "../layouts/components/list/PostListLayout";
 
+import SubscribeToNewsletter from "../components/utils/SubscribeToNewsletter";
+
 const styles = theme => ({
   avatar: {
     height: 200,
@@ -25,6 +28,7 @@ const styles = theme => ({
     border: `${theme.spacing.unit / 2}px ${theme.palette.primary.main} solid`,
     alignSelf: "center"
   },
+  divider: { marginBottom: theme.spacing.unit },
   item: {
     flex: 1,
     width: "100%"
@@ -32,7 +36,10 @@ const styles = theme => ({
   itemContainer: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "flex-start"
+    alignItems: "flex-start",
+    [theme.breakpoints.up("sm")]: {
+      marginBottom: theme.spacing.unit * 2
+    }
   },
   socialList: {
     width: "100%"
@@ -46,7 +53,8 @@ const styles = theme => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    padding: theme.spacing.unit
+    paddingTop: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit
   }
 });
 
@@ -59,14 +67,14 @@ const LandingPage = ({ classes }) => (
       <div className={classes.itemContainer}>
         <Grid item xs={12} classes={{ item: classes.item }}>
           <Typography variant="headline">Recent Activity</Typography>
-          <Divider />
+          <Divider className={classes.divider} />
         </Grid>
         <p>WORKING ON THIS FEATURE</p>
       </div>
       <div className={classes.itemContainer}>
         <Grid item xs={12} classes={{ item: classes.item }}>
           <Typography variant="headline">Working On</Typography>
-          <Divider />
+          <Divider className={classes.divider} />
         </Grid>
         <p>WORKING ON THIS FEATURE</p>
       </div>
@@ -74,7 +82,7 @@ const LandingPage = ({ classes }) => (
         <div className={classes.itemContainer}>
           <Grid item xs={12} classes={{ item: classes.item }}>
             <Typography variant="headline">Social</Typography>
-            <Divider />
+            <Divider className={classes.divider} />
           </Grid>
           <List classes={{ root: classes.socialList }} component="nav">
             <ListItem
@@ -111,6 +119,13 @@ const LandingPage = ({ classes }) => (
         </div>
       </Hidden>
       <div className={classes.itemContainer}>
+        <Grid item xs={12} classes={{ item: classes.item }}>
+          <Typography variant="headline">Newsletter</Typography>
+          <Divider className={classes.divider} />
+        </Grid>
+        <SubscribeToNewsletter />
+      </div>
+      <div className={classes.itemContainer}>
         <section className={classes.supportSection}>
           <Typography color="secondary" variant="body2">
             This blog will run ad-free forever.
@@ -121,7 +136,6 @@ const LandingPage = ({ classes }) => (
           <Button
             variant="raised"
             color="primary"
-            fullWidth
             href="https://www.buymeacoffee.com/noincomedev"
           >
             Buy me a coffee
