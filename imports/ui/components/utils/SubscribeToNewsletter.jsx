@@ -28,7 +28,10 @@ const styles = theme => ({
   newsletterSubheading: { color: theme.palette.grey[300] },
   raisedSecondary: {
     padding: 0,
-    backgroundColor: theme.palette.custom.text
+    backgroundColor: theme.palette.custom.text,
+    [theme.breakpoints.down("sm")]: {
+      marginTop: theme.spacing.unit
+    }
   }
 });
 
@@ -56,12 +59,6 @@ class SubscribeToNewsletter extends Component {
     this.showCaptcha();
   };
 
-  postMember = () => {
-    Meteor.call("postMemberToList", this.state.email, response => {
-      this.showResponse();
-    });
-  };
-
   showCaptcha = () => {
     this.setState({
       showSpinner: false,
@@ -79,7 +76,9 @@ class SubscribeToNewsletter extends Component {
   };
 
   verifyCallback = response => {
-    this.showResponse();
+    Meteor.call("postMemberToList", this.state.email, response => {
+      this.showResponse();
+    });
   };
 
   showResponse = () => {
@@ -93,7 +92,6 @@ class SubscribeToNewsletter extends Component {
   render() {
     const { classes } = this.props;
     const { email, showCaptcha, showSpinner, showResponse } = this.state;
-    console.log(Meteor.settings.public.CAPTCHA_KEY);
     if (showCaptcha)
       return (
         <Recaptcha
@@ -121,23 +119,23 @@ class SubscribeToNewsletter extends Component {
         </Grid>
       );
     return (
-      <Grid
-        classes={{ container: classes.newsletterContainer }}
-        container
-        alignItems="center"
+      <form
+        className={classes.form}
+        onSubmit={this.handleSubmit}
+        autoComplete="off"
       >
-        <Typography
-          variant="caption"
-          classes={{ caption: classes.newsletterSubheading }}
+        <Grid
+          classes={{ container: classes.newsletterContainer }}
+          container
+          alignItems="center"
         >
-          Do you want to get the best of my content? Subscribe to my newsletter!
-          I promise no spam! 1 or 2 emails monthly!
-        </Typography>
-        <form
-          className={classes.form}
-          onSubmit={this.handleSubmit}
-          autoComplete="off"
-        >
+          <Typography
+            variant="caption"
+            classes={{ caption: classes.newsletterSubheading }}
+          >
+            Do you want to get the best of my content? Subscribe to my
+            newsletter! I promise no spam! 1 or 2 emails monthly!
+          </Typography>
           <Grid item xs={12} sm={8}>
             <TextField
               required
@@ -163,8 +161,8 @@ class SubscribeToNewsletter extends Component {
               Subscribe!
             </Button>
           </Grid>
-        </form>
-      </Grid>
+        </Grid>
+      </form>
     );
   }
 }
