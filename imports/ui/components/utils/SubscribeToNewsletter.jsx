@@ -48,40 +48,53 @@ class SubscribeToNewsletter extends Component {
   };
 
   handleCaptchaCallback = () => {
-    this.toggleLoading();
-    this.postMember();
+    console.log("handleCaptchaCallback");
+    this.showResponse();
   };
 
   handleSubmit = event => {
     event.preventDefault();
-    this.toggleCaptcha();
+    this.showCaptcha();
   };
 
   postMember = () => {
     Meteor.call("postMemberToList", this.state.email, response => {
-      this.toggleResponse();
+      this.showResponse();
     });
   };
 
-  toggleCaptcha = () => {
-    this.setState({ showCaptcha: !this.state.showCaptcha });
-  };
-
-  toggleLoading = () => {
-    this.setState({ showSpinner: !this.state.showSpinner });
-  };
-
-  toggleResponse = () => {
+  showCaptcha = () => {
     this.setState({
-      showSpinner: !this.state.showSpinner,
-      showCaptcha: !this.state.showCaptcha,
-      showResponse: !this.state.showResponse
+      showSpinner: false,
+      showResponse: false,
+      showCaptcha: true
+    });
+  };
+
+  showSpinner = () => {
+    this.setState({
+      showCaptcha: false,
+      showResponse: false,
+      showSpinner: true
+    });
+  };
+
+  verifyCallback = response => {
+    this.showResponse();
+  };
+
+  showResponse = () => {
+    this.setState({
+      showCaptcha: false,
+      showSpinner: false,
+      showResponse: true
     });
   };
 
   render() {
     const { classes } = this.props;
     const { email, showCaptcha, showSpinner, showResponse } = this.state;
+    console.log(Meteor.settings.public.CAPTCHA_KEY);
     if (showCaptcha)
       return (
         <Recaptcha
@@ -89,6 +102,7 @@ class SubscribeToNewsletter extends Component {
           render="explicit"
           theme="dark"
           onloadCallback={this.handleCaptchaCallback}
+          verifyCallback={this.verifyCallback}
         />
       );
     if (showSpinner) return <Spinner />;
