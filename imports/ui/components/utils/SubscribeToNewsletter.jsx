@@ -48,8 +48,7 @@ class SubscribeToNewsletter extends Component {
   };
 
   handleCaptchaCallback = () => {
-    console.log("handleCaptchaCallback");
-    this.showResponse();
+    this.showCaptcha();
   };
 
   handleSubmit = event => {
