@@ -13,6 +13,7 @@ import Spinner from "../utils/Spinner";
 
 const styles = theme => ({
   form: {
+    width: "100%",
     display: "flex",
     flex: 1,
     alignItems: "center"
