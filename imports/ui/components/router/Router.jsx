@@ -21,6 +21,7 @@ import PostsPage from "../../pages/PostsPage";
 import SigninPage from "../../pages/SigninPage";
 import SignupPage from "../../pages/SignupPage";
 import StackPage from "../../pages/StackPage";
+import WipPage from "../../pages/WipPage";
 
 const Router = ({ loading, user }) => {
   if (!loading) {
@@ -49,6 +50,14 @@ const Router = ({ loading, user }) => {
                 />
               )}
               <MultiRoute exact path="/posts/:slug" component={PostsPage} />
+              <MultiRoute
+                content="Wip Page"
+                exact
+                name="Wip Page"
+                title="WIP"
+                path="/wip"
+                component={WipPage}
+              />
               <MultiRoute
                 content="Posts Page"
                 exact

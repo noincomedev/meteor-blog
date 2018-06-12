@@ -12,6 +12,7 @@ import List from "@material-ui/core/List";
 import Dashboard from "@material-ui/icons/Dashboard";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
+import Timeline from "@material-ui/icons/Timeline";
 import ViewList from "@material-ui/icons/ViewList";
 import withWidth from "@material-ui/core/withWidth";
 import { withStyles } from "@material-ui/core/styles";
@@ -94,6 +95,9 @@ const Private = ({ classes, open, toggleDrawer, theme, width }) => {
         </Item>
         <Item linkTo="/posts" text="Posts">
           <ViewList />
+        </Item>
+        <Item linkTo="/wip" text="WIP">
+          <Timeline />
         </Item>
       </List>
     </Drawer>

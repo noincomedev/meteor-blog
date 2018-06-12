@@ -7,16 +7,21 @@ import { Query } from "react-apollo";
 import { withStyles } from "@material-ui/core/styles";
 
 import Button from "@material-ui/core/Button";
+import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
-import CardWithTitleAndContent from "../../layouts/components/card/CardWithTitleAndContent";
+import Typography from "@material-ui/core/Typography";
 
-import PostEditor from "../post/PostEditor";
-import PostForm from "../post/PostForm";
-import PrivatePostItem from "../post/PrivatePostItem";
+import CardWithTitleAndContent from "../../../layouts/components/card/CardWithTitleAndContent";
+
+import PostEditor from "../PostEditor";
+import PostForm from "../PostForm";
+import PrivatePostItem from "../PrivatePostItem";
 
 const styles = theme => ({
   container: {
-    margin: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
     paddingRight: theme.spacing.unit * 2,
     overflow: "auto"
   }
@@ -58,19 +63,32 @@ class Private extends Component {
     const { showButton, showForm } = this.state;
     return (
       <Grid container className={classes.container} justify="center">
-        {showButton && (
-          <Grid item xs={6}>
-            <Button
-              variant="raised"
-              color="primary"
-              onClick={this.toggleButton}
-              className={classes.button}
-              fullWidth
-            >
-              New Post
-            </Button>
+        <Grid container alignItems="center" className={classes.container}>
+          <Grid item xs={8}>
+            <Typography variant="title" color="inherit">
+              Posts
+            </Typography>
           </Grid>
-        )}
+          <Grid
+            item
+            xs={4}
+            style={{ display: "flex", flex: 1, justifyContent: "flex-end" }}
+          >
+            {showButton && (
+              <Button
+                variant="flat"
+                color="secondary"
+                onClick={this.toggleButton}
+                className={classes.button}
+              >
+                +
+              </Button>
+            )}
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <Divider />
+        </Grid>
         {showForm && (
           <Grid item xs={12} style={{ paddingRight: 8 }}>
             <Helmet>

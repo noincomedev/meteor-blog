@@ -7,7 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 
-import PublicPostItem from "../post/PublicPostItem";
+import PublicPostItem from "../PublicPostItem";
 
 const styles = theme => ({
   container: {
@@ -16,20 +16,15 @@ const styles = theme => ({
   }
 });
 
-class Public extends Component {
-  render() {
-    const { classes, posts } = this.props;
-    return (
-      <Grid container spacing={16} classes={{ container: classes.container }}>
-        <Grid item xs={12}>
-          <Typography variant="headline">Recent Articles</Typography>
-          <Divider />
-        </Grid>
-        {posts.map(post => <PublicPostItem post={post} key={post._id} />)}
-      </Grid>
-    );
-  }
-}
+const Public = ({ classes, post }) => (
+  <Grid container spacing={16} classes={{ container: classes.container }}>
+    <Grid item xs={12}>
+      <Typography variant="headline">Recent Articles</Typography>
+      <Divider />
+    </Grid>
+    {posts.map(post => <PublicPostItem post={post} key={post._id} />)}
+  </Grid>
+);
 
 Public.propTypes = {
   posts: PropTypes.array
