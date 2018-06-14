@@ -1,21 +1,39 @@
 import React from "react";
+import gql from "graphql-tag";
+import { PropTypes } from "prop-types";
+import { Query } from "react-apollo";
 
-import Divider from "@material-ui/core/Divider";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { withStyles } from "@material-ui/core/styles";
+import PrivateList from "../../components/project/list/Private";
+
+import Spinner from "../../components/utils/Spinner";
+
+export const USER_PROJECTS = gql`
+  query projects($owner: String!) {
+    projects(owner: $owner) {
+      _id
+      owner
+      status
+      created
+      updated
+      name
+      description
+      imageUrl
+    }
+  }
+`;
 
 const syles = theme => ({});
 
 const PrivateWipPage = ({ classes }) => (
-  <Grid container>
-    <Grid item xs={12}>
-      <Typography variant="title" color="inherit">
-        Work in Progress
-      </Typography>
-      <Divider />
-    </Grid>
-  </Grid>
+  <Query query={USER_PROJECTS} variables={{ owner: Meteor.userId() }}>
+    {({ loading, error, data }) => {
+      if (loading) return <Spinner />;
+      if (error) return `Error!: ${error}`;
+      if (data) return <PrivateList projects={data.projects} />;
+    }}
+  </Query>
 );
 
-export default withStyles(styles, { withTheme: true })(PrivateWipPage);
+PrivateWipPage.propTypes = {};
+
+export default PrivateWipPage;

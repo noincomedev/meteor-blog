@@ -1,0 +1,19 @@
+type Project {
+  _id: String
+  owner: String
+  status: Boolean
+  created: String
+  updated: String
+  name: String
+  description: String
+  imageUrl: String
+}
+
+extend type Mutation {
+  createProject(name: String!, description: String!, imageUrl: String!): Project
+}
+
+extend type Query {
+  project(owner: String!): Project
+  projects(owner: String!): [Project]
+}
