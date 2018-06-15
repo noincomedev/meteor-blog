@@ -11,6 +11,7 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 
 import { USER_PROJECTS } from "../../layouts/pages/PrivateWipPageLayout";
+import ValidatedForm from "../utils/ValidatedForm";
 
 const CREATE_PROJECT = gql`
   mutation createProject(
@@ -99,29 +100,28 @@ class ProjectForm extends Component {
       //     })
       //   );
     } else {
-      console.log("createProject");
-      // this.props
-      //   .createProject({
-      //     variables: { _id, name, description, imageUrl }
-      //   })
-      //   .then(
-      //     Bert.alert({
-      //       title: "Success",
-      //       message: "Project created.",
-      //       type: "success",
-      //       style: "growl-top-right",
-      //       icon: "fa-check"
-      //     })
-      //   )
-      //   .catch(error =>
-      //     Bert.alert({
-      //       title: error ? "Error!" : "Success",
-      //       message: error ? error.message : "Project saved",
-      //       type: error ? "danger" : "success",
-      //       style: "growl-top-right",
-      //       icon: error ? "fa-remove" : "fa-check"
-      //     })
-      //   );
+      this.props
+        .createProject({
+          variables: { name, description, imageUrl }
+        })
+        .then(
+          Bert.alert({
+            title: "Success",
+            message: "Project created.",
+            type: "success",
+            style: "growl-top-right",
+            icon: "fa-check"
+          })
+        )
+        .catch(error =>
+          Bert.alert({
+            title: error ? "Error!" : "Success",
+            message: error ? error.message : "Project saved",
+            type: error ? "danger" : "success",
+            style: "growl-top-right",
+            icon: error ? "fa-remove" : "fa-check"
+          })
+        );
     }
   };
 
@@ -152,15 +152,12 @@ class ProjectForm extends Component {
     const { classes } = this.props;
     const { _id, name, imageUrl, description } = this.state;
     return (
-      <form
-        className={classes.container}
-        onSubmit={event => event.preventDefault()}
-        noValidate
-      >
-        <Grid container justify="center">
-          <Grid item xs={12}>
+      <Grid container justify="center">
+        <Grid item xs={12}>
+          <ValidatedForm onHandleSubmit={this.handleSubmit}>
             <TextField
               id="name"
+              name="name"
               label="Name"
               className={classes.textField}
               value={name}
@@ -171,6 +168,7 @@ class ProjectForm extends Component {
             />
             <TextField
               id="description"
+              name="description"
               label="Description"
               value={description}
               onChange={this.handleChange}
@@ -188,41 +186,41 @@ class ProjectForm extends Component {
               required
               type="url"
             />
-          </Grid>
-          <Grid container justify="center">
-            <Grid item xs={12}>
-              <Button
-                variant="raised"
-                color="primary"
-                fullWidth
-                onClick={this.handleSubmit}
-              >
-                {_id ? "Save" : "Create"}
-              </Button>
-              {_id && (
+            <Grid container justify="center">
+              <Grid item xs={12}>
+                <Button
+                  type="submit"
+                  variant="raised"
+                  color="primary"
+                  fullWidth
+                >
+                  {_id ? "Save" : "Create"}
+                </Button>
+                {_id && (
+                  <Button
+                    type="button"
+                    variant="raised"
+                    color="secondary"
+                    fullWidth
+                    onClick={this.handleDelete}
+                  >
+                    Delete
+                  </Button>
+                )}
                 <Button
                   type="button"
                   variant="raised"
-                  color="secondary"
+                  color="inherit"
                   fullWidth
-                  onClick={this.handleDelete}
+                  onClick={this.handleCancel}
                 >
-                  Delete
+                  Cancel
                 </Button>
-              )}
-              <Button
-                type="button"
-                variant="raised"
-                color="inherit"
-                fullWidth
-                onClick={this.handleCancel}
-              >
-                Cancel
-              </Button>
+              </Grid>
             </Grid>
-          </Grid>
+          </ValidatedForm>
         </Grid>
-      </form>
+      </Grid>
     );
   }
 }
