@@ -5,13 +5,9 @@ import { Link, withRouter } from "react-router-dom";
 import Disqus from "disqus-react";
 
 import Avatar from "@material-ui/core/Avatar";
-import Alarm from "@material-ui/icons/Alarm";
-import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import Chip from "@material-ui/core/Chip";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -19,7 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 
 import FiberNew from "@material-ui/icons/FiberNew";
-import CalendarToday from "../../../assets/icons/CalendarToday";
+import CalendarToday from "../../../../assets/icons/CalendarToday";
 
 const styles = theme => ({
   avatar: {

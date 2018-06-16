@@ -13,9 +13,8 @@ import Typography from "@material-ui/core/Typography";
 
 import CardWithTitleAndContent from "../../../layouts/components/card/CardWithTitleAndContent";
 
-import PostEditor from "../PostEditor";
 import PostForm from "../PostForm";
-import PrivatePostItem from "../PrivatePostItem";
+import PrivatePostItem from "./PrivatePostItem";
 
 const styles = theme => ({
   container: {

@@ -1,13 +1,12 @@
 import React, { Component, Fragment } from "react";
 import { PropTypes } from "prop-types";
-import { Link } from "react-router-dom";
 
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 
-import PublicPostItem from "../PublicPostItem";
+import PublicPostItem from "./PublicPostItem";
 
 const styles = theme => ({
   container: {

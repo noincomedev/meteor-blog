@@ -5,11 +5,16 @@ import { PropTypes } from "prop-types";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
+
+import ListSubheader from "@material-ui/core/ListSubheader";
+import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 
 import CardWithTitleAndContent from "../../../layouts/components/card/CardWithTitleAndContent";
 import ProjectForm from "../ProjectForm";
+
+import PrivateProjectItem from "./PrivateProjectItem";
 
 const styles = theme => ({
   container: {
@@ -99,6 +104,21 @@ class Private extends Component {
             </CardWithTitleAndContent>
           </Grid>
         )}
+        <Grid container>
+          <Grid item xs={12}>
+            <List
+              style={{ width: "100%" }}
+              component="nav"
+              subheader={
+                <ListSubheader component="div">Projects</ListSubheader>
+              }
+            >
+              {projects.map(project => (
+                <PrivateProjectItem key={project._id} project={project} />
+              ))}
+            </List>
+          </Grid>
+        </Grid>
       </Grid>
     );
   }
