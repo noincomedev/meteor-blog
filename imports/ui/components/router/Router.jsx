@@ -18,6 +18,7 @@ import DashboardPage from "../../pages/DashboardPage";
 import LandingPage from "../../pages/LandingPage";
 import NotFoundPage from "../../pages/NotFoundPage";
 import PostsPage from "../../pages/PostsPage";
+import ProjectPage from "../../pages/ProjectPage";
 import SigninPage from "../../pages/SigninPage";
 import SignupPage from "../../pages/SignupPage";
 import StackPage from "../../pages/StackPage";
@@ -65,6 +66,14 @@ const Router = ({ loading, user }) => {
                 path="/posts"
                 title="Posts"
                 component={PostsPage}
+              />
+              <PrivateRoute
+                name="Project Page"
+                content="Project Page"
+                exact
+                path="/projects/:_id"
+                title="Project"
+                component={ProjectPage}
               />
               <PublicRoute
                 title="About Me"

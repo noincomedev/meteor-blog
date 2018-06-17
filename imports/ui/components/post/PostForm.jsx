@@ -16,8 +16,6 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { stateToMarkdown } from "draft-js-export-markdown";
 import { stateFromMarkdown } from "draft-js-import-markdown";
 
-import { USER_POSTS } from "../../layouts/components/list/PostListLayout";
-
 const CREATE_POST = gql`
   mutation createPost(
     $title: String!

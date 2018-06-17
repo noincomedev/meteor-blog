@@ -8,8 +8,8 @@ export default {
         { sort: { created: -1 } }
       ).fetch({});
     },
-    project(obj, args, { userId }) {
-      return Projects.findOne({ owner: userdId, status: true });
+    project(obj, { _id }, { userId }) {
+      return Projects.findOne({ owner: userId, _id, status: true });
     }
   },
   Project: {},
@@ -22,6 +22,23 @@ export default {
           description,
           imageUrl
         });
+        return projectId;
+      }
+      throw new Error("Unauthorized");
+    },
+    editProject(obj, args, { userId }) {
+      if (userId) {
+        const projectId = Projects.update({ _id: args._id }, { $set: args });
+        return projectId;
+      }
+      throw new Error("Unauthorized");
+    },
+    deleteProject(obj, args, { userId }) {
+      if (userId) {
+        const projectId = Projects.update(
+          { _id: args._id },
+          { $set: { status: false } }
+        );
         return projectId;
       }
       throw new Error("Unauthorized");

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import { graphql } from "react-apollo";
 import { Helmet } from "react-helmet";
 import { PropTypes } from "prop-types";
 import { Query } from "react-apollo";

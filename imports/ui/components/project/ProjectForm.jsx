@@ -10,7 +10,6 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 
-import { USER_PROJECTS } from "../../layouts/pages/PrivateWipPageLayout";
 import ValidatedForm from "../utils/ValidatedForm";
 
 const CREATE_PROJECT = gql`
@@ -33,7 +32,7 @@ const EDIT_PROJECT = gql`
     $imageUrl: String!
   ) {
     editProject(
-      _id: $id
+      _id: $_id
       name: $name
       description: $description
       imageUrl: $imageUrl
@@ -79,26 +78,26 @@ class ProjectForm extends Component {
     const { _id, name, description, imageUrl } = this.state;
     const variables = { _id, name, description, imageUrl };
     if (_id) {
-      console.log("editPrpoject");
-      // this.props
-      //   .editProject({ variables })
-      //   .then(Bert.alert({
-      //       title: "Success",
-      //       message: "Project saved.",
-      //       type: "success",
-      //       style: "growl-top-right",
-      //       icon: "fa-check"
-      //     }))
-      //   .then(history.push("/posts"))
-      //   .catch(error =>
-      //     Bert.alert({
-      //       title: error ? "Error!" : "Success",
-      //       message: error ? error.message : "Project saved",
-      //       type: error ? "danger" : "success",
-      //       style: "growl-top-right",
-      //       icon: error ? "fa-remove" : "fa-check"
-      //     })
-      //   );
+      this.props
+        .editProject({ variables })
+        .then(
+          Bert.alert({
+            title: "Success",
+            message: "Project saved.",
+            type: "success",
+            style: "growl-top-right",
+            icon: "fa-check"
+          })
+        )
+        .catch(error =>
+          Bert.alert({
+            title: error ? "Error!" : "Success",
+            message: error ? error.message : "Project saved",
+            type: error ? "danger" : "success",
+            style: "growl-top-right",
+            icon: error ? "fa-remove" : "fa-check"
+          })
+        );
     } else {
       this.props
         .createProject({
@@ -134,6 +133,27 @@ class ProjectForm extends Component {
     const { history } = this.props;
     const variables = { _id };
     if (_id) {
+      this.props
+        .deleteProject({ variables })
+        .then(
+          Bert.alert({
+            title: "Success",
+            message: "Project deleted.",
+            type: "danger",
+            style: "growl-top-right",
+            icon: "fa-remove"
+          })
+        )
+        .then(history.push("/wip"))
+        .catch(error =>
+          Bert.alert({
+            title: error ? "Error!" : "Success",
+            message: error ? error.message : "Project deleted",
+            type: error ? "danger" : "success",
+            style: "growl-top-right",
+            icon: error ? "fa-remove" : "fa-check"
+          })
+        );
     }
   };
 

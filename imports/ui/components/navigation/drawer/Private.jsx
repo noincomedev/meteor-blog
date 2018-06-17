@@ -8,6 +8,7 @@ import Item from "./Item";
 
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
+import Hidden from "@material-ui/core/Hidden";
 import IconButton from "@material-ui/core/IconButton";
 import List from "@material-ui/core/List";
 import Dashboard from "@material-ui/icons/Dashboard";
@@ -118,9 +119,11 @@ const Private = ({ classes, open, toggleDrawer, theme, width }) => {
               <Item linkTo="/wip" text="WIP">
                 <Timeline />
               </Item>
-              {projects.map(project => (
-                <Subitem key={project._id} project={project} />
-              ))}
+              <Hidden smDown>
+                {projects.map(project => (
+                  <Subitem key={project._id} project={project} />
+                ))}
+              </Hidden>
             </List>
           </Drawer>
         );

@@ -7,6 +7,30 @@ import validate from "../../../modules/validate";
 const styles = theme => ({});
 
 class ValidatedForm extends Component {
+  componentDidMount() {
+    const component = this;
+    const { rules, messages, theme } = this.props;
+    validate(component.form, {
+      rules,
+      messages,
+      errorPlacement: function(error, element) {
+        var parent = $(element)
+          .parent()
+          .parent();
+        if (parent) {
+          $(parent)
+            .append(error)
+            .css("color", theme.palette.custom.error);
+        } else {
+          error.insertAfter(parent).css("color", theme.palette.custom.error);
+        }
+      },
+      submitHandler() {
+        component.handleSubmit();
+      }
+    });
+  }
+
   componentDidUpdate(prevProps, prevState) {
     const component = this;
     const { rules, messages, theme } = this.props;
@@ -22,7 +46,7 @@ class ValidatedForm extends Component {
             .append(error)
             .css("color", theme.palette.custom.error);
         } else {
-          error.insertAfter(parent).css("color", "red");
+          error.insertAfter(parent).css("color", theme.palette.custom.error);
         }
       },
       submitHandler() {

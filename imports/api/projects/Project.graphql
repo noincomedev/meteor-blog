@@ -10,10 +10,17 @@ type Project {
 }
 
 extend type Mutation {
+  editProject(
+    _id: String!
+    name: String!
+    description: String!
+    imageUrl: String!
+  ): Project
   createProject(name: String!, description: String!, imageUrl: String!): Project
+  deleteProject(_id: String!): Project
 }
 
 extend type Query {
-  project(owner: String!): Project
+  project(_id: String!): Project
   projects(owner: String!): [Project]
 }

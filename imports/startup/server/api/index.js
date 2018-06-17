@@ -11,8 +11,6 @@ import PostResolvers from "../../../api/posts/resolvers";
 import ProjectSchema from "../../../api/projects/Project.graphql";
 import ProjectResolvers from "../../../api/projects/resolvers";
 
-//a
-
 const typeDefs = [UserSchema, PostSchema, ProjectSchema];
 
 const resolvers = merge(UserResolvers, PostResolvers, ProjectResolvers);
