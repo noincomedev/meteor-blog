@@ -104,21 +104,24 @@ class Private extends Component {
             </CardWithTitleAndContent>
           </Grid>
         )}
-        <Grid container>
-          <Grid item xs={12}>
-            <List
-              style={{ width: "100%" }}
-              component="nav"
-              subheader={
-                <ListSubheader component="div">Projects</ListSubheader>
-              }
-            >
-              {projects.map(project => (
-                <PrivateProjectItem key={project._id} project={project} />
-              ))}
-            </List>
-          </Grid>
-        </Grid>
+        {projects.length > 0 &&
+          !showForm && (
+            <Grid container>
+              <Grid item xs={12}>
+                <List
+                  style={{ width: "100%" }}
+                  component="nav"
+                  subheader={
+                    <ListSubheader component="div">Projects</ListSubheader>
+                  }
+                >
+                  {projects.map(project => (
+                    <PrivateProjectItem key={project._id} project={project} />
+                  ))}
+                </List>
+              </Grid>
+            </Grid>
+          )}
       </Grid>
     );
   }

@@ -1,6 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import compose from "recompose/compose";
+import { Query } from "react-apollo";
 import { PropTypes } from "prop-types";
 
 import Item from "./Item";
@@ -16,6 +17,11 @@ import Timeline from "@material-ui/icons/Timeline";
 import ViewList from "@material-ui/icons/ViewList";
 import withWidth from "@material-ui/core/withWidth";
 import { withStyles } from "@material-ui/core/styles";
+
+import { USER_PROJECTS } from "../../../layouts/pages/PrivateWipPageLayout";
+
+import Spinner from "../../utils/Spinner";
+import Subitem from "./Subitem";
 
 const drawerWidth = 240;
 
@@ -73,39 +79,59 @@ let getDrawerType = width => {
 
 const Private = ({ classes, open, toggleDrawer, theme, width }) => {
   return (
-    <Drawer
-      variant={getDrawerType(width)}
-      open={open}
-      onClose={toggleDrawer}
-      classes={{
-        paper: classNames(classes.drawerPaper, !open && classes.miniDrawerPaper)
+    <Query query={USER_PROJECTS} variables={{ owner: Meteor.userId() }}>
+      {({ loading, error, data }) => {
+        if (loading) return <Spinner />;
+        if (error) return `Error!: ${error}`;
+        const { projects } = data;
+        return (
+          <Drawer
+            variant={getDrawerType(width)}
+            open={open}
+            onClose={toggleDrawer}
+            classes={{
+              paper: classNames(
+                classes.drawerPaper,
+                !open && classes.miniDrawerPaper
+              )
+            }}
+          >
+            <div className={classes.drawerInner}>
+              <div className={classes.drawerHeader}>
+                <IconButton onClick={toggleDrawer}>
+                  {theme.direction === "rtl" ? (
+                    <ChevronRight />
+                  ) : (
+                    <ChevronLeft />
+                  )}
+                </IconButton>
+              </div>
+              <Divider />
+            </div>
+            <List>
+              <Item linkTo="/" text="Dashboard">
+                <Dashboard />
+              </Item>
+              <Item linkTo="/posts" text="Posts">
+                <ViewList />
+              </Item>
+              <Item linkTo="/wip" text="WIP">
+                <Timeline />
+              </Item>
+              {projects.map(project => (
+                <Subitem key={project._id} project={project} />
+              ))}
+            </List>
+          </Drawer>
+        );
       }}
-    >
-      <div className={classes.drawerInner}>
-        <div className={classes.drawerHeader}>
-          <IconButton onClick={toggleDrawer}>
-            {theme.direction === "rtl" ? <ChevronRight /> : <ChevronLeft />}
-          </IconButton>
-        </div>
-        <Divider />
-      </div>
-      <List>
-        <Item linkTo="/" text="Dashboard">
-          <Dashboard />
-        </Item>
-        <Item linkTo="/posts" text="Posts">
-          <ViewList />
-        </Item>
-        <Item linkTo="/wip" text="WIP">
-          <Timeline />
-        </Item>
-      </List>
-    </Drawer>
+    </Query>
   );
 };
 
 Private.propTypes = {};
 
-export default compose(withWidth(), withStyles(styles, { withTheme: true }))(
-  Private
-);
+export default compose(
+  withWidth(),
+  withStyles(styles, { withTheme: true })
+)(Private);
