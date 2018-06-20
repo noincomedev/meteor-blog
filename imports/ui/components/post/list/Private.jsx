@@ -1,9 +1,8 @@
 import React, { Component, Fragment } from "react";
-import gql from "graphql-tag";
-import { graphql } from "react-apollo";
+
 import { Helmet } from "react-helmet";
 import { PropTypes } from "prop-types";
-import { Query } from "react-apollo";
+
 import { withStyles } from "@material-ui/core/styles";
 
 import Button from "@material-ui/core/Button";

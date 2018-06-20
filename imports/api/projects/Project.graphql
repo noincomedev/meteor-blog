@@ -7,6 +7,7 @@ type Project {
   name: String
   description: String
   imageUrl: String
+  tag: String
 }
 
 extend type Mutation {
@@ -15,8 +16,14 @@ extend type Mutation {
     name: String!
     description: String!
     imageUrl: String!
+    tag: String!
   ): Project
-  createProject(name: String!, description: String!, imageUrl: String!): Project
+  createProject(
+    name: String!
+    description: String!
+    imageUrl: String!
+    tag: String!
+  ): Project
   deleteProject(_id: String!): Project
 }
 

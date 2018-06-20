@@ -1,24 +1,24 @@
 import { Mongo } from "meteor/mongo";
 import SimpleSchema from "simpl-schema";
 
-const Projects = new Mongo.Collection("projects");
+const Tasks = new Mongo.Collection("tasks");
 
-Projects.allow({
+Tasks.allow({
   insert: () => false,
   update: () => false,
   remove: () => false
 });
 
-Projects.deny({
+Tasks.deny({
   insert: () => true,
   update: () => true,
   remove: () => true
 });
 
-Projects.schema = new SimpleSchema({
+Tasks.schema = new SimpleSchema({
   owner: {
     type: String,
-    label: "ID of the User this document belongs to.",
+    label: "ID of the Project this document belongs to.",
     optional: false
   },
   status: {
@@ -29,14 +29,14 @@ Projects.schema = new SimpleSchema({
   },
   created: {
     type: String,
-    label: "The date this project was created.",
+    label: "The date this task was created.",
     autoValue() {
       if (this.isInsert) return new Date().toISOString();
     }
   },
   updated: {
     type: String,
-    label: "The date this project was last updated.",
+    label: "The date this task was last updated.",
     optional: false,
     autoValue() {
       if (this.isInsert || this.isUpdate) return new Date().toISOString();
@@ -44,26 +44,16 @@ Projects.schema = new SimpleSchema({
   },
   name: {
     type: String,
-    label: "The name of this project.",
+    label: "The name of this task.",
     optional: false
   },
   description: {
     type: String,
-    label: "The description of this project.",
+    label: "The description of this task.",
     optional: false
-  },
-  imageUrl: {
-    type: String,
-    label: "The url image of this project.",
-    optional: true
-  },
-  tag: {
-    type: String,
-    label: "The tag of this project.",
-    optional: true
   }
 });
 
-Projects.attachSchema(Projects.schema);
+Tasks.attachSchema(Tasks.schema);
 
-export default Projects;
+export default Tasks;

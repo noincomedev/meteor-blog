@@ -17,8 +17,14 @@ const CREATE_PROJECT = gql`
     $name: String!
     $description: String!
     $imageUrl: String!
+    $tag: String!
   ) {
-    createProject(name: $name, description: $description, imageUrl: $imageUrl) {
+    createProject(
+      name: $name
+      description: $description
+      imageUrl: $imageUrl
+      tag: $tag
+    ) {
       _id
     }
   }
@@ -30,12 +36,14 @@ const EDIT_PROJECT = gql`
     $name: String!
     $description: String!
     $imageUrl: String!
+    $tag: String!
   ) {
     editProject(
       _id: $_id
       name: $name
       description: $description
       imageUrl: $imageUrl
+      tag: $tag
     ) {
       _id
     }
@@ -64,7 +72,8 @@ class ProjectForm extends Component {
   state = {
     name: "",
     description: "",
-    imageUrl: ""
+    imageUrl: "",
+    tag: ""
   };
 
   handleChange = event => {
@@ -75,8 +84,8 @@ class ProjectForm extends Component {
 
   handleSubmit = () => {
     const { history } = this.props;
-    const { _id, name, description, imageUrl } = this.state;
-    const variables = { _id, name, description, imageUrl };
+    const { _id, name, description, imageUrl, tag } = this.state;
+    const variables = { _id, name, description, imageUrl, tag };
     if (_id) {
       this.props
         .editProject({ variables })
@@ -101,7 +110,7 @@ class ProjectForm extends Component {
     } else {
       this.props
         .createProject({
-          variables: { name, description, imageUrl }
+          variables: { name, description, imageUrl, tag }
         })
         .then(
           Bert.alert({
@@ -170,7 +179,7 @@ class ProjectForm extends Component {
 
   render() {
     const { classes } = this.props;
-    const { _id, name, imageUrl, description } = this.state;
+    const { _id, name, imageUrl, description, tag } = this.state;
     return (
       <Grid container justify="center">
         <Grid item xs={12}>
@@ -205,6 +214,15 @@ class ProjectForm extends Component {
               fullWidth
               required
               type="url"
+            />
+            <TextField
+              id="tag"
+              label="TAG"
+              value={tag}
+              onChange={this.handleChange}
+              margin="normal"
+              fullWidth
+              required
             />
             <Grid container justify="center">
               <Grid item xs={12}>

@@ -11,9 +11,17 @@ import PostResolvers from "../../../api/posts/resolvers";
 import ProjectSchema from "../../../api/projects/Project.graphql";
 import ProjectResolvers from "../../../api/projects/resolvers";
 
-const typeDefs = [UserSchema, PostSchema, ProjectSchema];
+import TaskSchema from "../../../api/tasks/Task.graphql";
+import TaskResolvers from "../../../api/tasks/resolvers";
 
-const resolvers = merge(UserResolvers, PostResolvers, ProjectResolvers);
+const typeDefs = [UserSchema, PostSchema, ProjectSchema, TaskSchema];
+
+const resolvers = merge(
+  UserResolvers,
+  PostResolvers,
+  ProjectResolvers,
+  TaskResolvers
+);
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 

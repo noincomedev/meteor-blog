@@ -14,13 +14,14 @@ export default {
   },
   Project: {},
   Mutation: {
-    createProject(obj, { name, description, imageUrl }, { userId }) {
+    createProject(obj, { name, description, imageUrl, tag }, { userId }) {
       if (userId) {
         const projectId = Projects.insert({
           owner: userId,
           name,
           description,
-          imageUrl
+          imageUrl,
+          tag
         });
         return projectId;
       }

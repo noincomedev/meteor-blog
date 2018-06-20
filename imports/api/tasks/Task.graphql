@@ -1,0 +1,24 @@
+type Task {
+  _id: String
+  tag: String
+  owner: String
+  status: Boolean
+  created: String
+  updated: String
+  started: String
+  finished: String
+  skipped: String
+  deleted: String
+  name: String
+  description: String
+}
+
+extend type Mutation {
+  createTask(owner: String!, name: String!, description: String!): Task
+  editTask(_id: String!, name: String!, description: String!): Task
+}
+
+extend type Query {
+  task(_id: String!): Task
+  tasks(owner: String!): [Task]
+}

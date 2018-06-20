@@ -15,6 +15,8 @@ import Spinner from "../components/utils/Spinner";
 import CardWithTitleAndContent from "../layouts/components/card/CardWithTitleAndContent";
 import ProjectForm from "../components/project/ProjectForm";
 
+import PrivateTaskList from "../components/task/list/Private";
+
 export const GET_PROJECT = gql`
   query Project($_id: String!) {
     project(_id: $_id) {
@@ -22,6 +24,7 @@ export const GET_PROJECT = gql`
       name
       description
       imageUrl
+      tag
     }
   }
 `;
@@ -105,7 +108,7 @@ class ProjectPage extends Component {
               {showForm && (
                 <Grid item xs={12} style={{ paddingRight: 8 }}>
                   <Helmet>
-                    <title>NOINCOMEDEV | {project.name}</title>
+                    <title>NOINCOMEDEV | Edit Project </title>
                     <meta name="Edit Project" content="Edit Project" />
                   </Helmet>
                   <CardWithTitleAndContent title="Project Settings">
@@ -116,6 +119,7 @@ class ProjectPage extends Component {
                   </CardWithTitleAndContent>
                 </Grid>
               )}
+              {!showForm && <PrivateTaskList projectId={project._id} />}
             </Grid>
           );
         }}
