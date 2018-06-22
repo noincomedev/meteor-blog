@@ -5,7 +5,10 @@ export default {
   Query: {
     tasks(obj, args, { userId }) {
       const { _id } = args;
-      return Tasks.find({ owner: _id }, { sort: { created: -1 } }).fetch({});
+      return Tasks.find(
+        { owner: _id, archived: false },
+        { sort: { created: -1 } }
+      ).fetch({});
     }
   },
   Task: {
@@ -15,6 +18,26 @@ export default {
     }
   },
   Mutation: {
+    archiveTask(obj, args, { userId }) {
+      if (userId) {
+        const taskId = Tasks.update(
+          { _id: args._id },
+          { $set: { archived: true } }
+        );
+        return taskId;
+      }
+      throw new Error("Unauthorized");
+    },
+    toggleTaskStatus(obj, args, { userId }) {
+      if (userId) {
+        const taskId = Tasks.update(
+          { _id: args._id },
+          { $set: { status: !args.status } }
+        );
+        return taskId;
+      }
+      throw new Error("Unauthorized");
+    },
     createTask(obj, { owner, name, description }, { userId }) {
       if (userId) {
         const taskId = Tasks.insert({

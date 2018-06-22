@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import gql from "graphql-tag";
+import { Bert } from "meteor/themeteorchef:bert";
+import { compose, graphql } from "react-apollo";
 import { PropTypes } from "prop-types";
 
 import Button from "@material-ui/core/Button";
@@ -23,6 +26,7 @@ const styles = theme => ({
     paddingTop: theme.spacing.unit * 8
   },
   header: {
+    zIndex: 100,
     backgroundColor: theme.palette.primary.light,
     position: "fixed",
     width: "100%"
@@ -45,16 +49,52 @@ const styles = theme => ({
 class PrivateTaskListLayout extends Component {
   state = {};
 
-  handleArchive = id => {
-    console.log(`archive ${id}`);
+  handleArchive = _id => {
+    const variables = { _id };
+    this.props
+      .archiveTask({ variables })
+      .then(
+        Bert.alert({
+          title: "Warning!",
+          message: "Task archived",
+          type: "danger",
+          style: "growl-top-right",
+          icon: "fa-remove"
+        })
+      )
+      .catch(error =>
+        Bert.alert({
+          title: "Warning!",
+          message: "ERROR",
+          type: "danger",
+          style: "growl-top-right",
+          icon: "fa-remove"
+        })
+      );
   };
 
-  handleComplete = id => {
-    console.log(`complete ${id}`);
-  };
-
-  handlePospone = id => {
-    console.log(`pospone ${id}`);
+  handleStatusChange = (status, _id) => {
+    const variables = { _id, status };
+    this.props
+      .toggleTaskStatus({ variables })
+      .then(
+        Bert.alert({
+          title: "Success",
+          message: "Task updated.",
+          type: "success",
+          style: "growl-top-right",
+          icon: "fa-check"
+        })
+      )
+      .catch(error =>
+        Bert.alert({
+          title: error ? "Error!" : "Success",
+          message: error ? error.message : "Project saved",
+          type: error ? "danger" : "success",
+          style: "growl-top-right",
+          icon: error ? "fa-remove" : "fa-check"
+        })
+      );
   };
 
   handleToggleState = () => {
@@ -122,8 +162,7 @@ class PrivateTaskListLayout extends Component {
                 {tasks.map(task => (
                   <PrivateTaskItem
                     key={task._id}
-                    onComplete={this.handleComplete}
-                    onPospone={this.handlePospone}
+                    onToggleStatus={this.handleStatusChange}
                     onArchive={this.handleArchive}
                     task={task}
                   />
@@ -154,4 +193,35 @@ PrivateTaskListLayout.propTypes = {
   projectId: PropTypes.string
 };
 
-export default withStyles(styles, { withTheme: true })(PrivateTaskListLayout);
+const TOGGLE_TASK_STATUS = gql`
+  mutation toggleTaskStatus($_id: String!, $status: Boolean!) {
+    toggleTaskStatus(_id: $_id, status: $status) {
+      status
+    }
+  }
+`;
+
+const ARCHIVE_TASK = gql`
+  mutation archiveTask($_id: String!) {
+    archiveTask(_id: $_id) {
+      status
+    }
+  }
+`;
+
+export default compose(
+  graphql(TOGGLE_TASK_STATUS, {
+    name: "toggleTaskStatus",
+    options: {
+      refetchQueries: ["tasks"],
+      variables: { owner: Meteor.userId() }
+    }
+  }),
+  graphql(ARCHIVE_TASK, {
+    name: "archiveTask",
+    options: {
+      refetchQueries: ["tasks"],
+      variables: { owner: Meteor.userId() }
+    }
+  })
+)(withStyles(styles)(PrivateTaskListLayout));

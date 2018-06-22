@@ -5,15 +5,15 @@ type Task {
   status: Boolean
   created: String
   updated: String
-  started: String
-  finished: String
-  skipped: String
-  deleted: String
+  completed: String
+  archived: Boolean
   name: String
   description: String
 }
 
 extend type Mutation {
+  archiveTask(_id: String!): Task
+  toggleTaskStatus(_id: String!, status: Boolean!): Task
   createTask(owner: String!, name: String!, description: String!): Task
   editTask(_id: String!, name: String!, description: String!): Task
 }

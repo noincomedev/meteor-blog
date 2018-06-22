@@ -14,9 +14,14 @@ export const GET_PROJECT_TASKS = gql`
   query tasks($owner: String!) {
     tasks(owner: $owner) {
       _id
+      tag
+      status
+      created
+      updated
+      completed
+      archived
       name
       description
-      tag
     }
   }
 `;
