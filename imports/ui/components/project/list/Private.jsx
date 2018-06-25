@@ -1,127 +1,91 @@
 import React, { Component } from "react";
-import { Helmet } from "react-helmet";
+import classNames from "classnames";
 import { PropTypes } from "prop-types";
 
-import Button from "@material-ui/core/Button";
+import Add from "@material-ui/icons/Add";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
-
-import ListSubheader from "@material-ui/core/ListSubheader";
+import IconButton from "@material-ui/core/IconButton";
 import List from "@material-ui/core/List";
+import ListSubheader from "@material-ui/core/ListSubheader";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 
-import CardWithTitleAndContent from "../../../layouts/components/card/CardWithTitleAndContent";
+import PrivateProjectItem from "./PrivateProjectItem";
 import ProjectForm from "../ProjectForm";
 
-import PrivateProjectItem from "./PrivateProjectItem";
-
 const styles = theme => ({
-  container: {
-    marginRight: theme.spacing.unit,
-    marginLeft: theme.spacing.unit,
-    marginBottom: theme.spacing.unit,
-    paddingRight: theme.spacing.unit * 2,
-    overflow: "auto"
+  header: {
+    display: "flex",
+    flex: 1,
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  title: {
+    marginBottom: theme.spacing.unit / 2
   }
 });
 
 class Private extends Component {
-  state = {
-    showButton: false,
-    showForm: true
-  };
-
-  toggleButton = () => {
-    this.setState({
-      showButton: !this.state.showButton,
-      showForm: !this.state.showForm
-    });
-  };
-
-  toggleForm = () => {
-    this.setState({ showForm: !this.state.showForm });
-  };
-
-  toggleCancel = () => {
-    this.setState({
-      showButton: !this.state.showButton,
-      showForm: !this.state.showForm
-    });
-  };
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.projects) {
-      return {
-        showButton: nextProps.projects.length > 0 ? true : false,
-        showForm: nextProps.projects.length > 0 ? false : true
-      };
-    }
-    return {
-      ...nextProps
+  constructor(props) {
+    super(props);
+    const { projects } = props;
+    this.state = {
+      controls: projects.length > 0
     };
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.projects.length > 0 && this.props.projects.length == 0) {
+      this.toggleControls();
+    }
+  }
+
+  toggleControls = () => {
+    this.setState({ controls: !this.state.controls });
+  };
+
   render() {
     const { classes, projects } = this.props;
-    const { showButton, showForm } = this.state;
+    const { controls } = this.state;
     return (
-      <Grid container className={classes.container} justify="center">
-        <Grid container alignItems="center" className={classes.container}>
-          <Grid item xs={8}>
-            <Typography variant="title" color="inherit">
-              Work in Progress
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            xs={4}
-            style={{ display: "flex", flex: 1, justifyContent: "flex-end" }}
+      <Grid container>
+        <header className={classes.header}>
+          <Typography
+            className={classNames(!controls && classes.title)}
+            variant="title"
+            color="inherit"
           >
-            {showButton && (
-              <Button
-                variant="flat"
-                color="secondary"
-                onClick={this.toggleButton}
-                className={classes.button}
-              >
-                ADD PROJECT
-              </Button>
-            )}
-          </Grid>
-        </Grid>
+            Work in Progress
+          </Typography>
+          {controls && (
+            <IconButton color="secondary" onClick={this.toggleControls}>
+              <Add />
+            </IconButton>
+          )}
+        </header>
         <Grid item xs={12}>
           <Divider />
-        </Grid>
-        {showForm && (
-          <Grid item xs={12} style={{ paddingRight: 8 }}>
-            <Helmet>
-              <title>NOINCOMEDEV | Create Project</title>
-              <meta name="Add Project" content="Add Project" />
-            </Helmet>
-            <CardWithTitleAndContent title="Create Project">
-              <ProjectForm handleCancel={this.toggleCancel} />
-            </CardWithTitleAndContent>
-          </Grid>
-        )}
-        {projects.length > 0 &&
-          !showForm && (
-            <Grid container>
-              <Grid item xs={12}>
-                <List
-                  style={{ width: "100%" }}
-                  component="nav"
-                  subheader={
-                    <ListSubheader component="div">Projects</ListSubheader>
-                  }
-                >
-                  {projects.map(project => (
-                    <PrivateProjectItem key={project._id} project={project} />
-                  ))}
-                </List>
-              </Grid>
-            </Grid>
+          {!controls && (
+            <ProjectForm
+              handleToggleControls={this.toggleControls}
+              showCancelButton={projects.length > 0}
+            />
           )}
+          {controls &&
+            projects.length > 0 && (
+              <List
+                component="nav"
+                subheader={
+                  <ListSubheader component="div">Projects</ListSubheader>
+                }
+              >
+                {projects.map(project => (
+                  <PrivateProjectItem key={project._id} project={project} />
+                ))}
+              </List>
+            )}
+        </Grid>
       </Grid>
     );
   }

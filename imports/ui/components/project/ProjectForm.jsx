@@ -7,6 +7,10 @@ import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 
 import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
+import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 
@@ -60,8 +64,7 @@ const DELETE_PROJECT = gql`
 
 const styles = theme => ({
   container: {
-    display: "flex",
-    overflow: "auto"
+    marginTop: theme.spacing.unit
   },
   textField: {
     marginTop: 0
@@ -131,10 +134,11 @@ class ProjectForm extends Component {
           })
         );
     }
+    this.props.handleToggleControls();
   };
 
   handleCancel = () => {
-    this.props.handleCancel();
+    this.props.handleToggleControls();
   };
 
   handleDelete = () => {
@@ -164,99 +168,101 @@ class ProjectForm extends Component {
           })
         );
     }
+    this.props.handleToggleControls();
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.project) {
-      return {
-        ...nextProps.project
-      };
-    }
-    return {
-      ...nextProps
-    };
-  }
-
   render() {
-    const { classes } = this.props;
+    const { classes, showCancelButton } = this.props;
     const { _id, name, imageUrl, description, tag } = this.state;
     return (
-      <Grid container justify="center">
-        <Grid item xs={12}>
-          <ValidatedForm onHandleSubmit={this.handleSubmit}>
-            <TextField
-              id="name"
-              name="name"
-              label="Name"
-              className={classes.textField}
-              value={name}
-              onChange={this.handleChange}
-              margin="normal"
-              fullWidth
-              required
-            />
-            <TextField
-              id="description"
-              name="description"
-              label="Description"
-              value={description}
-              onChange={this.handleChange}
-              margin="normal"
-              fullWidth
-              required
-            />
-            <TextField
-              id="imageUrl"
-              label="Image URL"
-              value={imageUrl ? imageUrl : ""}
-              onChange={this.handleChange}
-              margin="normal"
-              fullWidth
-              required
-              type="url"
-            />
-            <TextField
-              id="tag"
-              label="TAG"
-              value={tag}
-              onChange={this.handleChange}
-              margin="normal"
-              fullWidth
-              required
-            />
-            <Grid container justify="center">
-              <Grid item xs={12}>
-                <Button
-                  type="submit"
-                  variant="raised"
-                  color="primary"
+      <Grid
+        container
+        classes={{ container: classes.container }}
+        justify="center"
+      >
+        <Grid item xs={12} sm={8} md={6}>
+          <Card>
+            <CardHeader title="Create Project" />
+            <Divider />
+            <CardContent>
+              <ValidatedForm onHandleSubmit={this.handleSubmit}>
+                <TextField
+                  id="name"
+                  name="name"
+                  label="Name"
+                  className={classes.textField}
+                  value={name}
+                  onChange={this.handleChange}
+                  margin="normal"
                   fullWidth
-                >
-                  {_id ? "Save" : "Create"}
-                </Button>
-                {_id && (
-                  <Button
-                    type="button"
-                    variant="raised"
-                    color="secondary"
-                    fullWidth
-                    onClick={this.handleDelete}
-                  >
-                    Delete
-                  </Button>
-                )}
-                <Button
-                  type="button"
-                  variant="raised"
-                  color="inherit"
+                  required
+                />
+                <TextField
+                  id="description"
+                  name="description"
+                  label="Description"
+                  value={description}
+                  onChange={this.handleChange}
+                  margin="normal"
                   fullWidth
-                  onClick={this.handleCancel}
-                >
-                  Cancel
-                </Button>
-              </Grid>
-            </Grid>
-          </ValidatedForm>
+                  required
+                />
+                <TextField
+                  id="imageUrl"
+                  label="Image URL"
+                  value={imageUrl ? imageUrl : ""}
+                  onChange={this.handleChange}
+                  margin="normal"
+                  fullWidth
+                  required
+                  type="url"
+                />
+                <TextField
+                  id="tag"
+                  label="TAG"
+                  value={tag}
+                  onChange={this.handleChange}
+                  margin="normal"
+                  fullWidth
+                  required
+                />
+                <Grid container justify="center">
+                  <Grid item xs={12}>
+                    <Button
+                      type="submit"
+                      variant="raised"
+                      color="primary"
+                      fullWidth
+                    >
+                      {_id ? "Save" : "Create"}
+                    </Button>
+                    {_id && (
+                      <Button
+                        type="button"
+                        variant="raised"
+                        color="secondary"
+                        fullWidth
+                        onClick={this.handleDelete}
+                      >
+                        Delete
+                      </Button>
+                    )}
+                    {showCancelButton && (
+                      <Button
+                        type="button"
+                        variant="raised"
+                        color="inherit"
+                        fullWidth
+                        onClick={this.handleCancel}
+                      >
+                        Cancel
+                      </Button>
+                    )}
+                  </Grid>
+                </Grid>
+              </ValidatedForm>
+            </CardContent>
+          </Card>
         </Grid>
       </Grid>
     );
@@ -264,8 +270,9 @@ class ProjectForm extends Component {
 }
 
 ProjectForm.propTypes = {
-  handleCancel: PropTypes.func.isRequired,
-  project: PropTypes.object
+  handleToggleControls: PropTypes.func.isRequired,
+  project: PropTypes.object,
+  showCancelButton: PropTypes.bool
 };
 
 export default compose(
