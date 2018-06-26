@@ -72,12 +72,17 @@ const styles = theme => ({
 });
 
 class ProjectForm extends Component {
-  state = {
-    name: "",
-    description: "",
-    imageUrl: "",
-    tag: ""
-  };
+  constructor(props) {
+    super(props);
+    const { project } = props;
+    this.state = {
+      name: project ? project.name : "",
+      description: project ? project.description : "",
+      imageUrl: project ? project.imageUrl : "",
+      tag: project ? project.tag : "",
+      _id: project ? project._id : ""
+    };
+  }
 
   handleChange = event => {
     const name = event.target.id,
@@ -172,7 +177,7 @@ class ProjectForm extends Component {
   };
 
   render() {
-    const { classes, showCancelButton } = this.props;
+    const { classes, project, showCancelButton } = this.props;
     const { _id, name, imageUrl, description, tag } = this.state;
     return (
       <Grid
@@ -182,7 +187,7 @@ class ProjectForm extends Component {
       >
         <Grid item xs={12} sm={8} md={6}>
           <Card>
-            <CardHeader title="Create Project" />
+            <CardHeader title={`${project ? "Edit" : "Create"} Project`} />
             <Divider />
             <CardContent>
               <ValidatedForm onHandleSubmit={this.handleSubmit}>
@@ -226,31 +231,12 @@ class ProjectForm extends Component {
                   fullWidth
                   required
                 />
-                <Grid container justify="center">
-                  <Grid item xs={12}>
-                    <Button
-                      type="submit"
-                      variant="raised"
-                      color="primary"
-                      fullWidth
-                    >
-                      {_id ? "Save" : "Create"}
-                    </Button>
-                    {_id && (
-                      <Button
-                        type="button"
-                        variant="raised"
-                        color="secondary"
-                        fullWidth
-                        onClick={this.handleDelete}
-                      >
-                        Delete
-                      </Button>
-                    )}
+                <Grid container justify="center" spacing={8}>
+                  <Grid item xs={4}>
                     {showCancelButton && (
                       <Button
                         type="button"
-                        variant="raised"
+                        variant="contained"
                         color="inherit"
                         fullWidth
                         onClick={this.handleCancel}
@@ -258,6 +244,30 @@ class ProjectForm extends Component {
                         Cancel
                       </Button>
                     )}
+                  </Grid>
+                  <Grid item xs={4}>
+                    {project && (
+                      <Button
+                        type="button"
+                        variant="contained"
+                        color="secondary"
+                        fullWidth
+                        onClick={this.handleDelete}
+                      >
+                        Delete
+                      </Button>
+                    )}
+                  </Grid>
+
+                  <Grid item xs={4}>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      fullWidth
+                    >
+                      {project ? "Save" : "Create"}
+                    </Button>
                   </Grid>
                 </Grid>
               </ValidatedForm>

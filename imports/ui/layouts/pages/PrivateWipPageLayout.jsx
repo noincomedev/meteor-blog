@@ -18,6 +18,7 @@ export const USER_PROJECTS = gql`
       name
       description
       imageUrl
+      tag
     }
   }
 `;

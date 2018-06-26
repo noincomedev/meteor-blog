@@ -1,21 +1,19 @@
 import React, { Component } from "react";
+import classNames from "classnames";
 import gql from "graphql-tag";
-import { Helmet } from "react-helmet";
 import { Query } from "react-apollo";
 import { Redirect, withRouter } from "react-router-dom";
 
-import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
+import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import Settings from "@material-ui/icons/Settings";
 import { withStyles } from "@material-ui/core/styles";
 
-import Spinner from "../components/utils/Spinner";
-import CardWithTitleAndContent from "../layouts/components/card/CardWithTitleAndContent";
 import ProjectForm from "../components/project/ProjectForm";
 
-import PrivateTaskList from "../components/task/list/Private";
+import Spinner from "../components/utils/Spinner";
 
 export const GET_PROJECT = gql`
   query Project($_id: String!) {
@@ -29,41 +27,33 @@ export const GET_PROJECT = gql`
   }
 `;
 
-const styles = theme => ({});
+const styles = theme => ({
+  header: {
+    display: "flex",
+    flex: 1,
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  title: {
+    marginBottom: theme.spacing.unit / 2
+  }
+});
 
 class ProjectPage extends Component {
-  state = {
-    showButton: true,
-    showForm: false
-  };
-
-  toggleButton = () => {
-    this.setState({
-      showButton: !this.state.showButton,
-      showForm: !this.state.showForm
-    });
-  };
-
-  toggleForm = () => {
-    this.setState({ showForm: !this.state.showForm });
-  };
-
-  toggleCancel = () => {
-    this.setState({
-      showButton: !this.state.showButton,
-      showForm: !this.state.showForm
-    });
-  };
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return {
-      ...nextProps
+  constructor(props) {
+    super(props);
+    this.state = {
+      controls: true
     };
   }
 
+  toggleControls = () => {
+    this.setState({ controls: !this.state.controls });
+  };
+
   render() {
-    const { showButton, showForm } = this.state;
     const { classes, match, project } = this.props;
+    const { controls } = this.state;
     const { params } = match;
     const { _id } = params;
 
@@ -75,51 +65,31 @@ class ProjectPage extends Component {
           const { project } = data;
           return (
             <Grid container className={classes.container} justify="center">
-              <Grid container alignItems="center" className={classes.container}>
-                <Grid item xs={8}>
-                  <Typography variant="title" color="inherit">
-                    {project.name}
-                  </Typography>
-                </Grid>
-                <Grid
-                  item
-                  xs={4}
-                  style={{
-                    display: "flex",
-                    flex: 1,
-                    justifyContent: "flex-end"
-                  }}
+              <header className={classes.header}>
+                <Typography
+                  className={classNames(!controls && classes.title)}
+                  variant="title"
+                  color="inherit"
                 >
-                  {showButton && (
-                    <Button
-                      variant="flat"
-                      color="secondary"
-                      onClick={this.toggleButton}
-                      className={classes.button}
-                    >
-                      <Settings color="inherit" />
-                    </Button>
-                  )}
-                </Grid>
-              </Grid>
+                  {project.name}
+                </Typography>
+                {controls && (
+                  <IconButton color="secondary" onClick={this.toggleControls}>
+                    <Settings />
+                  </IconButton>
+                )}
+              </header>
               <Grid item xs={12}>
                 <Divider />
-              </Grid>
-              {showForm && (
-                <Grid item xs={12} style={{ paddingRight: 8 }}>
-                  <Helmet>
-                    <title>NOINCOMEDEV | Edit Project </title>
-                    <meta name="Edit Project" content="Edit Project" />
-                  </Helmet>
-                  <CardWithTitleAndContent title="Project Settings">
+                {!controls &&
+                  project && (
                     <ProjectForm
+                      showCancelButton
                       project={project}
-                      handleCancel={this.toggleCancel}
+                      handleToggleControls={this.toggleControls}
                     />
-                  </CardWithTitleAndContent>
-                </Grid>
-              )}
-              {!showForm && <PrivateTaskList projectId={project._id} />}
+                  )}
+              </Grid>
             </Grid>
           );
         }}
