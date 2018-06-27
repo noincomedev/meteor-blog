@@ -116,10 +116,12 @@ class PrivateTaskListLayout extends Component {
     return (
       <Grid container style={{ marginTop: 8 }} justify="center">
         {!controls && (
-          <TaskForm
-            onToggleControls={this.toggleControls}
-            showCancelButton={tasks.length > 0}
-          />
+          <Grid item xs={12} sm={8} md={6}>
+            <TaskForm
+              onToggleControls={this.toggleControls}
+              showCancelButton={tasks.length > 0}
+            />
+          </Grid>
         )}
         {controls &&
           tasks.length > 0 && (

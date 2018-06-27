@@ -232,8 +232,8 @@ class ProjectForm extends Component {
                   required
                 />
                 <Grid container justify="center" spacing={8}>
-                  <Grid item xs={4}>
-                    {showCancelButton && (
+                  {showCancelButton && (
+                    <Grid item xs={4}>
                       <Button
                         type="button"
                         variant="contained"
@@ -243,10 +243,10 @@ class ProjectForm extends Component {
                       >
                         Cancel
                       </Button>
-                    )}
-                  </Grid>
-                  <Grid item xs={4}>
-                    {project && (
+                    </Grid>
+                  )}
+                  {project && (
+                    <Grid item xs={4}>
                       <Button
                         type="button"
                         variant="contained"
@@ -256,9 +256,8 @@ class ProjectForm extends Component {
                       >
                         Delete
                       </Button>
-                    )}
-                  </Grid>
-
+                    </Grid>
+                  )}
                   <Grid item xs={4}>
                     <Button
                       type="submit"
