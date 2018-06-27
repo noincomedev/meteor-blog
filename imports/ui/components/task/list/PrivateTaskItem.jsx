@@ -21,9 +21,17 @@ import { withStyles } from "@material-ui/core/styles";
 const styles = theme => ({
   avatar: {
     backgroundColor: theme.palette.primary.light,
-    color: theme.palette.common.white
+    color: theme.palette.common.white,
+    width: 20,
+    height: 20
+  },
+  avatarChild: {
+    width: 10,
+    height: 10
   },
   chip: {
+    height: 20,
+    fontSize: "0.5rem",
     marginLeft: theme.spacing.unit,
     justifyContent: "flex-start"
   },
@@ -135,7 +143,12 @@ class PrivateTaskItem extends Component {
           </Grid>
         )}
         <Grid item xs={9}>
-          <div style={{ display: task.archived && "inline-flex" }}>
+          <div
+            style={{
+              display: task.archived && "inline-flex",
+              alignItems: "center"
+            }}
+          >
             <Typography
               classes={{
                 root: classes.title,
@@ -153,7 +166,10 @@ class PrivateTaskItem extends Component {
                   </Avatar>
                 }
                 label="Archived"
-                classes={{ root: classes.chip }}
+                classes={{
+                  root: classes.chip,
+                  avatarChildren: classes.avatarChild
+                }}
               />
             ) : (
               <Typography variant="caption">{task.description}</Typography>
