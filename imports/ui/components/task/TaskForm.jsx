@@ -2,32 +2,20 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { compose, graphql } from "react-apollo";
 import { Bert } from "meteor/themeteorchef:bert";
-import { Helmet } from "react-helmet";
 import { PropTypes } from "prop-types";
+import { withApollo } from "react-apollo";
+import { withRouter } from "react-router-dom";
 
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
+import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles";
 
-import CardWithTitleAndContent from "../../layouts/components/card/CardWithTitleAndContent";
 import ValidatedForm from "../utils/ValidatedForm";
-
-const CREATE_TASK = gql`
-  mutation createTask($owner: String!, $name: String!, $description: String!) {
-    createTask(owner: $owner, name: $name, description: $description) {
-      _id
-    }
-  }
-`;
-
-const EDIT_TASK = gql`
-  mutation editTask($_id: String!, $name: String!, $description: String!) {
-    editProject(_id: $_id, name: $name, description: $description) {
-      _id
-    }
-  }
-`;
 
 const styles = theme => ({
   textField: {
@@ -36,13 +24,20 @@ const styles = theme => ({
 });
 
 class TaskForm extends Component {
-  state = {
-    name: "",
-    description: ""
-  };
+  constructor(props) {
+    super(props);
+    const { match, task } = props;
+    this.state = {
+      _id: task && task._id,
+      archived: task ? task.archived : false,
+      owner: task ? task.owner : match.params._id,
+      name: task ? task.name : "",
+      description: task ? task.description : ""
+    };
+  }
 
   handleCancel = () => {
-    this.props.onToggleState();
+    this.props.onToggleControls();
   };
 
   handleChange = event => {
@@ -51,14 +46,42 @@ class TaskForm extends Component {
     this.setState({ [name]: value });
   };
 
-  handleDelete = () => {};
+  handleDelete = () => {
+    const { client } = this.props;
+    const { _id } = this.state;
+    const variables = { _id };
+    if (_id) {
+      this.props
+        .deleteTask({ variables })
+        .then(
+          Bert.alert({
+            title: "Success",
+            message: "Task deleted.",
+            type: "danger",
+            style: "growl-top-right",
+            icon: "fa-remove"
+          })
+        )
+        .then(this.props.onToggleControls())
+        .catch(error =>
+          Bert.alert({
+            title: "Error!",
+            message: "something went wrong",
+            type: "danger",
+            style: "growl-top-right",
+            icon: "fa-remove"
+          })
+        );
+    }
+  };
 
   handleSubmit = () => {
-    const { task, projectId } = this.props;
-    const { _id, name, description } = this.state;
-    if (task) {
+    const { client } = this.props;
+    const { _id, description, name, owner } = this.state;
+
+    if (this.props.task) {
       this.props
-        .editTask({ variables: { _id, name, description } })
+        .editTask({ variables: { _id, description, name, owner } })
         .then(
           Bert.alert({
             title: "Success",
@@ -77,12 +100,9 @@ class TaskForm extends Component {
             icon: error ? "fa-remove" : "fa-check"
           })
         );
-      this.props.onToggleState();
     } else {
       this.props
-        .createTask({
-          variables: { owner: projectId, name, description }
-        })
+        .createTask({ variables: { description, name, owner } })
         .then(
           Bert.alert({
             title: "Success",
@@ -101,24 +121,19 @@ class TaskForm extends Component {
             icon: error ? "fa-remove" : "fa-check"
           })
         );
-      this.props.onToggleState();
     }
+    this.props.onToggleControls();
   };
 
   render() {
-    const { classes, onCancel, task } = this.props;
-    const { description, name } = this.state;
+    const { classes, showCancelButton, task } = this.props;
+    const { archived, description, name } = this.state;
     return (
       <Grid container>
-        <Grid item xs={12}>
-          <Helmet>
-            <title>NOINCOMEDEV | {task ? "Edit" : "Add"} Task</title>
-            <meta
-              name={`${task ? "Edit" : "Add"} Task`}
-              content={`${task ? "Edit" : "Add"} Task`}
-            />
-          </Helmet>
-          <CardWithTitleAndContent title={`${task ? "Edit" : "Add"} Task`}>
+        <Card>
+          <CardHeader title={`${task ? "Edit" : "Create"} Task`} />
+          <Divider />
+          <CardContent>
             <ValidatedForm onHandleSubmit={this.handleSubmit}>
               <TextField
                 id="name"
@@ -130,6 +145,7 @@ class TaskForm extends Component {
                 margin="normal"
                 fullWidth
                 required
+                disabled={task ? task.archived : false}
               />
               <TextField
                 id="description"
@@ -142,18 +158,24 @@ class TaskForm extends Component {
                 fullWidth
                 required
                 multiline
+                disabled={task ? task.archived : false}
               />
-              <Grid container justify="center">
-                <Grid item xs={12}>
-                  <Button
-                    type="submit"
-                    variant="raised"
-                    color="primary"
-                    fullWidth
-                  >
-                    {task ? "Save" : "Add"}
-                  </Button>
-                  {task && (
+              <Grid container justify="center" spacing={8}>
+                {showCancelButton && (
+                  <Grid item xs={4}>
+                    <Button
+                      type="button"
+                      variant="contained"
+                      color="inherit"
+                      fullWidth
+                      onClick={this.handleCancel}
+                    >
+                      Cancel
+                    </Button>
+                  </Grid>
+                )}
+                {task && (
+                  <Grid item xs={4}>
                     <Button
                       type="button"
                       variant="raised"
@@ -163,47 +185,93 @@ class TaskForm extends Component {
                     >
                       Delete
                     </Button>
-                  )}
-                  <Button
-                    type="button"
-                    variant="raised"
-                    color="inherit"
-                    fullWidth
-                    onClick={this.handleCancel}
-                  >
-                    Cancel
-                  </Button>
-                </Grid>
+                  </Grid>
+                )}
+                {!archived && (
+                  <Grid item xs={4}>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      fullWidth
+                    >
+                      {task ? "Save" : "Add"}
+                    </Button>
+                  </Grid>
+                )}
               </Grid>
             </ValidatedForm>
-          </CardWithTitleAndContent>
-        </Grid>
+          </CardContent>
+        </Card>
       </Grid>
     );
   }
 }
 
 TaskForm.propTypes = {
-  onToggleState: PropTypes.func.isRequired,
-  projectId: PropTypes.string.isRequired
+  onToggleControls: PropTypes.func.isRequired,
+  showCancelButton: PropTypes.bool,
+  task: PropTypes.object
 };
 
+const GET_TASKS = gql`
+  query tasks($owner: String!) {
+    tasks(owner: $owner) {
+      _id
+      owner
+      status
+      archived
+      name
+      description
+      completed
+    }
+  }
+`;
+
+const CREATE_TASK = gql`
+  mutation createTask($owner: String!, $name: String!, $description: String!) {
+    createTask(owner: $owner, name: $name, description: $description) {
+      _id
+    }
+  }
+`;
+
+const EDIT_TASK = gql`
+  mutation editTask($_id: String!, $name: String!, $description: String!) {
+    editTask(_id: $_id, name: $name, description: $description) {
+      _id
+    }
+  }
+`;
+
+const DELETE_TASK = gql`
+  mutation deleteTask($_id: String!) {
+    deleteTask(_id: $_id) {
+      _id
+    }
+  }
+`;
+
 export default compose(
-  graphql(
-    CREATE_TASK,
-    {
-      name: "createTask",
-      options: {
-        refetchQueries: ["projects"],
-        variables: { owner: Meteor.userId() }
-      }
-    },
-    graphql(EDIT_TASK, {
-      name: "editTask",
-      options: {
-        refetchQueries: ["projects"],
-        variables: { owner: Meteor.userId() }
-      }
-    })
-  )
-)(withStyles(styles, { withTheme: true })(TaskForm));
+  graphql(CREATE_TASK, {
+    name: "createTask",
+    options: {
+      refetchQueries: ["projects"],
+      variables: { owner: Meteor.userId() }
+    }
+  }),
+  graphql(DELETE_TASK, {
+    name: "deleteTask",
+    options: {
+      refetchQueries: ["projects"],
+      variables: { owner: Meteor.userId() }
+    }
+  }),
+  graphql(EDIT_TASK, {
+    name: "editTask",
+    options: {
+      refetchQueries: ["projects"],
+      variables: { owner: Meteor.userId() }
+    }
+  })
+)(withStyles(styles, { withTheme: true })(withRouter(withApollo(TaskForm))));

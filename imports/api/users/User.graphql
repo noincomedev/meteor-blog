@@ -3,6 +3,6 @@ type User {
   admin: Boolean
 }
 
-type Query {
+extend type Query {
   user: User
 }

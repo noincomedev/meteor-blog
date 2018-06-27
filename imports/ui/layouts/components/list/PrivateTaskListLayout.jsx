@@ -9,33 +9,31 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 
-import PrivateTaskItem from "../../../components/task/list/PrivateTaskItem";
+import EditableTaskItemLayout from "../../components/list/EditableTaskItemLayout";
 import TaskForm from "../../../components/task/TaskForm";
 
 const styles = theme => ({
   card: {
-    zIndex: 1,
-    position: "relative",
-    maxHeight: "50vh",
-    overflow: "auto"
-  },
-  content: {
-    paddingTop: theme.spacing.unit * 8
-  },
-  header: {
-    zIndex: 100,
-    backgroundColor: theme.palette.primary.light,
-    position: "fixed",
     width: "100%"
   },
+  cardContent: {
+    position: "relative",
+    minHeight: "22vh",
+    maxHeight: "33vh",
+    overflow: "scroll"
+  },
+  cardHeader: {
+    backgroundColor: theme.palette.primary.light
+  },
+  header: {},
   fab: {
     position: "absolute",
-    right: theme.spacing.unit * 2,
-    bottom: theme.spacing.unit * 2,
-    zIndex: 2
+    right: 0,
+    bottom: 0,
+    marginBottom: theme.spacing.unit,
+    marginRight: theme.spacing.unit
   },
   item: {
     position: "relative",
@@ -47,7 +45,13 @@ const styles = theme => ({
 });
 
 class PrivateTaskListLayout extends Component {
-  state = {};
+  constructor(props) {
+    super(props);
+    const { tasks } = props;
+    this.state = {
+      controls: tasks.length > 0
+    };
+  }
 
   handleArchive = _id => {
     const variables = { _id };
@@ -97,92 +101,56 @@ class PrivateTaskListLayout extends Component {
       );
   };
 
-  handleToggleState = () => {
-    this.setState({
-      showButton: !this.state.showButton,
-      showForm: !this.state.showForm
-    });
-  };
-
-  onFabClick = () => {
-    this.setState({
-      showButton: !this.state.showButton,
-      showForm: !this.state.showForm
-    });
-  };
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.tasks) {
-      return {
-        showButton: nextProps.tasks.length > 0 ? true : false,
-        showForm: nextProps.tasks.length > 0 ? false : true
-      };
-    }
-    return { ...nextProps };
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.tasks.length > 0 && this.props.tasks.length == 0)
+      this.toggleControls();
   }
 
+  toggleControls = () => {
+    this.setState({ controls: !this.state.controls });
+  };
+
   render() {
-    const { classes, tasks, projectId } = this.props;
-    const { showButton, showForm } = this.state;
+    const { classes, tasks } = this.props;
+    const { controls } = this.state;
     return (
-      <Grid
-        container
-        style={{ marginTop: 8 }}
-        direction="column"
-        alignItems="center"
-      >
-        {showForm && (
+      <Grid container style={{ marginTop: 8 }} justify="center">
+        {!controls && (
           <TaskForm
-            projectId={projectId}
-            onToggleState={this.handleToggleState}
+            onToggleControls={this.toggleControls}
+            showCancelButton={tasks.length > 0}
           />
         )}
-        {tasks.length == 0 &&
-          !showForm && (
-            <Typography
-              style={{ marginTop: 8 }}
-              variant="headline"
-              color="inherit"
-            >
-              Nothing to list here!
-            </Typography>
+        {controls &&
+          tasks.length > 0 && (
+            <Grid item xs={12} sm={8} md={6} style={{ position: "relative" }}>
+              <Card className={classes.card}>
+                <CardHeader
+                  classes={{
+                    root: classes.cardHeader,
+                    subheader: classes.subheader
+                  }}
+                  subheader="Tasks"
+                />
+                <CardContent classes={{ root: classes.cardContent }}>
+                  {tasks.map(task => (
+                    <EditableTaskItemLayout task={task} key={task._id} />
+                  ))}
+                </CardContent>
+              </Card>
+              {controls && (
+                <Button
+                  classes={{ mini: classes.fab }}
+                  color="secondary"
+                  variant="fab"
+                  mini
+                  onClick={this.toggleControls}
+                >
+                  +
+                </Button>
+              )}
+            </Grid>
           )}
-        {!showForm && (
-          <Grid item classes={{ item: classes.item }} xs={12} md={6}>
-            <Card
-              className={classes.card}
-              onMouseLeave={this.toggleRaised}
-              onMouseEnter={this.toggleRaised}
-            >
-              <CardHeader
-                classes={{ root: classes.header, subheader: classes.subheader }}
-                subheader="Tasks"
-              />
-              <CardContent classes={{ root: classes.content }}>
-                {tasks.map(task => (
-                  <PrivateTaskItem
-                    key={task._id}
-                    onToggleStatus={this.handleStatusChange}
-                    onArchive={this.handleArchive}
-                    task={task}
-                  />
-                ))}
-              </CardContent>
-            </Card>
-            {showButton && (
-              <Button
-                classes={{ fab: classes.fab }}
-                mini
-                variant="fab"
-                color="secondary"
-                type="button"
-                onClick={this.onFabClick}
-              >
-                +
-              </Button>
-            )}
-          </Grid>
-        )}
       </Grid>
     );
   }

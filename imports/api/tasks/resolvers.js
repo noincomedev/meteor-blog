@@ -28,11 +28,11 @@ export default {
       }
       throw new Error("Unauthorized");
     },
-    toggleTaskStatus(obj, args, { userId }) {
+    deleteTask(obj, args, { userId }) {
       if (userId) {
         const taskId = Tasks.update(
           { _id: args._id },
-          { $set: { status: !args.status } }
+          { $set: { status: false } }
         );
         return taskId;
       }
@@ -52,6 +52,16 @@ export default {
     editTask(obj, args, { userId }) {
       if (userId) {
         const taskId = Tasks.update({ _id: args._id }, { $set: args });
+        return taskId;
+      }
+      throw new Error("Unauthorized");
+    },
+    toggleTask(obj, args, { userId }) {
+      if (userId) {
+        const taskId = Tasks.update(
+          { _id: args._id },
+          { $set: { completed: args.completed } }
+        );
         return taskId;
       }
       throw new Error("Unauthorized");

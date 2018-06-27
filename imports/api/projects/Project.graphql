@@ -8,6 +8,7 @@ type Project {
   description: String
   imageUrl: String
   tag: String
+  tasks: [Task]
 }
 
 extend type Mutation {

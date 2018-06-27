@@ -1,4 +1,5 @@
 import Projects from "./Projects";
+import Tasks from "../tasks/Tasks";
 
 export default {
   Query: {
@@ -12,7 +13,13 @@ export default {
       return Projects.findOne({ owner: userId, _id, status: true });
     }
   },
-  Project: {},
+  Project: {
+    tasks: project =>
+      Tasks.find(
+        { owner: project._id, status: true },
+        { sort: { created: -1 } }
+      ).fetch({})
+  },
   Mutation: {
     createProject(obj, { name, description, imageUrl, tag }, { userId }) {
       if (userId) {

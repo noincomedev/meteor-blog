@@ -5,20 +5,21 @@ type Task {
   status: Boolean
   created: String
   updated: String
-  completed: String
   archived: Boolean
   name: String
   description: String
+  completed: Boolean
 }
 
-extend type Mutation {
+type Mutation {
   archiveTask(_id: String!): Task
-  toggleTaskStatus(_id: String!, status: Boolean!): Task
+  deleteTask(_id: String!): Task
   createTask(owner: String!, name: String!, description: String!): Task
   editTask(_id: String!, name: String!, description: String!): Task
+  toggleTask(_id: String!, completed: Boolean!): Task
 }
 
-extend type Query {
+type Query {
   task(_id: String!): Task
   tasks(owner: String!): [Task]
 }

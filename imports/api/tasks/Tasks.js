@@ -52,15 +52,16 @@ Tasks.schema = new SimpleSchema({
     label: "The description of this task.",
     optional: false
   },
-  completed: {
-    type: String,
-    label: "The date this task was completed.",
-    optional: true
-  },
   archived: {
     type: Boolean,
     label: "Flag archived.",
     optional: true,
+    autoValue() {
+      if (this.isInsert) return false;
+    }
+  },
+  completed: {
+    type: Boolean,
     autoValue() {
       if (this.isInsert) return false;
     }

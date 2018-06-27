@@ -11,23 +11,15 @@ import Typography from "@material-ui/core/Typography";
 import Settings from "@material-ui/icons/Settings";
 import { withStyles } from "@material-ui/core/styles";
 
+import PrivateTasksListLayout from "../layouts/components/list/PrivateTaskListLayout";
 import ProjectForm from "../components/project/ProjectForm";
 
 import Spinner from "../components/utils/Spinner";
 
-export const GET_PROJECT = gql`
-  query Project($_id: String!) {
-    project(_id: $_id) {
-      _id
-      name
-      description
-      imageUrl
-      tag
-    }
-  }
-`;
-
 const styles = theme => ({
+  divider: {
+    marginBottom: theme.spacing.unit
+  },
   header: {
     display: "flex",
     flex: 1,
@@ -56,19 +48,18 @@ class ProjectPage extends Component {
     const { controls } = this.state;
     const { params } = match;
     const { _id } = params;
-
     return (
-      <Query query={GET_PROJECT} variables={{ _id }}>
+      <Query query={GET_PROJECT_TASKS} variables={{ _id }} pollInterval={500}>
         {({ loading, error, data }) => {
           if (loading) return <Spinner />;
-          if (error) return <Redirect to="/" />;
+          if (error) return `Error!: ${error}`;
           const { project } = data;
           return (
             <Grid container className={classes.container} justify="center">
               <header className={classes.header}>
                 <Typography
                   className={classNames(!controls && classes.title)}
-                  variant="title"
+                  variant="headline"
                   color="inherit"
                 >
                   {project.name}
@@ -80,7 +71,7 @@ class ProjectPage extends Component {
                 )}
               </header>
               <Grid item xs={12}>
-                <Divider />
+                <Divider className={classes.divider} />
                 {!controls &&
                   project && (
                     <ProjectForm
@@ -89,6 +80,7 @@ class ProjectPage extends Component {
                       handleToggleControls={this.toggleControls}
                     />
                   )}
+                {controls && <PrivateTasksListLayout tasks={project.tasks} />}
               </Grid>
             </Grid>
           );
@@ -97,5 +89,26 @@ class ProjectPage extends Component {
     );
   }
 }
+
+export const GET_PROJECT_TASKS = gql`
+  query project($_id: String!) {
+    project(_id: $_id) {
+      _id
+      name
+      description
+      imageUrl
+      tag
+      tasks {
+        _id
+        owner
+        status
+        archived
+        name
+        description
+        completed
+      }
+    }
+  }
+`;
 
 export default withStyles(styles, { withTheme: true })(withRouter(ProjectPage));

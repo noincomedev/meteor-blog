@@ -8,6 +8,29 @@ import PublicList from "../../../components/post/list/Public";
 
 import Spinner from "../../../components/utils/Spinner";
 
+const PostListLayout = ({ user }) =>
+  user ? (
+    <Query query={USER_POSTS} variables={{ owner: Meteor.userId() }}>
+      {({ loading, error, data }) => {
+        if (loading) return <Spinner />;
+        if (error) return `Error!: ${error}`;
+        if (data) return <PrivateList user={user} posts={data.posts} />;
+      }}
+    </Query>
+  ) : (
+    <Query query={PUBLIC_POSTS} pollInterval={500}>
+      {({ loading, error, data }) => {
+        if (loading) return <Spinner />;
+        if (error) return `Error!: ${error}`;
+        if (data) return <PublicList posts={data.publicPosts} />;
+      }}
+    </Query>
+  );
+
+PostListLayout.propTypes = {
+  user: PropTypes.object
+};
+
 export const USER_POSTS = gql`
   query posts($owner: String!) {
     posts(owner: $owner) {
@@ -43,28 +66,5 @@ const PUBLIC_POSTS = gql`
     }
   }
 `;
-
-const PostListLayout = ({ user }) =>
-  user ? (
-    <Query query={USER_POSTS} variables={{ owner: Meteor.userId() }}>
-      {({ loading, error, data }) => {
-        if (loading) return <Spinner />;
-        if (error) return `Error!: ${error}`;
-        if (data) return <PrivateList user={user} posts={data.posts} />;
-      }}
-    </Query>
-  ) : (
-    <Query query={PUBLIC_POSTS} pollInterval={500}>
-      {({ loading, error, data }) => {
-        if (loading) return <Spinner />;
-        if (error) return `Error!: ${error}`;
-        if (data) return <PublicList posts={data.publicPosts} />;
-      }}
-    </Query>
-  );
-
-PostListLayout.propTypes = {
-  user: PropTypes.object
-};
 
 export default PostListLayout;
