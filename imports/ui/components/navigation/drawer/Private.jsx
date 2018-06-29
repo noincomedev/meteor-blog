@@ -119,11 +119,20 @@ const Private = ({ classes, open, toggleDrawer, theme, width }) => {
               <Item linkTo="/wip" text="WIP">
                 <Timeline />
               </Item>
-              <Hidden smDown>
-                {projects.map(project => (
-                  <Subitem key={project._id} project={project} />
-                ))}
-              </Hidden>
+              {!open && (
+                <Hidden smDown>
+                  {projects.map(project => (
+                    <Subitem key={project._id} project={project} />
+                  ))}
+                </Hidden>
+              )}
+              {open && (
+                <div>
+                  {projects.map(project => (
+                    <Subitem key={project._id} project={project} />
+                  ))}
+                </div>
+              )}
             </List>
           </Drawer>
         );

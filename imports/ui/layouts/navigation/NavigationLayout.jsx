@@ -39,7 +39,11 @@ class NavigationLayout extends Component {
   };
 
   toggleDrawer = () => {
-    this.setState({ open: !this.state.open });
+    this.setState(prevState => {
+      const { open } = prevState;
+      this.props.handleToggleDrawer(!open);
+      return { open: !open };
+    });
   };
 
   render() {
@@ -60,6 +64,10 @@ class NavigationLayout extends Component {
     );
   }
 }
+
+NavigationLayout.propTypes = {
+  handleToggleDrawer: PropTypes.func.isRequired
+};
 
 export default withStyles(styles, { withTheme: true })(
   withApollo(withRouter(NavigationLayout))

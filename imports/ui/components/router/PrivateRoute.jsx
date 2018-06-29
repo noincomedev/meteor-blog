@@ -1,4 +1,5 @@
-import React, { Fragment } from "react";
+import React, { Component, Fragment } from "react";
+import classNames from "classnames";
 import { Helmet } from "react-helmet";
 import { Route, Redirect } from "react-router-dom";
 import { PropTypes } from "prop-types";
@@ -28,41 +29,62 @@ const styles = theme => ({
       marginTop: 64,
       marginLeft: 0
     }
+  },
+  openDrawer: {
+    paddingLeft: 240
   }
 });
 
-const PrivateRoute = ({
-  classes,
-  client,
-  component,
-  content,
-  exact,
-  name,
-  path,
-  title
-}) => {
-  const { user } = client.readQuery({ query: CURRENT_USER });
-  if (!user) {
-    return <Redirect to="/" />;
-  }
+class PrivateRoute extends Component {
+  state = {
+    open: false
+  };
 
-  return (
-    <Route
-      exact={exact}
-      path={path}
-      render={props => (
-        <Fragment>
-          <Helmet>
-            <title>{`NOINCOMEDEV | ${title}`}</title>
-            <meta name={name} content={content} />
-          </Helmet>
-          <NavigationLayout title={title} />
-          <main className={classes.main}>{React.createElement(component)}</main>
-        </Fragment>
-      )}
-    />
-  );
-};
+  onToggleDrawer = open => {
+    this.setState({ open });
+  };
+
+  render() {
+    const {
+      classes,
+      client,
+      component,
+      content,
+      exact,
+      name,
+      path,
+      title
+    } = this.props;
+    const { open } = this.state;
+    const { user } = client.readQuery({ query: CURRENT_USER });
+    if (!user) {
+      return <Redirect to="/" />;
+    }
+    return (
+      <Route
+        exact={exact}
+        path={path}
+        render={props => (
+          <Fragment>
+            <Helmet>
+              <title>{`NOINCOMEDEV | ${title}`}</title>
+              <meta name={name} content={content} />
+            </Helmet>
+            <NavigationLayout
+              title={title}
+              handleToggleDrawer={this.onToggleDrawer}
+            />
+            <main
+              className={classNames(classes.main, open && classes.openDrawer)}
+            >
+              {React.createElement(component)}
+            </main>
+          </Fragment>
+        )}
+      />
+    );
+  }
+}
 
 PrivateRoute.propTypes = {
   client: PropTypes.object.isRequired,
