@@ -6,9 +6,6 @@ import { PropTypes } from "prop-types";
 import { withApollo } from "react-apollo";
 import { withRouter } from "react-router-dom";
 
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
 import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -18,6 +15,10 @@ import { withStyles } from "@material-ui/core/styles";
 import ValidatedForm from "../utils/ValidatedForm";
 
 const styles = theme => ({
+  divider: {
+    marginTop: theme.spacing.unit,
+    marginBottom: theme.spacing.unit
+  },
   textField: {
     marginTop: 0
   }
@@ -126,83 +127,92 @@ class TaskForm extends Component {
   };
 
   render() {
-    const { classes, showCancelButton, task } = this.props;
+    const { classes, showCancelButton, task, theme } = this.props;
     const { archived, description, name } = this.state;
     return (
-      <Grid container>
-        <Card>
-          <CardHeader title={`${task ? "Edit" : "Create"} Task`} />
-          <Divider />
-          <CardContent>
-            <ValidatedForm onHandleSubmit={this.handleSubmit}>
-              <TextField
-                id="name"
-                name="name"
-                label="Name"
-                className={classes.textField}
-                value={name}
-                onChange={this.handleChange}
-                margin="normal"
-                fullWidth
-                required
-                disabled={task ? task.archived : false}
-              />
-              <TextField
-                id="description"
-                name="description"
-                label="Description"
-                rows={3}
-                value={description}
-                onChange={this.handleChange}
-                margin="normal"
-                fullWidth
-                required
-                multiline
-                disabled={task ? task.archived : false}
-              />
-              <Grid container justify="center" spacing={8}>
-                {showCancelButton && (
-                  <Grid item xs={4}>
-                    <Button
-                      type="button"
-                      variant="contained"
-                      color="inherit"
-                      fullWidth
-                      onClick={this.handleCancel}
-                    >
-                      Cancel
-                    </Button>
-                  </Grid>
-                )}
-                {task && (
-                  <Grid item xs={4}>
-                    <Button
-                      type="button"
-                      variant="raised"
-                      color="secondary"
-                      fullWidth
-                      onClick={this.handleDelete}
-                    >
-                      Delete
-                    </Button>
-                  </Grid>
-                )}
-                {!archived && (
-                  <Grid item xs={4}>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      fullWidth
-                    >
-                      {task ? "Save" : "Add"}
-                    </Button>
-                  </Grid>
-                )}
+      <Grid
+        container
+        justify="center"
+        classes={{ container: classes.container }}
+      >
+        <ValidatedForm
+          style={{
+            border: `1px solid ${theme.palette.grey[400]}`,
+            padding: theme.spacing.unit
+          }}
+          onHandleSubmit={this.handleSubmit}
+        >
+          <TextField
+            id="name"
+            name="name"
+            label="Name"
+            className={classes.textField}
+            value={name}
+            onChange={this.handleChange}
+            margin="normal"
+            fullWidth
+            required
+            disabled={task ? task.archived : false}
+          />
+          <TextField
+            id="description"
+            name="description"
+            label="Description"
+            rows={3}
+            value={description}
+            onChange={this.handleChange}
+            margin="normal"
+            fullWidth
+            required
+            multiline
+            disabled={task ? task.archived : false}
+          />
+          <Grid container justify="center" spacing={8}>
+            {showCancelButton && (
+              <Grid item xs={4}>
+                <Button
+                  type="button"
+                  variant="contained"
+                  color="inherit"
+                  fullWidth
+                  onClick={this.handleCancel}
+                >
+                  Cancel
+                </Button>
               </Grid>
-            </ValidatedForm>
-          </CardContent>
-        </Card>
+            )}
+            {task && (
+              <Grid item xs={4}>
+                <Button
+                  type="button"
+                  variant="raised"
+                  color="secondary"
+                  fullWidth
+                  onClick={this.handleDelete}
+                >
+                  Delete
+                </Button>
+              </Grid>
+            )}
+            {!archived && (
+              <Grid item xs={4}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                >
+                  {task ? "Save" : "Add"}
+                </Button>
+              </Grid>
+            )}
+          </Grid>
+        </ValidatedForm>
+        {task && (
+          <Grid item xs={12}>
+            <Divider className={classes.divider} />
+          </Grid>
+        )}
       </Grid>
     );
   }

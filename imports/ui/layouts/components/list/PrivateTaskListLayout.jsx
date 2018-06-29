@@ -20,8 +20,8 @@ const styles = theme => ({
   },
   cardContent: {
     position: "relative",
-    minHeight: "22vh",
-    maxHeight: "33vh",
+    minHeight: "33vh",
+    maxHeight: "60vh",
     overflow: "scroll"
   },
   cardHeader: {
@@ -115,44 +115,40 @@ class PrivateTaskListLayout extends Component {
     const { controls } = this.state;
     return (
       <Grid container style={{ marginTop: 8 }} justify="center">
-        {!controls && (
-          <Grid item xs={12} sm={8} md={6}>
-            <TaskForm
-              onToggleControls={this.toggleControls}
-              showCancelButton={tasks.length > 0}
+        <Grid item xs={12} sm={8} md={6} style={{ position: "relative" }}>
+          <Card className={classes.card}>
+            <CardHeader
+              classes={{
+                root: classes.cardHeader,
+                subheader: classes.subheader
+              }}
+              subheader={controls ? "Tasks" : "New Task"}
             />
-          </Grid>
-        )}
-        {controls &&
-          tasks.length > 0 && (
-            <Grid item xs={12} sm={8} md={6} style={{ position: "relative" }}>
-              <Card className={classes.card}>
-                <CardHeader
-                  classes={{
-                    root: classes.cardHeader,
-                    subheader: classes.subheader
-                  }}
-                  subheader="Tasks"
+            <CardContent classes={{ root: classes.cardContent }}>
+              {!controls ? (
+                <TaskForm
+                  onToggleControls={this.toggleControls}
+                  showCancelButton={tasks.length > 0}
                 />
-                <CardContent classes={{ root: classes.cardContent }}>
-                  {tasks.map(task => (
-                    <EditableTaskItemLayout task={task} key={task._id} />
-                  ))}
-                </CardContent>
-              </Card>
-              {controls && (
-                <Button
-                  classes={{ mini: classes.fab }}
-                  color="secondary"
-                  variant="fab"
-                  mini
-                  onClick={this.toggleControls}
-                >
-                  +
-                </Button>
+              ) : (
+                tasks.map(task => (
+                  <EditableTaskItemLayout task={task} key={task._id} />
+                ))
               )}
-            </Grid>
+            </CardContent>
+          </Card>
+          {controls && (
+            <Button
+              classes={{ mini: classes.fab }}
+              color="secondary"
+              variant="fab"
+              mini
+              onClick={this.toggleControls}
+            >
+              +
+            </Button>
           )}
+        </Grid>
       </Grid>
     );
   }

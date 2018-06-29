@@ -60,8 +60,10 @@ class ValidatedForm extends Component {
   };
 
   render() {
+    const { style } = this.props;
     return (
       <form
+        style={style}
         ref={form => (this.form = form)}
         onSubmit={event => event.preventDefault()}
       >
@@ -74,7 +76,8 @@ class ValidatedForm extends Component {
 ValidatedForm.propTypes = {
   rules: PropTypes.object,
   messages: PropTypes.object,
-  onHandleSubmit: PropTypes.func.isRequired
+  onHandleSubmit: PropTypes.func.isRequired,
+  style: PropTypes.object
 };
 
 export default withStyles(styles, { withTheme: true })(ValidatedForm);

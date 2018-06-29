@@ -146,7 +146,8 @@ class PrivateTaskItem extends Component {
           <div
             style={{
               display: task.archived && "inline-flex",
-              alignItems: "center"
+              alignItems: "center",
+              height: "100%"
             }}
           >
             <Typography
