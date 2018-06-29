@@ -50,6 +50,16 @@ export default {
         return projectId;
       }
       throw new Error("Unauthorized");
+    },
+    togglePrivate(obj, args, { userId }) {
+      if (userId) {
+        const projectId = Projects.update(
+          { _id: args._id, owner: userId },
+          { $set: { private: args.private } }
+        );
+        return projectId;
+      }
+      throw new Error("Unauthorized");
     }
   }
 };

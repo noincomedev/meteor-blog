@@ -11,60 +11,21 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import Divider from "@material-ui/core/Divider";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
+import Switch from "@material-ui/core/Switch";
 import TextField from "@material-ui/core/TextField";
 
 import ValidatedForm from "../utils/ValidatedForm";
 
-const CREATE_PROJECT = gql`
-  mutation createProject(
-    $name: String!
-    $description: String!
-    $imageUrl: String!
-    $tag: String!
-  ) {
-    createProject(
-      name: $name
-      description: $description
-      imageUrl: $imageUrl
-      tag: $tag
-    ) {
-      _id
-    }
-  }
-`;
-
-const EDIT_PROJECT = gql`
-  mutation editProject(
-    $_id: String!
-    $name: String!
-    $description: String!
-    $imageUrl: String!
-    $tag: String!
-  ) {
-    editProject(
-      _id: $_id
-      name: $name
-      description: $description
-      imageUrl: $imageUrl
-      tag: $tag
-    ) {
-      _id
-    }
-  }
-`;
-
-const DELETE_PROJECT = gql`
-  mutation deleteProject($_id: String!) {
-    deleteProject(_id: $_id) {
-      _id
-    }
-  }
-`;
-
 const styles = theme => ({
   container: {
     marginTop: theme.spacing.unit
+  },
+  headerContent: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "space-between"
   },
   textField: {
     marginTop: 0
@@ -80,13 +41,21 @@ class ProjectForm extends Component {
       description: project ? project.description : "",
       imageUrl: project ? project.imageUrl : "",
       tag: project ? project.tag : "",
-      _id: project ? project._id : ""
+      _id: project ? project._id : "",
+      private: project ? project.private : false
     };
   }
 
   handleChange = event => {
     const name = event.target.id,
       value = event.target.value;
+    if (name == "private")
+      this.props.togglePrivate({
+        variables: {
+          _id: this.props.project._id,
+          private: event.target.checked
+        }
+      });
     this.setState({ [name]: value });
   };
 
@@ -187,7 +156,23 @@ class ProjectForm extends Component {
       >
         <Grid item xs={12} sm={8} md={6}>
           <Card>
-            <CardHeader title={`${project ? "Edit" : "Create"} Project`} />
+            <CardHeader
+              title={`${project ? "Edit" : "Create"} Project`}
+              classes={{ content: classes.headerContent }}
+              subheader={
+                <FormControlLabel
+                  control={
+                    <Switch
+                      id="private"
+                      onChange={this.handleChange}
+                      checked={project.private}
+                      value="private"
+                    />
+                  }
+                  label="Private"
+                />
+              }
+            />
             <Divider />
             <CardContent>
               <ValidatedForm onHandleSubmit={this.handleSubmit}>
@@ -241,7 +226,7 @@ class ProjectForm extends Component {
                         fullWidth
                         onClick={this.handleCancel}
                       >
-                        Cancel
+                        Back
                       </Button>
                     </Grid>
                   )}
@@ -284,6 +269,60 @@ ProjectForm.propTypes = {
   showCancelButton: PropTypes.bool
 };
 
+const CREATE_PROJECT = gql`
+  mutation createProject(
+    $name: String!
+    $description: String!
+    $imageUrl: String!
+    $tag: String!
+  ) {
+    createProject(
+      name: $name
+      description: $description
+      imageUrl: $imageUrl
+      tag: $tag
+    ) {
+      _id
+    }
+  }
+`;
+
+const EDIT_PROJECT = gql`
+  mutation editProject(
+    $_id: String!
+    $name: String!
+    $description: String!
+    $imageUrl: String!
+    $tag: String!
+  ) {
+    editProject(
+      _id: $_id
+      name: $name
+      description: $description
+      imageUrl: $imageUrl
+      tag: $tag
+    ) {
+      _id
+    }
+  }
+`;
+
+const DELETE_PROJECT = gql`
+  mutation deleteProject($_id: String!) {
+    deleteProject(_id: $_id) {
+      _id
+    }
+  }
+`;
+
+const TOGGLE_PRIVATE = gql`
+  mutation togglePrivate($_id: String!, $private: Boolean!) {
+    togglePrivate(_id: $_id, private: $private) {
+      _id
+    }
+  }
+`;
+
 export default compose(
   graphql(EDIT_PROJECT, {
     name: "editProject",
@@ -301,6 +340,13 @@ export default compose(
   }),
   graphql(CREATE_PROJECT, {
     name: "createProject",
+    options: {
+      refetchQueries: ["projects"],
+      variables: { owner: Meteor.userId() }
+    }
+  }),
+  graphql(TOGGLE_PRIVATE, {
+    name: "togglePrivate",
     options: {
       refetchQueries: ["projects"],
       variables: { owner: Meteor.userId() }

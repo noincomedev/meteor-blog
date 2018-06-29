@@ -61,6 +61,12 @@ Projects.schema = new SimpleSchema({
     type: String,
     label: "The tag of this project.",
     optional: true
+  },
+  private: {
+    type: Boolean,
+    autoValue() {
+      if (this.isInsert) return false;
+    }
   }
 });
 

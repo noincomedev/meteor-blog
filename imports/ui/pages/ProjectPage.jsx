@@ -98,6 +98,7 @@ export const GET_PROJECT_TASKS = gql`
       description
       imageUrl
       tag
+      private
       tasks {
         _id
         owner

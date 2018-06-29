@@ -9,6 +9,7 @@ type Project {
   imageUrl: String
   tag: String
   tasks: [Task]
+  private: Boolean
 }
 
 extend type Mutation {
@@ -26,6 +27,7 @@ extend type Mutation {
     tag: String!
   ): Project
   deleteProject(_id: String!): Project
+  togglePrivate(_id: String!, private: Boolean!): Project
 }
 
 extend type Query {
