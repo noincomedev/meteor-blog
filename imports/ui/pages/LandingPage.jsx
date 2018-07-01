@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import classNames from "classnames";
-import { Link } from "react-router-dom";
 
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
@@ -11,13 +9,10 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 
-import InboxIcon from "@material-ui/icons/Inbox";
-import DraftsIcon from "@material-ui/icons/Drafts";
-
+import PublicProjectList from "../../ui/components/project/list/Public";
 import PostListLayout from "../layouts/components/list/PostListLayout";
 
 import SubscribeToNewsletter from "../components/utils/SubscribeToNewsletter";
@@ -102,6 +97,7 @@ const LandingPage = ({ classes }) => {
   const InstagramWrapper = ({ children }) => (
     <div className={classes.instagramWrapper}>{children}</div>
   );
+
   return (
     <div>
       <Grid container alignItems="flex-start" spacing={16}>
@@ -121,7 +117,7 @@ const LandingPage = ({ classes }) => {
               <Typography variant="headline">Working On</Typography>
               <Divider className={classes.divider} />
             </Grid>
-            <p>WORKING ON THIS FEATURE</p>
+            <PublicProjectList />
           </div>
           <Hidden smDown>
             <div className={classes.itemContainer}>

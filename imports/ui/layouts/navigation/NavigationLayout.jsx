@@ -66,7 +66,7 @@ class NavigationLayout extends Component {
 }
 
 NavigationLayout.propTypes = {
-  handleToggleDrawer: PropTypes.func.isRequired
+  handleToggleDrawer: PropTypes.func
 };
 
 export default withStyles(styles, { withTheme: true })(

@@ -20,27 +20,15 @@ const styles = theme => ({
   }
 });
 
-const PrivateProjectItem = ({ classes, project }) => (
-  <ListItem
-    dense
-    button
-    component={Link}
-    to={`/projects/${project._id}`}
-    divider
-  >
+const PublicProjectItem = ({ classes, project }) => (
+  <ListItem button component={Link} to={`/projects/${project._id}`}>
     <Avatar alt="Project Cover Image" src={project.imageUrl} />
     <ListItemText primary={project.name} />
-    {project.private && (
-      <ListItemSecondaryAction classes={{ root: classes.secondaryAction }}>
-        <Typography variant="caption">Private</Typography>
-        <Lock className={classes.lock} />
-      </ListItemSecondaryAction>
-    )}
   </ListItem>
 );
 
-PrivateProjectItem.propTypes = {
+PublicProjectItem.propTypes = {
   project: PropTypes.object.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(PrivateProjectItem);
+export default withStyles(styles)(PublicProjectItem);

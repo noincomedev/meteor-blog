@@ -11,6 +11,9 @@ export default {
     },
     project(obj, { _id }, { userId }) {
       return Projects.findOne({ owner: userId, _id, status: true });
+    },
+    publicProjects(obj, args, context) {
+      return Projects.find({ status: true, private: false }).fetch({});
     }
   },
   Project: {

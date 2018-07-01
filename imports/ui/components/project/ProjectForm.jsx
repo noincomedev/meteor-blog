@@ -160,17 +160,19 @@ class ProjectForm extends Component {
               title={`${project ? "Edit" : "Create"} Project`}
               classes={{ content: classes.headerContent }}
               subheader={
-                <FormControlLabel
-                  control={
-                    <Switch
-                      id="private"
-                      onChange={this.handleChange}
-                      checked={project.private}
-                      value="private"
-                    />
-                  }
-                  label="Private"
-                />
+                project && (
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        id="private"
+                        onChange={this.handleChange}
+                        checked={project.private}
+                        value="private"
+                      />
+                    }
+                    label="Private"
+                  />
+                )
               }
             />
             <Divider />
@@ -250,7 +252,7 @@ class ProjectForm extends Component {
                       color="primary"
                       fullWidth
                     >
-                      {project ? "Save" : "Create"}
+                      {project ? "Save" : "Add"}
                     </Button>
                   </Grid>
                 </Grid>

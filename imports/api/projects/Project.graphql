@@ -33,4 +33,5 @@ extend type Mutation {
 extend type Query {
   project(_id: String!): Project
   projects(owner: String!): [Project]
+  publicProjects: [Project]
 }
