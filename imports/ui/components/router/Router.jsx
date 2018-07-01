@@ -67,7 +67,7 @@ const Router = ({ loading, user }) => {
                 title="Posts"
                 component={PostsPage}
               />
-              <PrivateRoute
+              <MultiRoute
                 name="Project Page"
                 content="Project Page"
                 exact
