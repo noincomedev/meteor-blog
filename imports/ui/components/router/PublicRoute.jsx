@@ -16,17 +16,16 @@ import { CURRENT_USER } from "./Router";
 
 const styles = theme => ({
   main: {
-    display: "flex",
     flex: 1,
     backgroundColor: theme.palette.background.default,
-    padding: 24,
     marginTop: 56,
     [theme.breakpoints.up("sm")]: {
       marginTop: 64
     }
   },
   landingPageMain: {
-    marginTop: 0
+    marginTop: 0,
+    padding: 24
   }
 });
 
@@ -56,8 +55,9 @@ const PublicRoute = ({
             <NavigationLayout location={location} />
             <main
               className={classNames(
-                location.pathname == "/" && classes.landingPageMain,
-                classes.main
+                location.pathname == "/"
+                  ? classes.landingPageMain
+                  : classes.main
               )}
             >
               {React.createElement(component, { name })}

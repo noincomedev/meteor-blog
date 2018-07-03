@@ -9,6 +9,9 @@ type Project {
   imageUrl: String
   tag: String
   tasks: [Task]
+  tasksCount: Int
+  completedTasksCount: Int
+  activeTasksCount: Int
   private: Boolean
 }
 

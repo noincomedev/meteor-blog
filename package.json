@@ -3,7 +3,6 @@
   "private": true,
   "scripts": {
     "start": "meteor run",
-    "dev": "MONGO_URL=mongodb://admin:Diegoro1108@ds161459.mlab.com:61459/noincomeblog meteor --settings settings-development.json",
     "devlocal": "meteor --settings settings-development.json",
     "prodlocal": "meteor --settings settings-production.json"
   },

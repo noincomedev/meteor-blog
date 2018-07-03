@@ -25,7 +25,28 @@ export default {
       Tasks.find(
         { owner: project._id, status: true },
         { sort: { created: -1 } }
-      ).fetch({})
+      ).fetch({}),
+    tasksCount: project => {
+      const tasks = Tasks.find({ owner: project._id }).fetch({});
+      return tasks.length;
+    },
+    completedTasksCount: project => {
+      const completedTasks = Tasks.find({
+        owner: project._id,
+        completed: true,
+        status: true,
+        archived: true
+      }).fetch({});
+      return completedTasks.length;
+    },
+    activeTasksCount: project => {
+      const activeTasks = Tasks.find({
+        owner: project._id,
+        status: true,
+        archived: false
+      }).fetch({});
+      return activeTasks.length;
+    }
   },
   Mutation: {
     createProject(obj, { name, description, imageUrl, tag }, { userId }) {

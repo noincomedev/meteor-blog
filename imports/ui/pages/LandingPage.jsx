@@ -38,8 +38,7 @@ const styles = theme => ({
   instagramContainer: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: "center"
   },
   instagramIcon: {
     color: theme.palette.secondary.main,
@@ -50,7 +49,7 @@ const styles = theme => ({
     fontFamily: "Oleo Script",
     textShadow: `1px 1px ${theme.palette.secondary.light}`
   },
-  instagramWrapper: {},
+  instagramWrapper: { margin: theme.spacing.unit },
   item: {
     flex: 1,
     width: "100%"
@@ -79,8 +78,7 @@ const styles = theme => ({
   twitterContainer: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: "center"
   },
   twitterIcon: {
     color: theme.palette.custom.text,
@@ -99,10 +97,80 @@ const LandingPage = ({ classes }) => {
   );
 
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column" }}>
       <Grid container alignItems="flex-start" spacing={16}>
         <Grid item xs={12} md={8}>
           <PostListLayout />
+          <Grid
+            container
+            justify="space-around"
+            classes={{ container: classes.feedsContainer }}
+            spacing={16}
+          >
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              classes={{ item: classes.twitterContainer }}
+            >
+              <i
+                className={classNames(
+                  "fab fa-twitter fa-3x",
+                  classes.twitterIcon
+                )}
+              />
+              <Typography
+                color="secondary"
+                variant="display3"
+                classes={{ display3: classes.twitterLogo }}
+              >
+                Twitter
+              </Typography>
+              <Timeline
+                dataSource={{
+                  sourceType: "profile",
+                  screenName: "noincomedev"
+                }}
+                options={{
+                  username: "Noincomedev",
+                  height: "600",
+                  width: "100%"
+                }}
+                onLoad={() => {}}
+              />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              classes={{ item: classes.instagramContainer }}
+            >
+              <i
+                className={classNames(
+                  "fab fa-instagram fa-3x",
+                  classes.instagramIcon
+                )}
+              />
+              <Typography
+                variant="display3"
+                classes={{ display3: classes.instagramLogo }}
+              >
+                Instagram
+              </Typography>
+              <ReactInstagramFeed
+                accessToken="7596328311.bb8560a.403c9242eeb9404ab44f41331f2dda76"
+                count={1}
+                type="user"
+                param="self"
+                resolution="standard"
+                wrapper={InstagramWrapper}
+                hasLink
+                before={() => {}}
+                after={() => {}}
+                showButton={false}
+              />
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item xs={12} md={4}>
           <div className={classes.itemContainer}>
@@ -184,68 +252,6 @@ const LandingPage = ({ classes }) => {
               </Button>
             </section>
           </div>
-        </Grid>
-      </Grid>
-      <Grid
-        container
-        justify="space-around"
-        classes={{ container: classes.feedsContainer }}
-        spacing={16}
-      >
-        <Grid
-          item
-          xs={6}
-          sm={6}
-          md={4}
-          classes={{ item: classes.twitterContainer }}
-        >
-          <i
-            className={classNames("fab fa-twitter fa-3x", classes.twitterIcon)}
-          />
-          <Typography
-            color="secondary"
-            variant="display3"
-            classes={{ display3: classes.twitterLogo }}
-          >
-            Twitter
-          </Typography>
-          <Timeline
-            dataSource={{ sourceType: "profile", screenName: "noincomedev" }}
-            options={{ username: "Noincomedev", height: "600" }}
-            onLoad={() => {}}
-          />
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sm={6}
-          md={4}
-          classes={{ item: classes.instagramContainer }}
-        >
-          <i
-            className={classNames(
-              "fab fa-instagram fa-3x",
-              classes.instagramIcon
-            )}
-          />
-          <Typography
-            variant="display3"
-            classes={{ display3: classes.instagramLogo }}
-          >
-            Instagram
-          </Typography>
-          <ReactInstagramFeed
-            accessToken="7596328311.bb8560a.403c9242eeb9404ab44f41331f2dda76"
-            count={1}
-            type="user"
-            param="self"
-            resolution="standard"
-            wrapper={InstagramWrapper}
-            hasLink
-            before={() => {}}
-            after={() => {}}
-            showButton={false}
-          />
         </Grid>
       </Grid>
     </div>
