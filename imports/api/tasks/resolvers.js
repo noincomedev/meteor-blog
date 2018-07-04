@@ -71,7 +71,12 @@ export default {
       if (userId) {
         const { _id } = args;
         const taskId = Tasks.update({ _id: args._id }, { $set: args });
-        History.insert({ owner: userId, action: "edit", taskId: _id });
+        History.insert({
+          owner: userId,
+          action: "edit",
+          type: "task",
+          taskId: _id
+        });
         return taskId;
       }
       throw new Error("Unauthorized");
