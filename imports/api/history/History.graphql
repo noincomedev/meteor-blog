@@ -1,7 +1,7 @@
 type History {
   _id: String
+  userId: String
   owner: String
-  taskId: String
   status: Boolean
   created: String
   updated: String

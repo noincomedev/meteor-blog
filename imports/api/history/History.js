@@ -16,9 +16,14 @@ History.deny({
 });
 
 History.schema = new SimpleSchema({
-  owner: {
+  userId: {
     type: String,
     label: "ID of the user this document belongs to.",
+    optional: false
+  },
+  owner: {
+    type: String,
+    label: "ID of the object-action that generated this event.",
     optional: false
   },
   status: {
@@ -41,11 +46,6 @@ History.schema = new SimpleSchema({
     autoValue() {
       if (this.isInsert || this.isUpdate) return new Date().toISOString();
     }
-  },
-  taskId: {
-    type: String,
-    label: "The id of task.",
-    optional: true
   },
   action: {
     type: String,

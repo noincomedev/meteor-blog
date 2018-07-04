@@ -26,10 +26,10 @@ export default {
           { $set: { archived: true } }
         );
         History.insert({
-          owner: userId,
+          userId: userId,
+          owner: args._id,
           action: "archive",
-          type: "task",
-          taskId: args._id
+          type: "task"
         });
         return taskId;
       }
@@ -42,10 +42,10 @@ export default {
           { $set: { status: false } }
         );
         History.insert({
-          owner: userId,
+          userId: userId,
+          owner: args._id,
           action: "delete",
-          type: "task",
-          taskId: args._id
+          type: "task"
         });
         return taskId;
       }
@@ -59,7 +59,8 @@ export default {
           description
         });
         History.insert({
-          owner: userId,
+          userId: userId,
+          owner: taskId,
           action: "create",
           type: "task"
         });
@@ -72,10 +73,10 @@ export default {
         const { _id } = args;
         const taskId = Tasks.update({ _id: args._id }, { $set: args });
         History.insert({
-          owner: userId,
+          userId: userId,
+          owner: _id,
           action: "edit",
-          type: "task",
-          taskId: _id
+          type: "task"
         });
         return taskId;
       }
@@ -88,10 +89,10 @@ export default {
           { $set: { completed: args.completed } }
         );
         History.insert({
-          owner: userId,
+          owner: args._id,
+          userId: userId,
           action: args.completed ? "finish" : "undo",
-          type: "task",
-          taskId: args._id
+          type: "task"
         });
         return taskId;
       }
