@@ -6,4 +6,5 @@ type History {
   created: String
   updated: String
   action: String
+  type: String
 }

@@ -51,6 +51,11 @@ History.schema = new SimpleSchema({
     type: String,
     label: "action on the task",
     optional: false
+  },
+  type: {
+    type: String,
+    label: "type schema model",
+    optional: false
   }
 });
 
