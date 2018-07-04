@@ -12,6 +12,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 
+import PublicHistoryList from "../../ui/components/history/list/Public";
 import PublicProjectList from "../../ui/components/project/list/Public";
 import PostListLayout from "../layouts/components/list/PostListLayout";
 
@@ -178,7 +179,7 @@ const LandingPage = ({ classes }) => {
               <Typography variant="headline">Recent Activity</Typography>
               <Divider className={classes.divider} />
             </Grid>
-            <p>WORKING ON THIS FEATURE</p>
+            <PublicHistoryList />
           </div>
           <div className={classes.itemContainer}>
             <Grid item xs={12} classes={{ item: classes.item }}>

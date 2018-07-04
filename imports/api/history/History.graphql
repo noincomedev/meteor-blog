@@ -7,4 +7,10 @@ type History {
   updated: String
   action: String
   type: String
+  project: Project
+  task: Task
+}
+
+extend type Query {
+  publicHistory: [History]
 }
