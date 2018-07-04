@@ -1,5 +1,6 @@
 import Tasks from "./Tasks";
 import Projects from "../projects/Projects";
+import History from "../history/History";
 
 export default {
   Query: {
@@ -24,6 +25,12 @@ export default {
           { _id: args._id },
           { $set: { archived: true } }
         );
+        History.insert({
+          owner: userId,
+          action: "archive",
+          type: "task",
+          taskId: args._id
+        });
         return taskId;
       }
       throw new Error("Unauthorized");
@@ -34,6 +41,12 @@ export default {
           { _id: args._id },
           { $set: { status: false } }
         );
+        History.insert({
+          owner: userId,
+          action: "delete",
+          type: "task",
+          taskId: args._id
+        });
         return taskId;
       }
       throw new Error("Unauthorized");
@@ -45,13 +58,20 @@ export default {
           name,
           description
         });
+        History.insert({
+          owner: userId,
+          action: "create",
+          type: "task"
+        });
         return taskId;
       }
       throw new Error("Unauthorized");
     },
     editTask(obj, args, { userId }) {
       if (userId) {
+        const { _id } = args;
         const taskId = Tasks.update({ _id: args._id }, { $set: args });
+        History.insert({ owner: userId, action: "edit", taskId: _id });
         return taskId;
       }
       throw new Error("Unauthorized");
@@ -62,6 +82,12 @@ export default {
           { _id: args._id },
           { $set: { completed: args.completed } }
         );
+        History.insert({
+          owner: userId,
+          action: args.completed ? "finish" : "undo",
+          type: "task",
+          taskId: args._id
+        });
         return taskId;
       }
       throw new Error("Unauthorized");
