@@ -1,4 +1,5 @@
 import Posts from "./Posts";
+import History from "../history/History";
 
 export default {
   Query: {
@@ -40,23 +41,43 @@ export default {
           content,
           tags
         });
+        History.insert({
+          userId: userId,
+          owner: postId,
+          action: "create",
+          type: "post"
+        });
         return postId;
       }
       throw new Error("Unauthorized");
     },
     editPost(obj, args, { userId }) {
       if (userId) {
+        const { _id } = args;
         const postId = Posts.update({ _id: args._id }, { $set: args });
+        History.insert({
+          userId: userId,
+          owner: _id,
+          action: "edit",
+          type: "post"
+        });
         return postId;
       }
       throw new Error("Unauthorized");
     },
     deletePost(obj, args, { userId }) {
       if (userId) {
+        const { _id } = args;
         const postId = Posts.update(
           { _id: args._id },
           { $set: { status: false } }
         );
+        History.insert({
+          userId: userId,
+          owner: _id,
+          action: "delete",
+          type: "post"
+        });
         return postId;
       }
       throw new Error("Unauthorized");

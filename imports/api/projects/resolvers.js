@@ -1,5 +1,6 @@
 import Projects from "./Projects";
 import Tasks from "../tasks/Tasks";
+import History from "../history/History";
 
 export default {
   Query: {
@@ -58,33 +59,60 @@ export default {
           imageUrl,
           tag
         });
+        History.insert({
+          userId: userId,
+          owner: projectId,
+          action: "create",
+          type: "project"
+        });
         return projectId;
       }
       throw new Error("Unauthorized");
     },
     editProject(obj, args, { userId }) {
       if (userId) {
+        const { _id } = args;
         const projectId = Projects.update({ _id: args._id }, { $set: args });
+        History.insert({
+          userId: userId,
+          owner: _id,
+          action: "edit",
+          type: "project"
+        });
         return projectId;
       }
       throw new Error("Unauthorized");
     },
     deleteProject(obj, args, { userId }) {
       if (userId) {
+        const { _id } = args;
         const projectId = Projects.update(
           { _id: args._id },
           { $set: { status: false } }
         );
+        History.insert({
+          userId: userId,
+          owner: _id,
+          action: "delete",
+          type: "project"
+        });
         return projectId;
       }
       throw new Error("Unauthorized");
     },
     togglePrivate(obj, args, { userId }) {
       if (userId) {
+        const { _id } = args;
         const projectId = Projects.update(
           { _id: args._id, owner: userId },
           { $set: { private: args.private } }
         );
+        History.insert({
+          userId: userId,
+          owner: _id,
+          action: args.private ? "private" : "public",
+          type: "project"
+        });
         return projectId;
       }
       throw new Error("Unauthorized");
