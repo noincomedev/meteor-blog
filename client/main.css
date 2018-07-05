@@ -21,9 +21,11 @@ a {
 .disqus-comment-count {
   align-self: flex-end;
 }
-
+a .igf-caption {
+  color: #94d6d6;
+}
 a:visited .igf-caption {
-  color: #3b295a;
+  color: #94d6d6;
 }
 a:visited .igf-comment {
   color: #fff;
@@ -32,19 +34,23 @@ a:visited .igf-like {
   color: #fff;
 }
 
-a:hover .igf-caption {
-  color: #cf256d;
-}
-
 .igf-image {
   width: 100%;
-  box-shadow: 2px 2px 5px #616161;
+  border: 2px solid #3b295a;
   border-radius: 15px;
+}
+
+.igf-comment {
+  color: white !important;
+  margin-top: -20%;
+}
+
+.igf-like {
+  color: white !important;
 }
 
 .igf-caption {
   margin: 0;
-  background-color: #eeeeee;
   padding: 8px;
   border-radius: 10px;
 }

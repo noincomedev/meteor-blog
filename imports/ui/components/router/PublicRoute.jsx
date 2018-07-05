@@ -16,8 +16,7 @@ const styles = theme => ({
     [theme.breakpoints.up("sm")]: {
       marginTop: 0
     },
-    paddingTop: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit * 3
+    paddingTop: theme.spacing.unit
   },
   main: {
     flex: 1,

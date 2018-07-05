@@ -11,7 +11,11 @@ import PublicPostItem from "./PublicPostItem";
 const styles = theme => ({
   container: {
     maxHeight: "100vh",
-    overflow: "auto"
+    overflow: "auto",
+    paddingBottom: theme.spacing.unit
+  },
+  item: {
+    paddingTop: theme.spacing.unit
   }
 });
 
@@ -21,7 +25,9 @@ const Public = ({ classes, posts }) => (
       <Typography variant="headline">Recent Articles</Typography>
       <Divider />
     </Grid>
-    {posts.map(post => <PublicPostItem post={post} key={post._id} />)}
+    <Grid item xs={12} classes={{ item: classes.item }}>
+      {posts.map(post => <PublicPostItem post={post} key={post._id} />)}
+    </Grid>
   </Grid>
 );
 

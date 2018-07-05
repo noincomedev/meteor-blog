@@ -21,7 +21,7 @@ const styles = theme => ({
 });
 
 const MainSidenav = ({ classes }) => (
-  <Grid container>
+  <Grid container style={{ height: "100%" }}>
     <Grid item xs={12}>
       <Typography variant="headline">Working On</Typography>
       <Divider className={classes.divider} />
