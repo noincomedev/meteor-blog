@@ -2,7 +2,7 @@ import React from "react";
 import classNames from "classnames";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { withApollo } from "react-apollo";
 import { withStyles } from "@material-ui/core/styles";
@@ -32,50 +32,57 @@ const styles = theme => ({
   }
 });
 
-const Private = ({ classes, client, open, onToggleDrawer }) => (
-  <Toolbar disableGutters className={classNames(open && classes.drawerOpen)}>
-    <Hidden mdUp>
-      <IconButton
-        classes={{
-          root: classNames(!open && classes.menuButton),
-          label: classNames(!open && classes.menuIcon)
-        }}
+const Private = ({ classes, client, history, open, onToggleDrawer }) => {
+  client.onResetStore(() => {
+    history.push("/");
+  });
+  return (
+    <Toolbar disableGutters className={classNames(open && classes.drawerOpen)}>
+      <Hidden mdUp>
+        <IconButton
+          classes={{
+            root: classNames(!open && classes.menuButton),
+            label: classNames(!open && classes.menuIcon)
+          }}
+          color="inherit"
+          aria-label="open drawer"
+          onClick={onToggleDrawer}
+          className={classNames(open && classes.hide)}
+        >
+          <Menu />
+        </IconButton>
+      </Hidden>
+      <Typography
+        className={classes.logo}
+        component={Link}
         color="inherit"
-        aria-label="open drawer"
-        onClick={onToggleDrawer}
-        className={classNames(open && classes.hide)}
+        to="/"
+        variant="title"
       >
-        <Menu />
-      </IconButton>
-    </Hidden>
-    <Typography
-      className={classes.logo}
-      component={Link}
-      color="inherit"
-      to="/"
-      variant="title"
-    >
-      NOINCOMEDEV
-    </Typography>
-    <div className={classes.toolbarButtonsContainer}>
-      <IconButton
-        color="inherit"
-        className={classes.menuButton}
-        onClick={event => {
-          Meteor.logout(error => {
-            if (!error) client.resetStore();
-          });
-        }}
-      >
-        <ExitToApp />
-      </IconButton>
-    </div>
-  </Toolbar>
-);
+        NOINCOMEDEV
+      </Typography>
+      <div className={classes.toolbarButtonsContainer}>
+        <IconButton
+          color="inherit"
+          className={classes.menuButton}
+          onClick={event => {
+            Meteor.logout(error => {
+              if (!error) client.resetStore();
+            });
+          }}
+        >
+          <ExitToApp />
+        </IconButton>
+      </div>
+    </Toolbar>
+  );
+};
 
 Private.propTypes = {
   onToggleDrawer: PropTypes.func.isRequired,
   open: PropTypes.bool
 };
 
-export default withStyles(styles, { withTheme: true })(withApollo(Private));
+export default withStyles(styles, { withTheme: true })(
+  withApollo(withRouter(Private))
+);

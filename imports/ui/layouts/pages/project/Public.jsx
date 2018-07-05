@@ -2,7 +2,7 @@ import React from "react";
 import gql from "graphql-tag";
 import { PropTypes } from "prop-types";
 import { Query } from "react-apollo";
-import { withRouter } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
@@ -76,7 +76,7 @@ const Public = ({ classes, history, id }) => (
       if (loading) return <Spinner />;
       if (error) return `Error!: ${error}`;
       const { project } = data;
-      if (project.private) history.push("/");
+      if (project.private) return <Redirect to="/" />;
       return (
         <Grid
           justify="center"
@@ -166,4 +166,4 @@ Public.propTypes = {
   id: PropTypes.string.isRequired
 };
 
-export default withStyles(styles)(withRouter(Public));
+export default withStyles(styles)(Public);

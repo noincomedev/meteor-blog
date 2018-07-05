@@ -3,10 +3,7 @@ import classNames from "classnames";
 import { Helmet } from "react-helmet";
 import { Route, Redirect } from "react-router-dom";
 import { PropTypes } from "prop-types";
-import { withApollo } from "react-apollo";
 import { withStyles } from "@material-ui/core/styles";
-
-import { CURRENT_USER } from "./Router";
 
 import NavigationLayout from "../../layouts/navigation/NavigationLayout";
 
@@ -47,7 +44,6 @@ class PrivateRoute extends Component {
   render() {
     const {
       classes,
-      client,
       component,
       content,
       exact,
@@ -56,10 +52,7 @@ class PrivateRoute extends Component {
       title
     } = this.props;
     const { open } = this.state;
-    const { user } = client.readQuery({ query: CURRENT_USER });
-    if (!user) {
-      return <Redirect to="/" />;
-    }
+    if (!Meteor.userId()) return <Redirect to="/" />;
     return (
       <Route
         exact={exact}
@@ -87,7 +80,6 @@ class PrivateRoute extends Component {
 }
 
 PrivateRoute.propTypes = {
-  client: PropTypes.object.isRequired,
   component: PropTypes.func.isRequired,
   exact: PropTypes.bool,
   name: PropTypes.string,
@@ -96,6 +88,4 @@ PrivateRoute.propTypes = {
   content: PropTypes.string
 };
 
-export default withStyles(styles, { withTheme: true })(
-  withApollo(PrivateRoute)
-);
+export default withStyles(styles, { withTheme: true })(PrivateRoute);

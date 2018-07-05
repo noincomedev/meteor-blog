@@ -11,11 +11,11 @@ export default {
       ).fetch({});
     },
     project(obj, { _id }, { userId }) {
-      if (userId) {
-        return Projects.findOne({ owner: userId, _id, status: true });
-      } else {
-        return Projects.findOne({ _id, status: true });
-      }
+      const project = Projects.findOne({
+        _id,
+        owner: userId
+      });
+      return project;
     },
     publicProjects(obj, args, context) {
       return Projects.find({ status: true, private: false }).fetch({});

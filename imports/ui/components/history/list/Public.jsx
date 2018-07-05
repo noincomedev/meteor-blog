@@ -35,10 +35,12 @@ const GET_PUBLIC_HISTORY = gql`
       action
       type
       project {
+        _id
         name
       }
       task {
         tag
+        owner
       }
     }
   }

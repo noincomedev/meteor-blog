@@ -3,16 +3,11 @@ import classNames from "classnames";
 import { Helmet } from "react-helmet";
 import { Route, Redirect } from "react-router-dom";
 import { PropTypes } from "prop-types";
-import { withApollo } from "react-apollo";
 import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 
-import Grid from "@material-ui/core/Grid";
-
 import NavigationLayout from "../../layouts/navigation/NavigationLayout";
 import PublicFooterLayout from "../../layouts/navigation/PublicFooterLayout";
-
-import { CURRENT_USER } from "./Router";
 
 const styles = theme => ({
   main: {
@@ -32,7 +27,6 @@ const styles = theme => ({
 const PublicRoute = ({
   content,
   classes,
-  client,
   component,
   exact,
   location,
@@ -40,8 +34,7 @@ const PublicRoute = ({
   path,
   title
 }) => {
-  const { user } = client.readQuery({ query: CURRENT_USER });
-  if (!user) {
+  if (!Meteor.userId()) {
     return (
       <Route
         exact={exact}
@@ -72,7 +65,6 @@ const PublicRoute = ({
 };
 
 PublicRoute.propTypes = {
-  client: PropTypes.object.isRequired,
   component: PropTypes.func.isRequired,
   exact: PropTypes.bool,
   name: PropTypes.string,
@@ -81,6 +73,4 @@ PublicRoute.propTypes = {
   content: PropTypes.string
 };
 
-export default withApollo(
-  withStyles(styles, { withTheme: true })(withRouter(PublicRoute))
-);
+export default withStyles(styles, { withTheme: true })(withRouter(PublicRoute));
