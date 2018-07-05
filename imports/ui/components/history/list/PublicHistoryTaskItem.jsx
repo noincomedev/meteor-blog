@@ -6,16 +6,16 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 
-const styles = theme => ({});
+const styles = theme => ({ textColor: { color: theme.palette.custom.text } });
 
-const PublicHistoryTaskItem = ({ history }) => (
+const PublicHistoryTaskItem = ({ classes, history }) => (
   <Grid item xs={12} style={{ display: "inline-flex" }}>
     <Typography variant="subheading" color="primary" style={{ marginRight: 8 }}>
       {`${history.action} task`}
     </Typography>
     <Typography
       variant="body2"
-      color="secondary"
+      classes={{ body2: classes.textColor }}
       component={Link}
       to={`/projects/${history.task.owner}`}
     >

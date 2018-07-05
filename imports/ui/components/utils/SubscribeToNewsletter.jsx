@@ -137,7 +137,7 @@ class SubscribeToNewsletter extends Component {
             Do you want to get the best of my content? Subscribe to my
             newsletter! I promise no spam! 1 or 2 emails monthly!
           </Typography>
-          <Grid item xs={12} sm={8}>
+          <Grid item xs={12}>
             <TextField
               required
               type="email"
@@ -145,13 +145,13 @@ class SubscribeToNewsletter extends Component {
               label="Email"
               value={email}
               onChange={this.handleChange}
-              margin="none"
+              margin="dense"
               fullWidth
               inputProps={{ className: classes.input }}
               InputLabelProps={{ classes: { root: classes.input } }}
             />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12}>
             <Button
               type="submit"
               variant="raised"

@@ -10,6 +10,15 @@ import NavigationLayout from "../../layouts/navigation/NavigationLayout";
 import PublicFooterLayout from "../../layouts/navigation/PublicFooterLayout";
 
 const styles = theme => ({
+  landingPageMain: {
+    flex: 1,
+    marginTop: 56,
+    [theme.breakpoints.up("sm")]: {
+      marginTop: 0
+    },
+    paddingTop: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit * 3
+  },
   main: {
     flex: 1,
     backgroundColor: theme.palette.background.default,
@@ -17,10 +26,6 @@ const styles = theme => ({
     [theme.breakpoints.up("sm")]: {
       marginTop: 64
     }
-  },
-  landingPageMain: {
-    marginTop: 0,
-    padding: 24
   }
 });
 
@@ -48,9 +53,9 @@ const PublicRoute = ({
             <NavigationLayout location={location} />
             <main
               className={classNames(
-                location.pathname == "/"
-                  ? classes.landingPageMain
-                  : classes.main
+                location.pathname != "/"
+                  ? classes.main
+                  : classes.landingPageMain
               )}
             >
               {React.createElement(component, { name })}

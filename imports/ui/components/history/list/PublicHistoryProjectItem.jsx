@@ -8,40 +8,27 @@ import AddAlert from "@material-ui/icons/AddAlert";
 import Warning from "@material-ui/icons/Warning";
 import { withStyles } from "@material-ui/core/styles";
 
-const styles = theme => ({});
+const styles = theme => ({
+  chipContainer: {
+    alignSelf: "flex-end"
+  }
+});
 
-const PublicHistoryProjectItem = ({ history }) => {
-  const renderChip = () => {
-    switch (history.action) {
-      case "create":
-        return <AddAlert />;
-      case "delete":
-        return <Warning />;
-      default:
-        return <p>icon</p>;
-    }
-  };
-  return (
-    <Grid item xs={12} style={{ display: "inline-flex" }}>
-      {renderChip()}
-      <Typography
-        variant="subheading"
-        color="primary"
-        style={{ marginRight: 8 }}
-      >
-        {`${history.action} project`}
-      </Typography>
-      <Typography
-        variant="body2"
-        color="secondary"
-        component={Link}
-        to={`/projects/${history.project._id}`}
-      >
-        {history.project.name}
-      </Typography>
-    </Grid>
-  );
-};
+const PublicHistoryProjectItem = ({ classes, history }) => (
+  <Grid item xs={12} style={{ display: "inline-flex" }}>
+    <Typography variant="subheading" color="primary" style={{ marginRight: 8 }}>
+      {`${history.action} project`}
+    </Typography>
+    <Typography
+      variant="body2"
+      color="secondary"
+      component={Link}
+      to={`/projects/${history.project._id}`}
+    >
+      {history.project.name}
+    </Typography>
+  </Grid>
+);
 
 PublicHistoryProjectItem.propTypes = {
   history: PropTypes.object.isRequired

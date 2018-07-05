@@ -16,8 +16,8 @@ const styles = theme => ({
 });
 
 const Public = ({ classes, posts }) => (
-  <Grid container spacing={16} classes={{ container: classes.container }}>
-    <Grid item xs={12}>
+  <Grid container classes={{ container: classes.container }}>
+    <Grid item xs={4}>
       <Typography variant="headline">Recent Articles</Typography>
       <Divider />
     </Grid>

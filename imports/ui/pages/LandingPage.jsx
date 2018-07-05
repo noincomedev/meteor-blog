@@ -1,94 +1,26 @@
 import React, { Component } from "react";
-import classNames from "classnames";
-
-import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
-import Hidden from "@material-ui/core/Hidden";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 
-import PublicHistoryList from "../../ui/components/history/list/Public";
-import PublicProjectList from "../../ui/components/project/list/Public";
+import ReactInstagramFeed from "react-instagram-feed";
+import { Timeline } from "react-twitter-widgets";
+
+import MainSidenav from "../components/navigation/sidenav/MainSidenav";
 import PostListLayout from "../layouts/components/list/PostListLayout";
 
-import SubscribeToNewsletter from "../components/utils/SubscribeToNewsletter";
-
-import { Timeline } from "react-twitter-widgets";
-import ReactInstagramFeed from "react-instagram-feed";
-
 const styles = theme => ({
-  avatar: {
-    height: 200,
-    width: 200,
-    border: `${theme.spacing.unit / 2}px ${theme.palette.primary.main} solid`,
-    alignSelf: "center"
-  },
-  divider: { marginBottom: theme.spacing.unit },
-  feedsContainer: {
-    marginTop: theme.spacing.unit * 2,
-    background: "linear-gradient(to right, #94d6d6 0%,#3b295a 80%)",
-    [theme.breakpoints.down("xs")]: {
-      background: "linear-gradient(to bottom, #94d6d6 0%,#3b295a 80%)"
+  container: {
+    [theme.breakpoints.up("md")]: {
+      paddingRight: theme.spacing.unit * 2
+    },
+    [theme.breakpoints.down("sm")]: {
+      paddingLeft: theme.spacing.unit * 2,
+      paddingRight: theme.spacing.unit * 2
     }
   },
-  instagramContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center"
-  },
-  instagramIcon: {
-    color: theme.palette.secondary.main,
-    textShadow: `1px 1px 3px #212121`
-  },
-  instagramLogo: {
-    color: theme.palette.primary.dark,
-    fontFamily: "Oleo Script",
-    textShadow: `1px 1px ${theme.palette.secondary.light}`
-  },
-  instagramWrapper: { margin: theme.spacing.unit },
-  item: {
-    flex: 1,
-    width: "100%"
-  },
-  itemContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start"
-  },
-  socialList: {
-    width: "100%"
-  },
-  supportSection: {
-    width: "100%",
-    minHeight: "10vh",
-    backgroundColor: theme.palette.grey[300],
-    display: "flex",
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: theme.spacing.unit,
-    paddingTop: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit
-  },
-  twitterContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center"
-  },
-  twitterIcon: {
-    color: theme.palette.custom.text,
-    textShadow: `1px 1px 3px ${theme.palette.primary.main}`
-  },
-  twitterLogo: {
-    color: theme.palette.primary.main,
-    fontFamily: "Oleo Script",
-    textShadow: `1px 1px ${theme.palette.common.white}`
+  mainSection: {
+    paddingLeft: theme.spacing.unit * 2,
+    paddingRight: theme.spacing.unit * 2
   }
 });
 
@@ -98,164 +30,52 @@ const LandingPage = ({ classes }) => {
   );
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      <Grid container alignItems="flex-start" spacing={16}>
-        <Grid item xs={12} md={8}>
-          <PostListLayout />
-          <Grid
-            container
-            justify="space-around"
-            classes={{ container: classes.feedsContainer }}
-            spacing={16}
-          >
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              classes={{ item: classes.twitterContainer }}
-            >
-              <i
-                className={classNames(
-                  "fab fa-twitter fa-3x",
-                  classes.twitterIcon
-                )}
-              />
-              <Typography
-                color="secondary"
-                variant="display3"
-                classes={{ display3: classes.twitterLogo }}
-              >
-                Twitter
-              </Typography>
-              <Timeline
-                dataSource={{
-                  sourceType: "profile",
-                  screenName: "noincomedev"
-                }}
-                options={{
-                  username: "Noincomedev",
-                  height: "600",
-                  width: "100%"
-                }}
-                onLoad={() => {}}
-              />
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              classes={{ item: classes.instagramContainer }}
-            >
-              <i
-                className={classNames(
-                  "fab fa-instagram fa-3x",
-                  classes.instagramIcon
-                )}
-              />
-              <Typography
-                variant="display3"
-                classes={{ display3: classes.instagramLogo }}
-              >
-                Instagram
-              </Typography>
-              <ReactInstagramFeed
-                accessToken="7596328311.bb8560a.403c9242eeb9404ab44f41331f2dda76"
-                count={1}
-                type="user"
-                param="self"
-                resolution="standard"
-                wrapper={InstagramWrapper}
-                hasLink
-                before={() => {}}
-                after={() => {}}
-                showButton={false}
-              />
-            </Grid>
-          </Grid>
+    <Grid
+      container
+      justify="flex-end"
+      classes={{ container: classes.container }}
+    >
+      <Grid item xs={12} sm={9} classes={{ item: classes.mainSection }}>
+        <PostListLayout />
+      </Grid>
+      <Grid item xs={12} sm={3}>
+        <MainSidenav />
+      </Grid>
+      <Grid container justify="space-around">
+        <Grid item xs={12} sm={4}>
+          <Timeline
+            dataSource={{
+              sourceType: "profile",
+              screenName: "noincomedev"
+            }}
+            options={{
+              username: "Noincomedev",
+              height: "100%",
+              width: "100%"
+            }}
+            onLoad={() => {
+              $("#twitter-widget-0")
+                .parent()
+                .css({ height: "100%", "min-height": "75vh" });
+            }}
+          />
         </Grid>
-        <Grid item xs={12} md={4}>
-          <div className={classes.itemContainer}>
-            <Grid item xs={12} classes={{ item: classes.item }}>
-              <Typography variant="headline">Recent Activity</Typography>
-              <Divider className={classes.divider} />
-            </Grid>
-            <PublicHistoryList />
-          </div>
-          <div className={classes.itemContainer}>
-            <Grid item xs={12} classes={{ item: classes.item }}>
-              <Typography variant="headline">Working On</Typography>
-              <Divider className={classes.divider} />
-            </Grid>
-            <PublicProjectList />
-          </div>
-          <Hidden smDown>
-            <div className={classes.itemContainer}>
-              <Grid item xs={12} classes={{ item: classes.item }}>
-                <Typography variant="headline">Social</Typography>
-                <Divider className={classes.divider} />
-              </Grid>
-              <List classes={{ root: classes.socialList }} component="nav">
-                <ListItem
-                  button
-                  component={Button}
-                  href="https://www.twitter.com/noincomedev/"
-                >
-                  <ListItemIcon>
-                    <i className="fab fa-twitter fa-2x" />
-                  </ListItemIcon>
-                  <ListItemText primary="TWEET!" />
-                </ListItem>
-                <ListItem
-                  button
-                  component={Button}
-                  href="https://www.instagram.com/noincomedev/"
-                >
-                  <ListItemIcon>
-                    <i className="fab fa-instagram fa-2x" />
-                  </ListItemIcon>
-                  <ListItemText primary="FOLLOW ME" />
-                </ListItem>
-                <ListItem
-                  button
-                  component={Button}
-                  href="https://github.com/noincomedev/meteor-blog"
-                >
-                  <ListItemIcon>
-                    <i className="fab fa-github fa-2x" />
-                  </ListItemIcon>
-                  <ListItemText primary="STAR" />
-                </ListItem>
-              </List>
-            </div>
-          </Hidden>
-          <div className={classes.itemContainer}>
-            <Grid item xs={12} classes={{ item: classes.item }}>
-              <Typography variant="headline">Newsletter</Typography>
-              <Divider className={classes.divider} />
-            </Grid>
-            <SubscribeToNewsletter />
-          </div>
-          <div className={classes.itemContainer}>
-            <section className={classes.supportSection}>
-              <Typography color="secondary" variant="body2">
-                This blog will run ad-free forever.
-              </Typography>
-              <Typography color="secondary" variant="body2">
-                Support my job!
-              </Typography>
-              <Button
-                variant="raised"
-                color="primary"
-                href="https://www.buymeacoffee.com/noincomedev"
-              >
-                Buy me a coffee
-                <i className="fas fa-coffee" />
-              </Button>
-            </section>
-          </div>
+        <Grid item xs={12} sm={6}>
+          <ReactInstagramFeed
+            accessToken="7596328311.bb8560a.403c9242eeb9404ab44f41331f2dda76"
+            count={1}
+            type="user"
+            param="self"
+            resolution="standard"
+            wrapper={InstagramWrapper}
+            hasLink
+            before={() => {}}
+            after={() => {}}
+            showButton={false}
+          />
         </Grid>
       </Grid>
-    </div>
+    </Grid>
   );
 };
 
