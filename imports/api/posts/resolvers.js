@@ -14,7 +14,7 @@ export default {
     },
     publicPosts(obj, args, ctx) {
       return Posts.find(
-        { status: true, published: true },
+        { status: true, published: true, private: false },
         { sort: { created: -1 } }
       ).fetch({});
     }
@@ -74,6 +74,23 @@ export default {
           userId: userId,
           owner: _id,
           action: "delete",
+          type: "post"
+        });
+        return postId;
+      }
+      throw new Error("Unauthorized");
+    },
+    togglePostPrivacy(obj, args, { userId }) {
+      if (userId) {
+        const { _id, private } = args;
+        const postId = Posts.update(
+          { _id, owner: userId },
+          { $set: { private } }
+        );
+        History.insert({
+          userId: userId,
+          owner: _id,
+          action: private ? "private" : "public",
           type: "post"
         });
         return postId;

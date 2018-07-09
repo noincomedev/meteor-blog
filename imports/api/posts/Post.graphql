@@ -13,6 +13,7 @@ type Post {
   new: Boolean
   intro: String
   imageUrl: String
+  private: Boolean
 }
 
 extend type Mutation {
@@ -34,6 +35,7 @@ extend type Mutation {
     category: String!
   ): Post
   deletePost(_id: String!): Post
+  togglePostPrivacy(_id: String!, private: Boolean!): Post
 }
 
 extend type Query {

@@ -13,6 +13,7 @@ class ValidatedForm extends Component {
     validate(component.form, {
       rules,
       messages,
+      ignore: ".public-DraftEditor-content",
       errorPlacement: function(error, element) {
         var parent = $(element)
           .parent()
@@ -37,6 +38,7 @@ class ValidatedForm extends Component {
     validate(component.form, {
       rules,
       messages,
+      ignore: ".public-DraftEditor-content",
       errorPlacement: function(error, element) {
         var parent = $(element)
           .parent()

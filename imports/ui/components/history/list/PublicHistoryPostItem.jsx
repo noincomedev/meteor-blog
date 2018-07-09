@@ -12,24 +12,16 @@ const styles = theme => ({
   }
 });
 
-const PublicHistoryProjectItem = ({ classes, history }) => (
+const PublicHistoryPostItem = ({ classes, history }) => (
   <Grid item xs={12} style={{ display: "inline-flex" }}>
     <Typography variant="subheading" color="primary" style={{ marginRight: 8 }}>
-      {`${history.action} project`}
-    </Typography>
-    <Typography
-      variant="body2"
-      color="secondary"
-      component={Link}
-      to={`/projects/${history.project._id}`}
-    >
-      {history.project.name}
+      {`${history.action == "public" ? "unhide" : "hide"} post`}
     </Typography>
   </Grid>
 );
 
-PublicHistoryProjectItem.propTypes = {
+PublicHistoryPostItem.propTypes = {
   history: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(PublicHistoryProjectItem);
+export default withStyles(styles)(PublicHistoryPostItem);

@@ -1,16 +1,13 @@
 import React, { Component, Fragment } from "react";
-
-import { Helmet } from "react-helmet";
 import { PropTypes } from "prop-types";
 
 import { withStyles } from "@material-ui/core/styles";
 
-import Button from "@material-ui/core/Button";
+import Add from "@material-ui/icons/Add";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
+import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-
-import CardWithTitleAndContent from "../../../layouts/components/card/CardWithTitleAndContent";
 
 import PostForm from "../PostForm";
 import PrivatePostItem from "./PrivatePostItem";
@@ -59,14 +56,9 @@ class Private extends Component {
             style={{ display: "flex", flex: 1, justifyContent: "flex-end" }}
           >
             {controls && (
-              <Button
-                variant="flat"
-                color="secondary"
-                onClick={this.toggleControls}
-                className={classes.button}
-              >
-                +
-              </Button>
+              <IconButton color="secondary" onClick={this.toggleControls}>
+                <Add />
+              </IconButton>
             )}
           </Grid>
         </Grid>
@@ -74,15 +66,10 @@ class Private extends Component {
           <Divider />
         </Grid>
         {!controls && (
-          <Grid item xs={12} style={{ paddingRight: 8 }}>
-            <Helmet>
-              <title>NOINCOMEDEV | Add Post</title>
-              <meta name="Add Post" content="Add Post" />
-            </Helmet>
-            <CardWithTitleAndContent title="New Post">
-              <PostForm handleCancel={this.toggleControls} />
-            </CardWithTitleAndContent>
-          </Grid>
+          <PostForm
+            showCancelButton={posts.length > 0}
+            handleCancel={this.toggleControls}
+          />
         )}
         {controls &&
           posts.length > 0 &&

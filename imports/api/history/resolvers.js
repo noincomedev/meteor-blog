@@ -5,9 +5,10 @@ import Tasks from "../tasks/Tasks";
 export default {
   Query: {
     publicHistory(obj, args, context) {
-      return History.find({ status: true }, { sort: { created: -1 } }).fetch(
-        {}
-      );
+      return History.find(
+        { status: true },
+        { sort: { created: -1 }, limit: 15 }
+      ).fetch({});
     }
   },
   History: {

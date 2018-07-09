@@ -79,6 +79,12 @@ Posts.schema = new SimpleSchema({
     type: String,
     label: "The url image of this post.",
     optional: true
+  },
+  private: {
+    type: Boolean,
+    autoValue() {
+      if (this.isInsert) return false;
+    }
   }
 });
 

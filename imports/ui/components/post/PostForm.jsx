@@ -1,14 +1,23 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import gql from "graphql-tag";
 import { compose, graphql } from "react-apollo";
+import { Helmet } from "react-helmet";
 import { Bert } from "meteor/themeteorchef:bert";
 import { PropTypes } from "prop-types";
 import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 
 import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
+import Divider from "@material-ui/core/Divider";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
+import Switch from "@material-ui/core/Switch";
 import TextField from "@material-ui/core/TextField";
+
+import ValidatedForm from "../utils/ValidatedForm";
 
 import { EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
@@ -18,12 +27,17 @@ import { stateFromMarkdown } from "draft-js-import-markdown";
 
 const styles = theme => ({
   container: {
-    display: "flex",
-    overflow: "auto"
+    marginTop: theme.spacing.unit,
+    marginBottom: theme.spacing.unit
   },
   editor: {
     border: `1px solid ${theme.palette.grey[200]}`,
     minHeight: 150
+  },
+  headerContent: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "space-between"
   }
 });
 
@@ -41,7 +55,8 @@ class PostForm extends Component {
       tags: post ? post.tags : [],
       editorState: post
         ? EditorState.createWithContent(stateFromMarkdown(post.content))
-        : EditorState.createEmpty()
+        : EditorState.createEmpty(),
+      private: post ? post.private : false
     };
   }
 
@@ -59,6 +74,14 @@ class PostForm extends Component {
       case "title":
         this.setState({ title: value });
         this.updateSlug(value);
+        break;
+      case "private":
+        this.props.togglePostPrivacy({
+          variables: {
+            _id: this.props.post._id,
+            private: event.target.checked
+          }
+        });
         break;
       default:
         this.setState({ [name]: value });
@@ -90,7 +113,7 @@ class PostForm extends Component {
             icon: "fa-check"
           })
         )
-        .then(history.push("/posts"))
+        .then(this.props.handleCancel())
         .catch(error =>
           Bert.alert({
             title: error ? "Error!" : "Success",
@@ -114,6 +137,7 @@ class PostForm extends Component {
             icon: "fa-check"
           })
         )
+        .then(this.props.handleCancel())
         .catch(error =>
           Bert.alert({
             title: error ? "Error!" : "Success",
@@ -146,7 +170,7 @@ class PostForm extends Component {
             icon: "fa-remove"
           })
         )
-        .then(history.push("/posts"))
+        .then(this.props.handleCancel())
         .catch(error =>
           Bert.alert({
             title: error ? "Error!" : "Success",
@@ -171,126 +195,170 @@ class PostForm extends Component {
   };
 
   render() {
-    const { classes, post } = this.props;
+    const { classes, post, showCancelButton } = this.props;
     const { title, imageUrl, slug, category, tags, editorState } = this.state;
     return (
-      <form
-        className={classes.container}
-        onSubmit={event => event.preventDefault()}
+      <Grid
+        container
+        classes={{ container: classes.container }}
+        justify="center"
       >
-        <Grid container justify="center">
-          <Grid item xs={12}>
-            <TextField
-              id="title"
-              label="Title"
-              className={classes.textField}
-              value={title}
-              onChange={this.handleChange}
-              margin="normal"
-              fullWidth
+        <Helmet>
+          <title>NOINCOMEDEV | Edit Post</title>
+          <meta name="Edit Post" content="Edit Post" />
+        </Helmet>
+        <Grid item xs={12} sm={8} md={6}>
+          <Card>
+            <CardHeader
+              title={`${post ? "Edit" : "New"} Post`}
+              classes={{ content: classes.headerContent }}
+              subheader={
+                post && (
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        id="private"
+                        onChange={this.handleChange}
+                        checked={post.private}
+                        value="private"
+                      />
+                    }
+                    label="Private"
+                  />
+                )
+              }
             />
-            <TextField
-              id="slug"
-              label="Slug"
-              className={classes.textField}
-              value={slug}
-              onChange={this.handleChange}
-              margin="normal"
-              disabled
-              fullWidth
-            />
-            <TextField
-              id="imageUrl"
-              label="Image URL"
-              className={classes.textField}
-              value={imageUrl ? imageUrl : ""}
-              onChange={this.handleChange}
-              margin="normal"
-              fullWidth
-            />
-            <TextField
-              id="category"
-              label="Category"
-              className={classes.textField}
-              value={category}
-              onChange={this.handleChange}
-              margin="normal"
-              fullWidth
-            />
-            <TextField
-              id="tags"
-              label="Tags"
-              className={classes.textField}
-              value={tags}
-              onChange={this.handleChange}
-              margin="normal"
-              fullWidth
-              helperText="No spaces, use - instead. Separate by comma."
-            />
-            <Editor
-              editorClassName={classes.editor}
-              defaultEditorState={editorState}
-              onEditorStateChange={this.onEditorStateChange}
-              toolbar={{
-                options: [
-                  "inline",
-                  "blockType",
-                  "list",
-                  "link",
-                  "embedded",
-                  "emoji",
-                  "image",
-                  "history"
-                ],
-                inline: {
-                  inDropdown: true,
-                  options: ["bold", "italic"]
-                },
-                list: { inDropdown: true },
-                textAlign: { inDropdown: true },
-                link: { inDropdown: true },
-                history: { inDropdown: true },
-                image: {
-                  previewImage: true,
-                  alt: { present: true, mandatory: true }
-                }
-              }}
-            />
-          </Grid>
-          <Grid container justify="center">
-            <Grid item xs={12}>
-              <Button
-                variant="raised"
-                color="primary"
-                fullWidth
-                onClick={this.handleSubmit}
-              >
-                {post ? "Save" : "Add"}
-              </Button>
-              {post && (
-                <Button
-                  type="button"
-                  variant="raised"
-                  color="secondary"
+            <Divider />
+            <CardContent>
+              <ValidatedForm onHandleSubmit={this.handleSubmit}>
+                <TextField
+                  id="title"
+                  label="Title"
+                  className={classes.textField}
+                  value={title}
+                  onChange={this.handleChange}
+                  margin="normal"
                   fullWidth
-                  onClick={this.handleDelete}
+                  required
+                />
+                <TextField
+                  id="slug"
+                  label="Slug"
+                  className={classes.textField}
+                  value={slug}
+                  onChange={this.handleChange}
+                  margin="normal"
+                  disabled
+                  fullWidth
+                  required
+                />
+                <TextField
+                  id="imageUrl"
+                  label="Image URL"
+                  className={classes.textField}
+                  value={imageUrl ? imageUrl : ""}
+                  onChange={this.handleChange}
+                  margin="normal"
+                  fullWidth
+                  required
+                />
+                <TextField
+                  id="category"
+                  label="Category"
+                  className={classes.textField}
+                  value={category}
+                  onChange={this.handleChange}
+                  margin="normal"
+                  fullWidth
+                  required
+                />
+                <TextField
+                  id="tags"
+                  label="Tags"
+                  className={classes.textField}
+                  value={tags}
+                  onChange={this.handleChange}
+                  margin="normal"
+                  fullWidth
+                  helperText="No spaces, use - instead. Separate by comma."
+                  required
+                />
+                <Editor
+                  id="editor"
+                  spellCheck={false}
+                  editorClassName={classes.editor}
+                  editorState={editorState}
+                  onEditorStateChange={this.onEditorStateChange}
+                  toolbar={{
+                    options: [
+                      "inline",
+                      "blockType",
+                      "list",
+                      "link",
+                      "embedded",
+                      "emoji",
+                      "image",
+                      "history"
+                    ],
+                    inline: { inDropdown: true, options: ["bold", "italic"] },
+                    list: { inDropdown: true },
+                    textAlign: { inDropdown: true },
+                    link: { inDropdown: true },
+                    history: { inDropdown: true },
+                    image: {
+                      previewImage: true,
+                      alt: { present: true, mandatory: true }
+                    }
+                  }}
+                />
+                <Grid
+                  container
+                  spacing={8}
+                  justify="flex-end"
+                  style={{ marginTop: 8 }}
                 >
-                  Delete
-                </Button>
-              )}
-              <Button
-                type="button"
-                variant="raised"
-                color="inherit"
-                fullWidth
-                onClick={this.handleCancel}
-              >
-                Cancel
-              </Button>
-            </Grid>
-          </Grid>
+                  {showCancelButton && (
+                    <Grid item xs={4}>
+                      <Button
+                        type="button"
+                        variant="raised"
+                        color="inherit"
+                        fullWidth
+                        onClick={this.handleCancel}
+                      >
+                        Cancel
+                      </Button>
+                    </Grid>
+                  )}
+                  {post && (
+                    <Grid item xs={4}>
+                      <Button
+                        type="button"
+                        variant="raised"
+                        color="secondary"
+                        fullWidth
+                        onClick={this.handleDelete}
+                      >
+                        Delete
+                      </Button>
+                    </Grid>
+                  )}
+                  <Grid item xs={4}>
+                    <Button
+                      variant="raised"
+                      color="primary"
+                      fullWidth
+                      onClick={this.handleSubmit}
+                    >
+                      {post ? "Save" : "Add"}
+                    </Button>
+                  </Grid>
+                </Grid>
+              </ValidatedForm>
+            </CardContent>
+          </Card>
         </Grid>
-      </form>
+      </Grid>
     );
   }
 }
@@ -354,6 +422,14 @@ const DELETE_POST = gql`
   }
 `;
 
+const TOGGLE_POST_PRIVACY = gql`
+  mutation togglePostPrivacy($_id: String!, $private: Boolean!) {
+    togglePostPrivacy(_id: $_id, private: $private) {
+      _id
+    }
+  }
+`;
+
 export default compose(
   graphql(EDIT_POST, {
     name: "editPost",
@@ -371,6 +447,13 @@ export default compose(
   }),
   graphql(CREATE_POST, {
     name: "createPost",
+    options: {
+      refetchQueries: ["posts"],
+      variables: { owner: Meteor.userId() }
+    }
+  }),
+  graphql(TOGGLE_POST_PRIVACY, {
+    name: "togglePostPrivacy",
     options: {
       refetchQueries: ["posts"],
       variables: { owner: Meteor.userId() }

@@ -45,6 +45,7 @@ export const USER_POSTS = gql`
       new
       intro
       imageUrl
+      private
     }
   }
 `;

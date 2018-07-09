@@ -12,6 +12,8 @@ import Spinner from "../../utils/Spinner";
 const styles = theme => ({
   container: {
     marginTop: theme.spacing.unit / 2,
+    marginBottom: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit,
     minHeight: "10vh",
     maxHeight: "22vh",
     overflow: "auto"
