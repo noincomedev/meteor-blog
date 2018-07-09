@@ -21,9 +21,7 @@ export default {
   },
   Post: {
     new: post => moment(new Date()).diff(post.created, "days") <= 5,
-    intro: post =>
-      post.content.substring(0, 200) +
-      `... [Continue Reading.](https//:www.noincomedev.me/${post.slug})`
+    intro: post => post.content.substring(0, 200) + `... Continue Reading.`
   },
   Mutation: {
     createPost(

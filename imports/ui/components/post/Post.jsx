@@ -37,6 +37,9 @@ styles = theme => ({
     backgroundColor: theme.palette.common.white,
     color: theme.palette.secondary.light
   },
+  container: {
+    padding: theme.spacing.unit
+  },
   divider: { marginBottom: theme.spacing.unit },
   text: {
     color: theme.palette.text.secondary,
@@ -59,7 +62,11 @@ const Post = ({ classes, slug }) => (
         title: post.title
       };
       return (
-        <Grid container justify="center">
+        <Grid
+          container
+          justify="center"
+          classes={{ container: classes.container }}
+        >
           <Helmet>
             <title>{`NOINCOMEDEV | ${post.title}`}</title>
             <meta name="Read Post" content="Post" />

@@ -16,60 +16,6 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { stateToMarkdown } from "draft-js-export-markdown";
 import { stateFromMarkdown } from "draft-js-import-markdown";
 
-const CREATE_POST = gql`
-  mutation createPost(
-    $title: String!
-    $slug: String!
-    $content: String!
-    $tags: [String]!
-    $category: String!
-    $imageUrl: String!
-  ) {
-    createPost(
-      title: $title
-      slug: $slug
-      category: $category
-      content: $content
-      tags: $tags
-      imageUrl: $imageUrl
-    ) {
-      _id
-    }
-  }
-`;
-
-const EDIT_POST = gql`
-  mutation editPost(
-    $_id: String!
-    $title: String!
-    $slug: String!
-    $content: String!
-    $tags: [String]!
-    $category: String!
-    $imageUrl: String!
-  ) {
-    editPost(
-      _id: $_id
-      title: $title
-      slug: $slug
-      content: $content
-      tags: $tags
-      category: $category
-      imageUrl: $imageUrl
-    ) {
-      _id
-    }
-  }
-`;
-
-const DELETE_POST = gql`
-  mutation deletePost($_id: String!) {
-    deletePost(_id: $_id) {
-      _id
-    }
-  }
-`;
-
 const styles = theme => ({
   container: {
     display: "flex",
@@ -82,15 +28,22 @@ const styles = theme => ({
 });
 
 class PostForm extends Component {
-  state = {
-    title: "",
-    imageUrl: "",
-    slug: "",
-    category: "",
-    content: "",
-    tags: [],
-    editorState: EditorState.createEmpty()
-  };
+  constructor(props) {
+    super(props);
+    const { post } = props;
+    this.state = {
+      _id: post ? post._id : null,
+      title: post ? post.title : "",
+      imageUrl: post ? post.imageUrl : "",
+      slug: post ? post.slug : "",
+      category: post ? post.category : "",
+      content: post ? post.content : "",
+      tags: post ? post.tags : [],
+      editorState: post
+        ? EditorState.createWithContent(stateFromMarkdown(post.content))
+        : EditorState.createEmpty()
+    };
+  }
 
   handleChange = event => {
     const name = event.target.id,
@@ -209,20 +162,6 @@ class PostForm extends Component {
   updateSlug = title => {
     this.setState({ slug: getSlug(title) });
   };
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.post) {
-      return {
-        ...nextProps.post,
-        editorState: EditorState.createWithContent(
-          stateFromMarkdown(nextProps.post.content)
-        )
-      };
-    }
-    return {
-      ...nextProps.post
-    };
-  }
 
   onEditorStateChange = editorState => {
     this.setState({
@@ -360,6 +299,60 @@ PostForm.propTypes = {
   handleCancel: PropTypes.func.isRequired,
   post: PropTypes.object
 };
+
+const CREATE_POST = gql`
+  mutation createPost(
+    $title: String!
+    $slug: String!
+    $content: String!
+    $tags: [String]!
+    $category: String!
+    $imageUrl: String!
+  ) {
+    createPost(
+      title: $title
+      slug: $slug
+      category: $category
+      content: $content
+      tags: $tags
+      imageUrl: $imageUrl
+    ) {
+      _id
+    }
+  }
+`;
+
+const EDIT_POST = gql`
+  mutation editPost(
+    $_id: String!
+    $title: String!
+    $slug: String!
+    $content: String!
+    $tags: [String]!
+    $category: String!
+    $imageUrl: String!
+  ) {
+    editPost(
+      _id: $_id
+      title: $title
+      slug: $slug
+      content: $content
+      tags: $tags
+      category: $category
+      imageUrl: $imageUrl
+    ) {
+      _id
+    }
+  }
+`;
+
+const DELETE_POST = gql`
+  mutation deletePost($_id: String!) {
+    deletePost(_id: $_id) {
+      _id
+    }
+  }
+`;
 
 export default compose(
   graphql(EDIT_POST, {
